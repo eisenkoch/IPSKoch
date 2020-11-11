@@ -40,7 +40,9 @@ class StuderInnotecWeb extends IPSModule {
     * Die Funktionen werden, mit dem selbst eingerichteten Prefix, in PHP und JSON-RPC wiefolgt zur Verfügung gestellt:
     *
     */
-    public function MeineErsteEigeneFunktion() {
-        // Selbsterstellter Code
+    public function Studer_Update() {
+        if (DEBUG):
+            var_dump ("========);
+        endif;
     }
 }
