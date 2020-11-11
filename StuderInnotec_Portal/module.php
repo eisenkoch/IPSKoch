@@ -35,9 +35,9 @@ class StuderInnotecWeb extends IPSModule {
 
     }
     public function Update(){
-        if (DEBUG):
+        if ($this->ReadPropertyBoolean("Debug"))
             IPS_LogMessage($_IPS['SELF'], "+++++++++++");
-        endif;
+       
    }
 
    /**
