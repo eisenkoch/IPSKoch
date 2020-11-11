@@ -30,7 +30,7 @@ class StuderInnotecWeb extends IPSModule {
     public function ApplyChanges() {
         // Diese Zeile nicht löschen
         parent::ApplyChanges();
-        $this->SetTimerInterval("UpdateTimer", $this->ReadPropertyInteger("UpdateInterval")*1000);
+        $this->SetTimerInterval("UpdateTimer", $this->ReadPropertyInteger("UpdateInterval_short")*1000);
     }
  
     /**
