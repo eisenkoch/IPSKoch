@@ -1,8 +1,8 @@
 {
     "id": "{F04FD126-DA5A-09F0-6FFE-44A9EA454E6C}",
-    "name": "StuderInnotecRS485forIPSymcon",
+    "name": "StuderInnotecRS485",
     "type": 3,
-    "vendor": "",
+    "vendor": "Studer Innotec",
     "aliases":
     [
         "Name1UnterstütztesGerät",

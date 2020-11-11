@@ -1,8 +1,8 @@
 {
     "id": "{32102938-0EA9-B77F-2477-474481A89900}",
-    "name": "StuderInnotec_Portal",
+    "name": "StuderInnotecWeb",
     "type": 3,
-    "Vendor": "",
+    "Vendor": "Studer Innotec",
     "aliases":
     [
         "Name1UnterstütztesGerät"
@@ -11,5 +11,5 @@
     "parentRequirements": [],
     "childRequirements": [],
     "implemented": [],
-    "prefix": "StuderInnotec_Portal"
+    "prefix": "StuderInnotecPortal"
 }
