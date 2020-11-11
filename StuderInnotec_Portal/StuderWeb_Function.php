@@ -1,5 +1,8 @@
 <?php
-IPS_LogMessage($this->moduleName, "-----");
+if ($this->ReadPropertyBoolean("VS_Total_produced_energy")){
+    std_3020()
+}
+
 function std_3020(){
     global $email;
     global $pwd;
