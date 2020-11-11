@@ -1,0 +1,6 @@
+{
+    "elements":
+    [
+        { "name": "Debug",  "type": "CheckBox", "caption": "Debug" }
+    ]
+}
