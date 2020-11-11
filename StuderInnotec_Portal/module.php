@@ -35,10 +35,12 @@ class StuderInnotecWeb extends IPSModule {
 
     }
     public function Update(){
-        IPS_LogMessage($_IPS['SELF'], "+++++++++++");
-    }
-    
-        /**
+        if (DEBUG):
+            IPS_LogMessage($_IPS['SELF'], "+++++++++++");
+        endif;
+   }
+
+   /**
     * Die folgenden Funktionen stehen automatisch zur Verfügung, wenn das Modul über die "Module Control" eingefügt wurden.
     * Die Funktionen werden, mit dem selbst eingerichteten Prefix, in PHP und JSON-RPC wiefolgt zur Verfügung gestellt:
     *
