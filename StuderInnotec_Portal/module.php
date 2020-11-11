@@ -29,21 +29,18 @@ class StuderInnotecWeb extends IPSModule {
     public function ApplyChanges() {
         // Diese Zeile nicht löschen
         parent::ApplyChanges();
-        $this->SetTimerInterval("UpdateTimer", $this->ReadPropertyInteger("UpdateIntervall")*1000);
+        $this->SetTimerInterval("UpdateTimer", $this->ReadPropertyInteger("UpdateIntervall")*1000); 
         $this->Username = $this->ReadPropertyString("Username");
         $this->Password = $this->ReadPropertyString("Password");
 
     }
- 
-    /**
+    public function Update()
+        IPS_LogMessage($this->moduleName,"Updating devices from '".$baseURL."'");
+    {
+    
+        /**
     * Die folgenden Funktionen stehen automatisch zur Verfügung, wenn das Modul über die "Module Control" eingefügt wurden.
     * Die Funktionen werden, mit dem selbst eingerichteten Prefix, in PHP und JSON-RPC wiefolgt zur Verfügung gestellt:
     *
     */
-    public function Studer_Update() {
-        IPS_LogMessage($_IPS['SELF'], "++++++");
-        if (DEBUG):
-            IPS_LogMessage($_IPS['SELF'], "=========");
-        endif;
-    }
 }
