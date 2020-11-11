@@ -1,5 +1,5 @@
 <?php
-
+IPS_LogMessage($this->moduleName, "-----");
 function std_3020(){
     global $email;
     global $pwd;
