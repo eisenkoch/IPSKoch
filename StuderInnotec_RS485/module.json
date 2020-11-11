@@ -2,14 +2,15 @@
     "id": "{F04FD126-DA5A-09F0-6FFE-44A9EA454E6C}",
     "name": "StuderInnotecRS485forIPSymcon",
     "type": 3,
-    "Vendor": "",
+    "vendor": "",
     "aliases":
     [
-        "Name1UnterstütztesGerät"
+        "Name1UnterstütztesGerät",
+        "Name2UnterstütztesGerät"
     ],
-    "url": "",
+    "url": "https://www.symcon.de",
     "parentRequirements": [],
     "childRequirements": [],
     "implemented": [],
-    "prefix": ""
+    "prefix": "ABC"
 }
