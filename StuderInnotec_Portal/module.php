@@ -34,9 +34,9 @@ class StuderInnotecWeb extends IPSModule {
         $this->Password = $this->ReadPropertyString("Password");
 
     }
-    public function Update()
-        IPS_LogMessage($this->moduleName,"Updating devices from '".$baseURL."'");
-    {
+    public function Update(){
+        IPS_LogMessage($_IPS['SELF'], "+++++++++++");
+    }
     
         /**
     * Die folgenden Funktionen stehen automatisch zur Verfügung, wenn das Modul über die "Module Control" eingefügt wurden.
