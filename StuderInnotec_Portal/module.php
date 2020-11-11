@@ -1,5 +1,6 @@
 <?php
 class StuderInnotecWeb extends IPSModule {
+    var $moduleName = "StuderInnotecWeb";
     public function Create() {
         // Diese Zeile nicht löschen.
         parent::Create();
@@ -21,11 +22,11 @@ class StuderInnotecWeb extends IPSModule {
     }
     public function Destroy()
     {
-      
+        $this->UnregisterTimer("UpdateTimer");
         //Never delete this line!
         parent::Destroy();
     }
-    // Überschreibt die intere IPS_ApplyChanges($id) Funktion
+
     public function ApplyChanges() {
         // Diese Zeile nicht löschen
         parent::ApplyChanges();
@@ -36,7 +37,8 @@ class StuderInnotecWeb extends IPSModule {
     }
     public function Update(){
         if ($this->ReadPropertyBoolean("Debug"))
-            IPS_LogMessage($_IPS['SELF'], "+++++++++++");
+            IPS_LogMessage($this->moduleName, "+++++++++++");
+        include_once(__DIR__ . "/StuderWeb_Function.php");
        
    }
 
