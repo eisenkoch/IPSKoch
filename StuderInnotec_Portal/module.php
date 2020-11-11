@@ -29,6 +29,7 @@ class StuderInnotecWeb extends IPSModule {
     public function ApplyChanges() {
         // Diese Zeile nicht löschen
         parent::ApplyChanges();
+        $this->SetTimerInterval("UpdateTimer", $this->ReadPropertyInteger("UpdateIntervall")*1000);
         $this->Username = $this->ReadPropertyString("Username");
         $this->Password = $this->ReadPropertyString("Password");
 
