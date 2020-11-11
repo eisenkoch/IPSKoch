@@ -1,0 +1,14 @@
+{
+    "id": "{F04FD126-DA5A-09F0-6FFE-44A9EA454E6C}",
+    "name": "Studer Innotec via rs485 (modbus)",
+    "type": 3,
+    "aliases":
+    [
+        "Name1UnterstütztesGerät"
+    ],
+    "url": "",
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": ""
+}
