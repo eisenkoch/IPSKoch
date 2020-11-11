@@ -1,6 +1,6 @@
 <?php
     // Klassendefinition
-    class StuderInnotecPortalforIPSymcon extends IPSModule {
+    class StuderWeb extends IPSModule {
  
         // Überschreibt die interne IPS_Create($id) Funktion
         public function Create() {
