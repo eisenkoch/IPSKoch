@@ -1,16 +1,15 @@
 {
     "id": "{32102938-0EA9-B77F-2477-474481A89900}",
-    "name": "ModulnameXYZ",
+    "name": "StuderInnotecWeb",
     "type": 3,
-    "vendor": "",
+    "vendor": "Studer Innotec",
     "aliases":
     [
-        "Name1UnterstütztesGerät",
-        "Name2UnterstütztesGerät"
+        "Studer Innotec via Web-API"
     ],
     "url": "https://www.symcon.de",
     "parentRequirements": [],
     "childRequirements": [],
     "implemented": [],
-    "prefix": "ABC"
+    "prefix": "Studer"
 }
