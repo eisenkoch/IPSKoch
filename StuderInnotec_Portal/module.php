@@ -1,6 +1,6 @@
 <?php
     // Klassendefinition
-    class SaltRelaxproforIPSymcon extends IPSModule {
+    class StuderInnotecPortalforIPSymcon extends IPSModule {
  
         // Überschreibt die interne IPS_Create($id) Funktion
         public function Create() {
