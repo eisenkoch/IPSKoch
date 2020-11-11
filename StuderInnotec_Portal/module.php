@@ -10,7 +10,7 @@ class StuderInnotecWeb extends IPSModule {
         $this->RegisterPropertyString("Username", "");
         $this->RegisterPropertyString("Password", "");
         $this->RegisterPropertyString("installationNumber", "");
-        $this->RegisterPropertyString("PortlURL", "");
+        $this->RegisterPropertyString("PortlURL", "https://portal.studer-innotec.com/scomwebservice.asmx");
         $this->RegisterPropertyBoolean("VS_Total_produced_energy", false);
         $this->RegisterPropertyBoolean("XT_IN_total_yesterday", false);
         $this->RegisterPropertyBoolean("XT_Out_total_today", false);
@@ -28,8 +28,9 @@ class StuderInnotecWeb extends IPSModule {
     }
     // Überschreibt die intere IPS_ApplyChanges($id) Funktion
     public function ApplyChanges() {
-    // Diese Zeile nicht löschen
-    parent::ApplyChanges();
+        // Diese Zeile nicht löschen
+        parent::ApplyChanges();
+        $this->SetTimerInterval("UpdateTimer", $this->ReadPropertyInteger("UpdateInterval")*1000);
     }
  
     /**
