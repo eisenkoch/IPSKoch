@@ -2,8 +2,8 @@
     "elements":
     [
         { "type": "ValidationTextBox",  "name": "Username", "caption": "Username" },
-        { "type": "PasswordTextBox",    "name": "Password", "caption": "Passwort" }
-        { "type": "CheckBox",           "name": "Debug",    "caption": "Debug" }
+        { "type": "PasswordTextBox",    "name": "Password", "caption": "Passwort" },
+        { "type": "CheckBox",           "name": "Debug",    "caption": "Debug" },
         { "type": "SelectInstance", "name": "PropertyInstanceID", "caption": "Target" }
     ]
 }
