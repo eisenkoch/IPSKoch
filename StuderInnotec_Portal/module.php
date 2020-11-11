@@ -40,8 +40,9 @@ class StuderInnotecWeb extends IPSModule {
     *
     */
     public function Studer_Update() {
+        IPS_LogMessage($_IPS['SELF'], "++++++");
         if (DEBUG):
-            var_dump ("=====");
+            IPS_LogMessage($_IPS['SELF'], "=========");
         endif;
     }
 }
