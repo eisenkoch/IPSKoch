@@ -5,12 +5,11 @@
     "vendor": "Studer Innotec",
     "aliases":
     [
-        "Name1UnterstütztesGerät",
-        "Name2UnterstütztesGerät"
+        "Studer Innotec via RS485(modbus)"
     ],
     "url": "https://www.symcon.de",
     "parentRequirements": [],
     "childRequirements": [],
     "implemented": [],
-    "prefix": "ABC"
+    "prefix": "Studer"
 }
