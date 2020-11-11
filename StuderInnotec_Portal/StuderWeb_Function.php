@@ -1,6 +1,6 @@
 <?php
 if ($this->ReadPropertyBoolean("VS_Total_produced_energy")){
-    std_3020()
+    std_3020();
 }
 
 function std_3020(){
