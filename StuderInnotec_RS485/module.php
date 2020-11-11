@@ -1,6 +1,6 @@
 <?php
     // Klassendefinition
-    class StuderInnotecRS485forIPSymcon extends IPSModule {
+    class StuderInnotecRS485 extends IPSModule {
     //var $moduleName = "StuderInnotecRS485forIPSymcon";
     
     public function Create() {
