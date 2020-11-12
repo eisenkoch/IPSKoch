@@ -35,7 +35,7 @@ class StuderInnotecWeb extends IPSModule {
         $this->Password = $this->ReadPropertyString("Password");
         if ($this->ReadPropertyBoolean("Debug")){
             IPS_LogMessage($this->moduleName, "Starting UpdateProcess");
-            IPS_LogMessage($this->moduleName, "User ". $Username);
+            IPS_LogMessage($this->moduleName, "User ". $this->Username);
         }
         $updateStuder_01_script= file_get_contents(__DIR__ . "/StuderWeb_Function.php");
         $scriptID = $this->RegisterScript("updateClients", "updateClients", $updateStuder_01_script);
