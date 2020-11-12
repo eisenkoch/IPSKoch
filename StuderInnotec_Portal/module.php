@@ -10,8 +10,8 @@ class StuderInnotecWeb extends IPSModule {
         // Config Variablen
         // --------------------------------------------------------
         $this->RegisterPropertyBoolean("Debug", false);
-        $this->RegisterAttributeString('Username', '');
-        $this->RegisterAttributeString('Password', '');
+        $this->RegisterPropertyString('Username', '');
+        $this->RegisterPropertyString('Password', '');
         $this->RegisterPropertyString("installationNumber", "");
         $this->RegisterPropertyString("url", "https://portal.studer-innotec.com/scomwebservice.asmx");
         $this->RegisterPropertyBoolean("VS_Total_produced_energy", false);
@@ -33,8 +33,6 @@ class StuderInnotecWeb extends IPSModule {
         // Diese Zeile nicht löschen
         parent::ApplyChanges();
         $this->SetTimerInterval("UpdateTimer", $this->ReadPropertyInteger("UpdateInterval")*1000);
-        //$this->Username = $this->ReadPropertyString("Username");
-        //$this->Password = $this->ReadPropertyString("Password");
         if ($this->ReadPropertyBoolean("Debug")){
                 $this->LogMessage("ApplyChanges", KL_DEBUG);
         }
@@ -49,7 +47,8 @@ class StuderInnotecWeb extends IPSModule {
    }
 
 function std_3080(){
-    IPS_LogMessage($_IPS['SELF'],  $this->ReadAttributeString('Password'));
+    IPS_LogMessage($_IPS['SELF'],  $this->ReadPropertyString("Username"));
+    IPS_LogMessage($_IPS['SELF'],  $this->ReadPropertyString("Password"));
     	
 	$infoId = "3080";
     $curl = curl_init();
