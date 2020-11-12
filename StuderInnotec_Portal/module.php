@@ -16,7 +16,7 @@ class StuderInnotecWeb extends IPSModule {
         $this->RegisterPropertyBoolean("XT_IN_total_yesterday", false);
         $this->RegisterPropertyBoolean("XT_Out_total_today", false);
         $this->RegisterPropertyBoolean("XT_Out_total_yesterday", false);
-        $this->RegisterPropertyInteger("UpdateIntervall", 10);
+        $this->RegisterPropertyInteger("UpdateInterval", 10);
         
         $this->RegisterTimer("UpdateTimer", 0, 'Studer_Update($_IPS[\'TARGET\']);');
     }
@@ -30,7 +30,7 @@ class StuderInnotecWeb extends IPSModule {
     public function ApplyChanges() {
         // Diese Zeile nicht löschen
         parent::ApplyChanges();
-        //$this->SetTimerInterval("UpdateTimer", $this->ReadPropertyInteger("UpdateIntervall")*1000); 
+        $this->SetTimerInterval("UpdateTimer", $this->ReadPropertyInteger("UpdateInterval")*60);
         $this->Username = $this->ReadPropertyString("Username");
         $this->Password = $this->ReadPropertyString("Password");
         if ($this->ReadPropertyBoolean("Debug")){
