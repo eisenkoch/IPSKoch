@@ -1,6 +1,6 @@
 <?php
 if ($this->ReadPropertyBoolean("XT_Out_total_yesterday")){
-    std_3050();
+    std_3080();
 }
 
 function std_3080(){
