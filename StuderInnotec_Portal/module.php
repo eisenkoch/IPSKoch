@@ -34,22 +34,51 @@ class StuderInnotecWeb extends IPSModule {
         $this->Username = $this->ReadPropertyString("Username");
         $this->Password = $this->ReadPropertyString("Password");
         if ($this->ReadPropertyBoolean("Debug")){
-            IPS_LogMessage($this->moduleName, "Starting UpdateProcess");
-            IPS_LogMessage($this->moduleName, "User ". $this->Username);
+                $this->LogMessage("ApplyChanges", KL_DEBUG);
         }
-        $updateStuder_01_script= file_get_contents(__DIR__ . "/StuderWeb_Function.php");
-        $scriptID = $this->RegisterScript("updateStuder_01_script", "updateStuder_01_script", $updateStuder_01_script);
-		IPS_SetScriptTimer($scriptID, $this->ReadPropertyInteger("UpdateIntervall")*60); 
+    
 
     }
     public function Update(){
-        
+    if ($this->ReadPropertyBoolean("XT_Out_total_yesterday")){
+        std_3080();
+    }
        
    }
 
-   /**
-    * Die folgenden Funktionen stehen automatisch zur Verfügung, wenn das Modul über die "Module Control" eingefügt wurden.
-    * Die Funktionen werden, mit dem selbst eingerichteten Prefix, in PHP und JSON-RPC wiefolgt zur Verfügung gestellt:
-    *
-    */
+  private function std_3080(){
+    IPS_LogMessage($_IPS['SELF'], $username);
+    global $username;
+    global $password;
+    global $installationNumber;
+	global $url;
+	
+	$infoId = "3080";
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+    CURLOPT_URL => $url . "/ReadUserInfo?email=". $username ."&pwd=" . $password ."&installationNumber=". $installationNumber ."&infoId=". $infoId . "&paramPart=Value&device=XT_Group",
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => "",
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 30,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => "GET",
+    CURLOPT_POSTFIELDS => "",
+    CURLOPT_HTTPHEADER => array("cache-control: no-cache"),
+    ));
+
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+
+    curl_close($curl);
+
+    if ($err) {
+    	echo "cURL Error #:" . $err;
+    } else {
+    $xml = new SimpleXMLElement($response);
+    //var_dump ($xml->FloatValue);
+    SetValueFloat  (11920, (float) $xml->FloatValue);
+    }
+}
 }
