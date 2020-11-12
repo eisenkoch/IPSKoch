@@ -9,10 +9,10 @@
         { "type": "Label",              "caption": "--------------------------------------------------------------------------------------------------------------------------------------------" },
     	{ "type": "Label",              "caption": "Welche Bereiche der Aufzeichnungen sollen ausgelesen werden? " },
         { "type": "Label",              "caption": "--------------------------------------------------------------------------------------------------------------------------------------------" },
-        { "type": "CheckBox",           "name": "VS_Total_produced_energy", "caption": "VS_Total_produced_energy"},
+        { "type": "CheckBox",           "name": "std_15023", "caption": "VS_Total_produced_energy (FN: 15023)"},
         { "type": "CheckBox",           "name": "XT_IN_total_yesterday", "caption": "XT_IN_total_yesterday"},
         { "type": "CheckBox",           "name": "XT_Out_total_today", "caption": "XT_Out_total_today"},
-        { "type": "CheckBox",           "name": "ST_3080",          "caption": "XT_Out_total_yesterday (FN: 3080)"},
+        { "type": "CheckBox",           "name": "std_3080",          "caption": "XT_Out_total_yesterday (FN: 3080)"},
         { "type": "IntervalBox",        "name": "UpdateInterval",   "caption": "Minuten" }
     ]
 }

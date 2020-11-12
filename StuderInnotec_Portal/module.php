@@ -8,7 +8,7 @@ class StuderInnotecWeb extends IPSModule {
     public function Create() {
         // Diese Zeile nicht löschen.
         parent::Create();
-        $archiv = IPS_GetInstanceIDByName("Archiv", 0 );
+        $archiv = IPS_GetInstanceIDByName("Archive", 0 );
         // --------------------------------------------------------
         // Config Variablen
         // --------------------------------------------------------
@@ -17,10 +17,10 @@ class StuderInnotecWeb extends IPSModule {
         $this->RegisterPropertyString('Password', '');
         $this->RegisterPropertyString("installationNumber", "");
         $this->RegisterPropertyString("url", "https://portal.studer-innotec.com/scomwebservice.asmx");
-        $this->RegisterPropertyBoolean("VS_Total_produced_energy", false);
+        $this->RegisterPropertyBoolean("std_15023", false);
         $this->RegisterPropertyBoolean("XT_IN_total_yesterday", false);
         $this->RegisterPropertyBoolean("XT_Out_total_today", false);
-        $this->RegisterPropertyBoolean("ST_3080", false);
+        $this->RegisterPropertyBoolean("std_3080", false);
         $this->RegisterPropertyInteger("UpdateInterval", 10);
         
         $this->RegisterTimer("UpdateTimer", 0, 'Studer_Update($_IPS[\'TARGET\']);');
@@ -43,13 +43,15 @@ class StuderInnotecWeb extends IPSModule {
 
     }
     public function Update(){
-    if ($this->ReadPropertyBoolean("ST_3080")){
+    if ($this->ReadPropertyBoolean("std_3080")){
         $this->std_3080();
     }
-       
+    if ($this->ReadPropertyBoolean("std_15023")){
+        $this->std_3080();
+    }   
    }
 
-function std_3080(){
+function std_3080(){ //XT_IN_total_yesterday
 
     if (!$ID_XT_IN_total_yesterday = @$this->GetIDForIdent('ID_XT_IN_total_yesterday')) {
         $ID_XT_IN_total_yesterday = $this->RegisterVariableFloat('ID_XT_IN_total_yesterday', $this->Translate('XT_IN_total_yesterday'),'~Electricity');
@@ -83,6 +85,41 @@ function std_3080(){
     $xml = new SimpleXMLElement($response);
     //var_dump ($xml->FloatValue);
     SetValueFloat  ($ID_XT_IN_total_yesterday, (float) $xml->FloatValue);
+    }
+}
+function std_15023(){ //VS_Total_produced_energy
+       
+    if (!$ID_VS_Total_produced_energy = @$this->GetIDForIdent('ID_VS_Total_produced_energy')) {
+        $ID_VS_Total_produced_energy = $this->RegisterVariableFloat('ID_VS_Total_produced_energy', $this->Translate('XT_VS_Total_produced_energy'),'~Electricity');
+        IPS_SetIcon($ID_VS_Total_produced_energy, 'Graph');
+        AC_SetLoggingStatus($archiv, $ID_VS_Total_produced_energy, true);
+    }
+	$infoId = "15023";
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+    CURLOPT_URL => $this->ReadPropertyString("url") . "/ReadUserInfo?email=". $this->ReadPropertyString("Username") ."&pwd=" . $this->ReadPropertyString("Password") ."&installationNumber=". $this->ReadPropertyString("installationNumber") ."&infoId=". $infoId . "&paramPart=Value&device=XT_Group",
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => "",
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 30,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => "GET",
+    CURLOPT_POSTFIELDS => "",
+    CURLOPT_HTTPHEADER => array("cache-control: no-cache"),
+    ));
+
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+
+    curl_close($curl);
+
+    if ($err) {
+    echo "cURL Error #:" . $err;
+    } else {
+    $xml = new SimpleXMLElement($response);
+    	var_dump ($xml->FloatValue);
+    SetValueFloat  ($ID_VS_Total_produced_energy, (float) $xml->FloatValue);
     }
 }
 }
