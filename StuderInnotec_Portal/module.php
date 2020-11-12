@@ -30,7 +30,7 @@ class StuderInnotecWeb extends IPSModule {
     public function ApplyChanges() {
         // Diese Zeile nicht löschen
         parent::ApplyChanges();
-        $this->SetTimerInterval("UpdateTimer", $this->ReadPropertyInteger("UpdateIntervall")*1000); 
+        //$this->SetTimerInterval("UpdateTimer", $this->ReadPropertyInteger("UpdateIntervall")*1000); 
         $this->Username = $this->ReadPropertyString("Username");
         $this->Password = $this->ReadPropertyString("Password");
         if ($this->ReadPropertyBoolean("Debug")){
@@ -38,8 +38,8 @@ class StuderInnotecWeb extends IPSModule {
             IPS_LogMessage($this->moduleName, "User ". $this->Username);
         }
         $updateStuder_01_script= file_get_contents(__DIR__ . "/StuderWeb_Function.php");
-        $scriptID = $this->RegisterScript("updateClients", "updateClients", $updateStuder_01_script);
-		IPS_SetScriptTimer($scriptID, 60); 
+        $scriptID = $this->RegisterScript("updateStuder_01_script", "updateStuder_01_script", $updateStuder_01_script);
+		IPS_SetScriptTimer($scriptID, $this->ReadPropertyInteger("UpdateIntervall")*1000); 
 
     }
     public function Update(){
