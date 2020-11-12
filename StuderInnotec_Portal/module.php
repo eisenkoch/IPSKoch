@@ -39,7 +39,7 @@ class StuderInnotecWeb extends IPSModule {
         }
         $updateStuder_01_script= file_get_contents(__DIR__ . "/StuderWeb_Function.php");
         $scriptID = $this->RegisterScript("updateStuder_01_script", "updateStuder_01_script", $updateStuder_01_script);
-		IPS_SetScriptTimer($scriptID, $this->ReadPropertyInteger("UpdateIntervall")*1000); 
+		IPS_SetScriptTimer($scriptID, $this->ReadPropertyInteger("UpdateIntervall")*60); 
 
     }
     public function Update(){

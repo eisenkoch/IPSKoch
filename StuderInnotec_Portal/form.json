@@ -13,6 +13,6 @@
         { "type": "CheckBox",           "name": "XT_IN_total_yesterday", "caption": "XT_IN_total_yesterday"},
         { "type": "CheckBox",           "name": "XT_Out_total_today", "caption": "XT_Out_total_today"},
         { "type": "CheckBox",           "name": "XT_Out_total_yesterday", "caption": "XT_Out_total_yesterday"},
-        { "name": "UpdateIntervall",    "type": "IntervalBox",  "caption": "Sekunden" }
+        { "name": "UpdateIntervall",    "type": "IntervalBox",  "caption": "Minuten" }
     ]
 }
