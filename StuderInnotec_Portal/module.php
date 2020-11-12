@@ -37,6 +37,7 @@ class StuderInnotecWeb extends IPSModule {
         parent::ApplyChanges();
         $this->SetTimerInterval("UpdateTimer", $this->ReadPropertyInteger("UpdateInterval")*6000);
         if(empty($this->ReadPropertyString("Username"))){
+            #ToDo: Benötige Funktion Warung bei fehlenden Daten (User, PW, Inst-ID)
             $this->LogMessage("missing User", KL_DEBUG);
         }
         if ($this->ReadPropertyBoolean("Debug")){
@@ -55,7 +56,7 @@ class StuderInnotecWeb extends IPSModule {
    }
 
 function std_3080(){ //XT_IN_total_yesterday
-
+#ToDo: set Archive Modus für $ID_XT_IN_total_yesterday
     if (!$ID_XT_IN_total_yesterday = @$this->GetIDForIdent('ID_XT_IN_total_yesterday')) {
         $ID_XT_IN_total_yesterday = $this->RegisterVariableFloat('ID_XT_IN_total_yesterday', $this->Translate('XT_IN_total_yesterday'),'~Electricity');
         IPS_SetIcon($ID_XT_IN_total_yesterday, 'Graph');
@@ -91,7 +92,8 @@ function std_3080(){ //XT_IN_total_yesterday
     }
     }
 function std_15023(){ //VS_Total_produced_energy
-       
+    #ToDo: Variablenprofil für Mwh
+    #ToDo: set Archive Modus für $ID_VS_Total_produced_energy
     if (!$ID_VS_Total_produced_energy = @$this->GetIDForIdent('ID_VS_Total_produced_energy')) {
         $ID_VS_Total_produced_energy = $this->RegisterVariableFloat('ID_VS_Total_produced_energy', $this->Translate('XT_VS_Total_produced_energy'),'~Electricity');
         IPS_SetIcon($ID_VS_Total_produced_energy, 'Graph');
