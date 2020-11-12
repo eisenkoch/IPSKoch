@@ -50,7 +50,7 @@ class StuderInnotecWeb extends IPSModule {
         $this->std_3080();
     }
     if ($this->ReadPropertyBoolean("std_15023")){
-        $this->std_3080();
+        $this->std_15023();
     }   
    }
 
