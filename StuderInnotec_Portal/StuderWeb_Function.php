@@ -4,9 +4,9 @@ if ($this->ReadPropertyBoolean("XT_Out_total_yesterday")){
 }
 
 function std_3080(){
-    IPS_LogMessage($_IPS['SELF'], $email);
-    global $email;
-    global $pwd;
+    IPS_LogMessage($_IPS['SELF'], $username);
+    global $username;
+    global $password;
     global $installationNumber;
 	global $url;
 	
@@ -14,7 +14,7 @@ function std_3080(){
     $curl = curl_init();
 
     curl_setopt_array($curl, array(
-    CURLOPT_URL => $url . "/ReadUserInfo?email=". $email ."&pwd=" . $pwd ."&installationNumber=". $installationNumber ."&infoId=". $infoId . "&paramPart=Value&device=XT_Group",
+    CURLOPT_URL => $url . "/ReadUserInfo?email=". $username ."&pwd=" . $password ."&installationNumber=". $installationNumber ."&infoId=". $infoId . "&paramPart=Value&device=XT_Group",
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => "",
     CURLOPT_MAXREDIRS => 10,
