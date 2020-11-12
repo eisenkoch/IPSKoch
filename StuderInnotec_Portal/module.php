@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 class StuderInnotecWeb extends IPSModule {
     var $moduleName = "StuderInnotecWeb";
     public function Create() {
@@ -8,8 +10,8 @@ class StuderInnotecWeb extends IPSModule {
         // Config Variablen
         // --------------------------------------------------------
         $this->RegisterPropertyBoolean("Debug", false);
-        $this->RegisterPropertyString("Username", "");
-        $this->RegisterPropertyString("Password", "");
+        $this->RegisterAttributeString('Username', '');
+        $this->RegisterAttributeString('Password', '');
         $this->RegisterPropertyString("installationNumber", "");
         $this->RegisterPropertyString("url", "https://portal.studer-innotec.com/scomwebservice.asmx");
         $this->RegisterPropertyBoolean("VS_Total_produced_energy", false);
@@ -31,8 +33,8 @@ class StuderInnotecWeb extends IPSModule {
         // Diese Zeile nicht löschen
         parent::ApplyChanges();
         $this->SetTimerInterval("UpdateTimer", $this->ReadPropertyInteger("UpdateInterval")*1000);
-        $this->Username = $this->ReadPropertyString("Username");
-        $this->Password = $this->ReadPropertyString("Password");
+        //$this->Username = $this->ReadPropertyString("Username");
+        //$this->Password = $this->ReadPropertyString("Password");
         if ($this->ReadPropertyBoolean("Debug")){
                 $this->LogMessage("ApplyChanges", KL_DEBUG);
         }
@@ -47,16 +49,13 @@ class StuderInnotecWeb extends IPSModule {
    }
 
 function std_3080(){
-    //IPS_LogMessage($_IPS['SELF'], $this->Username);
-    //global $password;
-    //global $installationNumber;
-	//global $url;
-	
+    IPS_LogMessage($_IPS['SELF'],  $this->ReadAttributeString('Password');
+    	
 	$infoId = "3080";
     $curl = curl_init();
 
     curl_setopt_array($curl, array(
-    CURLOPT_URL => $this->ReadPropertyString("url") . "/ReadUserInfo?email=". $this->ReadPropertyString("Username") ."&pwd=" . $this->ReadPropertyString("password") ."&installationNumber=". $$this->ReadPropertyString("installationNumber") ."&infoId=". $infoId . "&paramPart=Value&device=XT_Group",
+    CURLOPT_URL => $this->ReadPropertyString("url") . "/ReadUserInfo?email=". $this->ReadPropertyString("Username") ."&pwd=" . $this->ReadPropertyString("Password") ."&installationNumber=". $$this->ReadPropertyString("installationNumber") ."&infoId=". $infoId . "&paramPart=Value&device=XT_Group",
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => "",
     CURLOPT_MAXREDIRS => 10,
