@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 class StuderInnotecWeb extends IPSModule {
     var $moduleName = "StuderInnotecWeb";
+     //Create Profile
+
     public function Create() {
         // Diese Zeile nicht löschen.
         parent::Create();
+
         // --------------------------------------------------------
         // Config Variablen
         // --------------------------------------------------------
@@ -32,7 +35,7 @@ class StuderInnotecWeb extends IPSModule {
     public function ApplyChanges() {
         // Diese Zeile nicht löschen
         parent::ApplyChanges();
-        $this->SetTimerInterval("UpdateTimer", $this->ReadPropertyInteger("UpdateInterval")*1000);
+        $this->SetTimerInterval("UpdateTimer", $this->ReadPropertyInteger("UpdateInterval")*6000);
         if ($this->ReadPropertyBoolean("Debug")){
                 $this->LogMessage("ApplyChanges", KL_DEBUG);
         }
@@ -47,9 +50,13 @@ class StuderInnotecWeb extends IPSModule {
    }
 
 function std_3080(){
-    IPS_LogMessage($_IPS['SELF'],  $this->ReadPropertyString("Username"));
-    IPS_LogMessage($_IPS['SELF'],  $this->ReadPropertyString("Password"));
-    	
+    //IPS_LogMessage($_IPS['SELF'],  $this->ReadPropertyString("Username"));
+    //IPS_LogMessage($_IPS['SELF'],  $this->ReadPropertyString("Password"));
+    if (!$XT_IN_total_yesterday = @$this->GetIDForIdent('XT_IN_total_yesterday')) {
+        $XT_IN_total_yesterday = $this->RegisterVariableFloat('XT_IN_total_yesterday', $this->Translate('XT_IN_total_yesterday'));
+        IPS_SetIcon($SXT_IN_total_yesterday, 'Graph');
+    }
+    
 	$infoId = "3080";
     $curl = curl_init();
 
