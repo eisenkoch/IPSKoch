@@ -38,6 +38,7 @@ class StuderInnotecWeb extends IPSModule {
     public function Update(){
         if ($this->ReadPropertyBoolean("Debug")){
             IPS_LogMessage($this->moduleName, "Starting UpdateProcess");
+            IPS_LogMessage($this->moduleName, "User ". $Username);
         }
         include_once(__DIR__ . "/StuderWeb_Function.php");
        
