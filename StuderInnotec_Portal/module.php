@@ -46,7 +46,7 @@ class StuderInnotecWeb extends IPSModule {
        
    }
 
-  private function std_3080(){
+function std_3080(){
     IPS_LogMessage($_IPS['SELF'], $username);
     global $username;
     global $password;
