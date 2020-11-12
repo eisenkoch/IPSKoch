@@ -49,7 +49,7 @@ class StuderInnotecWeb extends IPSModule {
    }
 
 function std_3080(){
-    IPS_LogMessage($_IPS['SELF'],  $this->ReadAttributeString('Password');
+    IPS_LogMessage($_IPS['SELF'],  $this->ReadAttributeString('Password'));
     	
 	$infoId = "3080";
     $curl = curl_init();
