@@ -30,7 +30,7 @@ class StuderInnotecWeb extends IPSModule {
     public function ApplyChanges() {
         // Diese Zeile nicht löschen
         parent::ApplyChanges();
-        $this->SetTimerInterval("UpdateTimer", $this->ReadPropertyInteger("UpdateInterval")*60);
+        $this->SetTimerInterval("UpdateTimer", $this->ReadPropertyInteger("UpdateInterval")*1000);
         $this->Username = $this->ReadPropertyString("Username");
         $this->Password = $this->ReadPropertyString("Password");
         if ($this->ReadPropertyBoolean("Debug")){
@@ -47,16 +47,16 @@ class StuderInnotecWeb extends IPSModule {
    }
 
 function std_3080(){
-    IPS_LogMessage($_IPS['SELF'], $this->Username);
-    global $password;
-    global $installationNumber;
-	global $url;
+    //IPS_LogMessage($_IPS['SELF'], $this->Username);
+    //global $password;
+    //global $installationNumber;
+	//global $url;
 	
 	$infoId = "3080";
     $curl = curl_init();
 
     curl_setopt_array($curl, array(
-    CURLOPT_URL => $this->url . "/ReadUserInfo?email=". $this->$username ."&pwd=" . $password ."&installationNumber=". $installationNumber ."&infoId=". $infoId . "&paramPart=Value&device=XT_Group",
+    CURLOPT_URL => $this->ReadPropertyString("url") . "/ReadUserInfo?email=". $this->ReadPropertyString("Username") ."&pwd=" . $this->ReadPropertyString("password") ."&installationNumber=". $$this->ReadPropertyString("installationNumber") ."&infoId=". $infoId . "&paramPart=Value&device=XT_Group",
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => "",
     CURLOPT_MAXREDIRS => 10,
