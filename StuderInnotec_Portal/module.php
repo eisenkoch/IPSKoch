@@ -54,7 +54,7 @@ function std_3080(){
     $curl = curl_init();
 
     curl_setopt_array($curl, array(
-    CURLOPT_URL => $this->ReadPropertyString("url") . "/ReadUserInfo?email=". $this->ReadPropertyString("Username") ."&pwd=" . $this->ReadPropertyString("Password") ."&installationNumber=". $$this->ReadPropertyString("installationNumber") ."&infoId=". $infoId . "&paramPart=Value&device=XT_Group",
+    CURLOPT_URL => $this->ReadPropertyString("url") . "/ReadUserInfo?email=". $this->ReadPropertyString("Username") ."&pwd=" . $this->ReadPropertyString("Password") ."&installationNumber=". $this->ReadPropertyString("installationNumber") ."&infoId=". $infoId . "&paramPart=Value&device=XT_Group",
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => "",
     CURLOPT_MAXREDIRS => 10,
