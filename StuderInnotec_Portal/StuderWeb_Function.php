@@ -1,15 +1,16 @@
 <?php
-if ($this->ReadPropertyBoolean("VS_Total_produced_energy")){
-    std_3020();
+if ($this->ReadPropertyBoolean("XT_Out_total_yesterday")){
+    std_3050();
 }
 
-function std_3020(){
+function std_3080(){
+    IPS_LogMessage($this->moduleName, $email);
     global $email;
     global $pwd;
     global $installationNumber;
 	global $url;
 	
-	$infoId = "3020";
+	$infoId = "3080";
     $curl = curl_init();
 
     curl_setopt_array($curl, array(
@@ -30,12 +31,10 @@ function std_3020(){
     curl_close($curl);
 
     if ($err) {
-    echo "cURL Error #:" . $err;
+    	echo "cURL Error #:" . $err;
     } else {
     $xml = new SimpleXMLElement($response);
-	if (DEBUG):
-    	var_dump ($xml->FloatValue);
-	endif;
-    	SetValueBoolean (38731, (float) $xml->FloatValue);
+    //var_dump ($xml->FloatValue);
+    SetValueFloat  (11920, (float) $xml->FloatValue);
     }
 }
