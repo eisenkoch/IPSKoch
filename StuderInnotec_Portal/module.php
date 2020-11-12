@@ -8,7 +8,7 @@ class StuderInnotecWeb extends IPSModule {
     public function Create() {
         // Diese Zeile nicht löschen.
         parent::Create();
-
+        $archiv = IPS_GetInstanceIDByName("Archiv", 0 );
         // --------------------------------------------------------
         // Config Variablen
         // --------------------------------------------------------
@@ -50,11 +50,11 @@ class StuderInnotecWeb extends IPSModule {
    }
 
 function std_3080(){
-    //IPS_LogMessage($_IPS['SELF'],  $this->ReadPropertyString("Username"));
-    //IPS_LogMessage($_IPS['SELF'],  $this->ReadPropertyString("Password"));
-    if (!$XT_IN_total_yesterday = @$this->GetIDForIdent('XT_IN_total_yesterday')) {
-        $XT_IN_total_yesterday = $this->RegisterVariableFloat('XT_IN_total_yesterday', $this->Translate('XT_IN_total_yesterday'));
-        IPS_SetIcon($SXT_IN_total_yesterday, 'Graph');
+
+    if (!$ID_XT_IN_total_yesterday = @$this->GetIDForIdent('ID_XT_IN_total_yesterday')) {
+        $ID_XT_IN_total_yesterday = $this->RegisterVariableFloat('ID_XT_IN_total_yesterday', $this->Translate('XT_IN_total_yesterday'),'~Electricity');
+        IPS_SetIcon($ID_XT_IN_total_yesterday, 'Graph');
+        AC_SetLoggingStatus($archiv, $ID_XT_IN_total_yesterday, true);
     }
     
 	$infoId = "3080";
@@ -82,7 +82,7 @@ function std_3080(){
     } else {
     $xml = new SimpleXMLElement($response);
     //var_dump ($xml->FloatValue);
-    SetValueFloat  (11920, (float) $xml->FloatValue);
+    SetValueFloat  ($ID_XT_IN_total_yesterday, (float) $xml->FloatValue);
     }
 }
 }
