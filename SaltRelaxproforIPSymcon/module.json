@@ -2,7 +2,7 @@
     "id": "{EE24F708-A104-28F8-8855-B631F82D390D}",
     "name": "SaltRelaxproforIPSymcon",
     "type": 3,
-    "Vendor": "Bayrol",
+    "vendor": "Bayrol",
     "aliases":
     [
         "Bayrol SaltReax pro"
@@ -11,5 +11,5 @@
     "parentRequirements": [],
     "childRequirements": [],
     "implemented": [],
-    "prefix": ""
+    "prefix": "Bayrol"
 }
