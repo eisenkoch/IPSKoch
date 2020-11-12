@@ -4,7 +4,7 @@ if ($this->ReadPropertyBoolean("XT_Out_total_yesterday")){
 }
 
 function std_3080(){
-    IPS_LogMessage($this->moduleName, $email);
+    IPS_LogMessage($_IPS['SELF'], $email);
     global $email;
     global $pwd;
     global $installationNumber;
