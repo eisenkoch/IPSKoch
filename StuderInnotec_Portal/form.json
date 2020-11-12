@@ -4,7 +4,7 @@
         { "type": "ValidationTextBox",  "name": "Username", "caption": "Username" },
         { "type": "PasswordTextBox",    "name": "Password", "caption": "Passwort" },
         { "type": "ValidationTextBox",  "name": "installationNumber", "caption": "installationNumber"},
-        { "type": "ValidationTextBox",  "name": "PortlURL", "caption": "Portal URL"},
+        { "type": "ValidationTextBox",  "name": "url", "caption": "Portal URL"},
         { "type": "CheckBox",           "name": "Debug",    "caption": "Debug" },
         { "type": "Label",              "caption": "--------------------------------------------------------------------------------------------------------------------------------------------" },
     	{ "type": "Label",              "caption": "Welche Bereiche der Aufzeichnungen sollen ausgelesen werden? " },

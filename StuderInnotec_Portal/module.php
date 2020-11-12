@@ -11,7 +11,7 @@ class StuderInnotecWeb extends IPSModule {
         $this->RegisterPropertyString("Username", "");
         $this->RegisterPropertyString("Password", "");
         $this->RegisterPropertyString("installationNumber", "");
-        $this->RegisterPropertyString("PortlURL", "https://portal.studer-innotec.com/scomwebservice.asmx");
+        $this->RegisterPropertyString("url", "https://portal.studer-innotec.com/scomwebservice.asmx");
         $this->RegisterPropertyBoolean("VS_Total_produced_energy", false);
         $this->RegisterPropertyBoolean("XT_IN_total_yesterday", false);
         $this->RegisterPropertyBoolean("XT_Out_total_today", false);
@@ -47,8 +47,7 @@ class StuderInnotecWeb extends IPSModule {
    }
 
 function std_3080(){
-    IPS_LogMessage($_IPS['SELF'], $username);
-    global $username;
+    IPS_LogMessage($_IPS['SELF'], $this->$username);
     global $password;
     global $installationNumber;
 	global $url;
@@ -57,7 +56,7 @@ function std_3080(){
     $curl = curl_init();
 
     curl_setopt_array($curl, array(
-    CURLOPT_URL => $url . "/ReadUserInfo?email=". $username ."&pwd=" . $password ."&installationNumber=". $installationNumber ."&infoId=". $infoId . "&paramPart=Value&device=XT_Group",
+    CURLOPT_URL => $this->url . "/ReadUserInfo?email=". $this->$username ."&pwd=" . $password ."&installationNumber=". $installationNumber ."&infoId=". $infoId . "&paramPart=Value&device=XT_Group",
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => "",
     CURLOPT_MAXREDIRS => 10,
