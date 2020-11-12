@@ -33,14 +33,17 @@ class StuderInnotecWeb extends IPSModule {
         $this->SetTimerInterval("UpdateTimer", $this->ReadPropertyInteger("UpdateIntervall")*1000); 
         $this->Username = $this->ReadPropertyString("Username");
         $this->Password = $this->ReadPropertyString("Password");
-
-    }
-    public function Update(){
         if ($this->ReadPropertyBoolean("Debug")){
             IPS_LogMessage($this->moduleName, "Starting UpdateProcess");
             IPS_LogMessage($this->moduleName, "User ". $Username);
         }
-        include_once(__DIR__ . "/StuderWeb_Function.php");
+        $updateStuder_01_script= file_get_contents(__DIR__ . "/StuderWeb_Function.php");
+        $scriptID = $this->RegisterScript("updateClients", "updateClients", $updateStuder_01_script);
+		IPS_SetScriptTimer($scriptID, 60); 
+
+    }
+    public function Update(){
+        
        
    }
 
