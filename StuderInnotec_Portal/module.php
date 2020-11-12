@@ -15,7 +15,7 @@ class StuderInnotecWeb extends IPSModule {
         $this->RegisterPropertyBoolean("VS_Total_produced_energy", false);
         $this->RegisterPropertyBoolean("XT_IN_total_yesterday", false);
         $this->RegisterPropertyBoolean("XT_Out_total_today", false);
-        $this->RegisterPropertyBoolean("XT_Out_total_yesterday", false);
+        $this->RegisterPropertyBoolean("ST_3080", false);
         $this->RegisterPropertyInteger("UpdateInterval", 10);
         
         $this->RegisterTimer("UpdateTimer", 0, 'Studer_Update($_IPS[\'TARGET\']);');
@@ -40,8 +40,8 @@ class StuderInnotecWeb extends IPSModule {
 
     }
     public function Update(){
-    if ($this->ReadPropertyBoolean("XT_Out_total_yesterday")){
-        std_3080();
+    if ($this->ReadPropertyBoolean("ST_3080")){
+        $this->std_3080();
     }
        
    }
