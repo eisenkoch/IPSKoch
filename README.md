@@ -7,7 +7,7 @@ Mit diesem Modul können Studer-Innotec Installtionen aus IP-Symcon heraus gemon
 * Studer Xtender (XTS/XTM/XTH)
 * Studer VarioString oder Variotrack
 * Studer XCOM-RS232i 
-* * Die Anlage muss im Studer Portal angemeldet sein (https://portal.studer-innotec.com/User/Login)
+  * Die Anlage muss im Studer Portal angemeldet sein (https://portal.studer-innotec.com/User/Login)
 ## Studer via rs485 (modbus)
 
 ## Unterstützung [![Spenden](https://img.shields.io/badge/donate-PayPal-green.svg)](https://www.paypal.com/paypalme/eisenkoch)
