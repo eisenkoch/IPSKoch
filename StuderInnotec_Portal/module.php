@@ -56,7 +56,7 @@ class StuderInnotecWeb extends IPSModule {
    }
 
 function std_3080(){ //XT_IN_total_yesterday
-#ToDo: set Archive Modus für $ID_XT_IN_total_yesterday
+    #ToDo: set Archive Modus für $ID_XT_IN_total_yesterday
     if (!$ID_XT_IN_total_yesterday = @$this->GetIDForIdent('ID_XT_IN_total_yesterday')) {
         $ID_XT_IN_total_yesterday = $this->RegisterVariableFloat('ID_XT_IN_total_yesterday', $this->Translate('XT_IN_total_yesterday'),'~Electricity');
         IPS_SetIcon($ID_XT_IN_total_yesterday, 'Graph');
