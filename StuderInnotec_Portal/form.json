@@ -13,6 +13,8 @@
         { "type": "CheckBox",           "name": "XT_IN_total_yesterday", "caption": "XT_IN_total_yesterday"},
         { "type": "CheckBox",           "name": "XT_Out_total_today", "caption": "XT_Out_total_today"},
         { "type": "CheckBox",           "name": "std_3080",          "caption": "XT_Out_total_yesterday (FN: 3080)"},
-        { "type": "IntervalBox",        "name": "UpdateInterval",   "caption": "Minuten" }
+        { "type": "IntervalBox",        "name": "UpdateInterval",   "caption": "Minuten" },
+        { "type": "Label",              "caption": "--------------------------------------------------------------------------------------------------------------------------------------------" },
+        { "type": "IntervalBox",        "name": "UpdateInterval_long",   "caption": "Minuten" }
     ]
 }

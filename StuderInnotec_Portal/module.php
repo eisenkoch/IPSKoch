@@ -30,8 +30,6 @@ class StuderInnotecWeb extends IPSModule {
         $this->RegisterTimer("UpdateTimer", 0, 'Studer_Update($_IPS[\'TARGET\']);');
     }
     public function Destroy() {
-        #ToDo: nachfolgendes Destroy liefert noch Fehler
-        $this->UnregisterTimer("UpdateTimer");
         //Never delete this line!
         parent::Destroy();
     }
