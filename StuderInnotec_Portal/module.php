@@ -1,19 +1,21 @@
 <?php
+#ToDo: Logmessages funktionieren noch nicht
+#ToDo: unterscheidliche Timer notwendig 
 declare(strict_types=1);
 
 class StuderInnotecWeb extends IPSModule {
     var $moduleName = "StuderInnotecWeb";
-     //Create Profile
 
     public function Create() {
         // Diese Zeile nicht löschen.
         parent::Create();
         $archiv = IPS_GetInstanceIDByName("Archive", 0 );
+        
+        //Config Profile
         $this->RegisterProfileFloat("Studer-Innotec.MWh", "Factory", "", " MWh", 0, 0, 0, 3);
         $this->RegisterProfileFloat("Studer-Innotec.kWh", "Electricity", "", " kWh", 0, 0, 0, 2);
-        // --------------------------------------------------------
-        // Config Variablen
-        // --------------------------------------------------------
+        
+        // Config Variablen 
         $this->RegisterPropertyBoolean("Debug", false);
         $this->RegisterPropertyString('Username', '');
         $this->RegisterPropertyString('Password', '');
@@ -27,8 +29,8 @@ class StuderInnotecWeb extends IPSModule {
         
         $this->RegisterTimer("UpdateTimer", 0, 'Studer_Update($_IPS[\'TARGET\']);');
     }
-    public function Destroy()
-    {
+    public function Destroy() {
+        #ToDo: nachfolgendes Destroy liefert noch Fehler
         $this->UnregisterTimer("UpdateTimer");
         //Never delete this line!
         parent::Destroy();
@@ -45,30 +47,28 @@ class StuderInnotecWeb extends IPSModule {
         if ($this->ReadPropertyBoolean("Debug")){
                 $this->LogMessage("ApplyChanges", KL_DEBUG);
         }
-    
+    }
 
-    }
-    public function Update(){
-    if ($this->ReadPropertyBoolean("std_3080")){
-        #ToDo: set Archive Modus für $ID_XT_IN_total_yesterday
-        if (!$ID_XT_IN_total_yesterday = @$this->GetIDForIdent('ID_XT_IN_total_yesterday')) {
-            $ID_XT_IN_total_yesterday = $this->RegisterVariableFloat('ID_XT_IN_total_yesterday', $this->Translate('XT_IN_total_yesterday'),'Studer-Innotec.kWh');
-            IPS_SetIcon($ID_XT_IN_total_yesterday, 'Graph');
-            //AC_SetLoggingStatus($archiv, $ID_XT_IN_total_yesterday, true);
-        }
-        SetValueFloat ($ID_XT_IN_total_yesterday, (float) $this->Studer_Read("3080","Value","XT_Group")->FloatValue);
+    public function Update() {
+        if ($this->ReadPropertyBoolean("std_3080")){
+            #ToDo: set Archive Modus für $ID_XT_IN_total_yesterday
+            if (!$ID_XT_IN_total_yesterday = @$this->GetIDForIdent('ID_XT_IN_total_yesterday')) {
+                $ID_XT_IN_total_yesterday = $this->RegisterVariableFloat('ID_XT_IN_total_yesterday', $this->Translate('XT_IN_total_yesterday'),'Studer-Innotec.kWh');
+                IPS_SetIcon($ID_XT_IN_total_yesterday, 'Graph');
+                //AC_SetLoggingStatus($archiv, $ID_XT_IN_total_yesterday, true);
+            }
+            SetValueFloat ($ID_XT_IN_total_yesterday, (float) $this->Studer_Read("3080","Value","XT_Group")->FloatValue);
         
-    }
-    if ($this->ReadPropertyBoolean("std_15023")){
-        #ToDo: Variablenprofil für Mwh
-        #ToDo: set Archive Modus für $ID_VS_Total_produced_energy
-        if (!$ID_VS_Total_produced_energy = @$this->GetIDForIdent('ID_VS_Total_produced_energy')) {
-            $ID_VS_Total_produced_energy = $this->RegisterVariableFloat('ID_VS_Total_produced_energy', $this->Translate('XT_VS_Total_produced_energy'),'Studer-Innotec.MWh');
-            IPS_SetIcon($ID_VS_Total_produced_energy, 'Graph');
-            //AC_SetLoggingStatus($archiv, $ID_VS_Total_produced_energy, true);
         }
-        SetValueFloat ($ID_VS_Total_produced_energy, (float) $this->Studer_Read("15023","Value","XT_Group")->FloatValue);    
-    }   
+        if ($this->ReadPropertyBoolean("std_15023")){
+            #ToDo: set Archive Modus für $ID_VS_Total_produced_energy
+            if (!$ID_VS_Total_produced_energy = @$this->GetIDForIdent('ID_VS_Total_produced_energy')) {
+                $ID_VS_Total_produced_energy = $this->RegisterVariableFloat('ID_VS_Total_produced_energy', $this->Translate('XT_VS_Total_produced_energy'),'Studer-Innotec.MWh');
+                IPS_SetIcon($ID_VS_Total_produced_energy, 'Graph');
+                //AC_SetLoggingStatus($archiv, $ID_VS_Total_produced_energy, true);
+            }
+            SetValueFloat ($ID_VS_Total_produced_energy, (float) $this->Studer_Read("15023","Value","XT_Group")->FloatValue);    
+        }   
    }
 
 private function Studer_Read($infoId,$paramart,$device){
@@ -105,6 +105,7 @@ private function Studer_Read($infoId,$paramart,$device){
     }
 }
 private function RegisterProfileFloat($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits)
+ #Fuction origanl from https://github.com/Joey-1970/
 	{
 	        if (!IPS_VariableProfileExists($Name))
 	        {
