@@ -9,7 +9,8 @@ class StuderInnotecWeb extends IPSModule {
         // Diese Zeile nicht löschen.
         parent::Create();
         $archiv = IPS_GetInstanceIDByName("Archive", 0 );
-        $this->RegisterProfileFloat("IPSStuder.MWh", "Factory", "", " MWh", 0, 0, 0,3);
+        $this->RegisterProfileFloat("Studer-Innotec.MWh", "Factory", "", " MWh", 0, 0, 0, 3);
+        $this->RegisterProfileFloat("Studer-Innotec.kWh", "Electricity", "", " kWh", 0, 0, 0, 2);
         // --------------------------------------------------------
         // Config Variablen
         // --------------------------------------------------------
@@ -51,7 +52,7 @@ class StuderInnotecWeb extends IPSModule {
     if ($this->ReadPropertyBoolean("std_3080")){
         #ToDo: set Archive Modus für $ID_XT_IN_total_yesterday
         if (!$ID_XT_IN_total_yesterday = @$this->GetIDForIdent('ID_XT_IN_total_yesterday')) {
-            $ID_XT_IN_total_yesterday = $this->RegisterVariableFloat('ID_XT_IN_total_yesterday', $this->Translate('XT_IN_total_yesterday'),'~Electricity');
+            $ID_XT_IN_total_yesterday = $this->RegisterVariableFloat('ID_XT_IN_total_yesterday', $this->Translate('XT_IN_total_yesterday'),'Studer-Innotec.kWh');
             IPS_SetIcon($ID_XT_IN_total_yesterday, 'Graph');
             //AC_SetLoggingStatus($archiv, $ID_XT_IN_total_yesterday, true);
         }
@@ -62,7 +63,7 @@ class StuderInnotecWeb extends IPSModule {
         #ToDo: Variablenprofil für Mwh
         #ToDo: set Archive Modus für $ID_VS_Total_produced_energy
         if (!$ID_VS_Total_produced_energy = @$this->GetIDForIdent('ID_VS_Total_produced_energy')) {
-            $ID_VS_Total_produced_energy = $this->RegisterVariableFloat('ID_VS_Total_produced_energy', $this->Translate('XT_VS_Total_produced_energy'),'~Electricity');
+            $ID_VS_Total_produced_energy = $this->RegisterVariableFloat('ID_VS_Total_produced_energy', $this->Translate('XT_VS_Total_produced_energy'),'Studer-Innotec.MWh');
             IPS_SetIcon($ID_VS_Total_produced_energy, 'Graph');
             //AC_SetLoggingStatus($archiv, $ID_VS_Total_produced_energy, true);
         }
