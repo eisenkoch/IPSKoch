@@ -9,6 +9,7 @@ class StuderInnotecWeb extends IPSModule {
         // Diese Zeile nicht löschen.
         parent::Create();
         $archiv = IPS_GetInstanceIDByName("Archive", 0 );
+        $this->RegisterProfileFloat("IPSStuder.MWh", "Factory", "", " MWh", 0, 0, 0,3);
         // --------------------------------------------------------
         // Config Variablen
         // --------------------------------------------------------
@@ -54,7 +55,7 @@ class StuderInnotecWeb extends IPSModule {
             IPS_SetIcon($ID_XT_IN_total_yesterday, 'Graph');
             //AC_SetLoggingStatus($archiv, $ID_XT_IN_total_yesterday, true);
         }
-        SetValueFloat ($ID_XT_IN_total_yesterday, (float) Studer_Read("3080","Value","XT_Group")->FloatValue);
+        SetValueFloat ($ID_XT_IN_total_yesterday, (float) $this->Studer_Read("3080","Value","XT_Group")->FloatValue);
         
     }
     if ($this->ReadPropertyBoolean("std_15023")){
@@ -65,11 +66,11 @@ class StuderInnotecWeb extends IPSModule {
             IPS_SetIcon($ID_VS_Total_produced_energy, 'Graph');
             //AC_SetLoggingStatus($archiv, $ID_VS_Total_produced_energy, true);
         }
-        SetValueFloat ($ID_VS_Total_produced_energy, (float) Studer_Read("15023","XT_Group")->FloatValue);    
+        SetValueFloat ($ID_VS_Total_produced_energy, (float) $this->Studer_Read("15023","Value","XT_Group")->FloatValue);    
     }   
    }
 
-function Studer_Read($infoId,$paramart,$device){
+private function Studer_Read($infoId,$paramart,$device){
     global $email;
     global $pwd;
     global $installationNumber;
@@ -102,4 +103,21 @@ function Studer_Read($infoId,$paramart,$device){
     return $xml;
     }
 }
+private function RegisterProfileFloat($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits)
+	{
+	        if (!IPS_VariableProfileExists($Name))
+	        {
+	            IPS_CreateVariableProfile($Name, 2);
+	        }
+	        else
+	        {
+	            $profile = IPS_GetVariableProfile($Name);
+	            if ($profile['ProfileType'] != 2)
+	                throw new Exception("Variable profile type does not match for profile " . $Name);
+	        }
+	        IPS_SetVariableProfileIcon($Name, $Icon);
+	        IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
+	        IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);
+	        IPS_SetVariableProfileDigits($Name, $Digits);
+	}
 }
