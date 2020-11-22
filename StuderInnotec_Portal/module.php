@@ -13,7 +13,8 @@ class StuderInnotecWeb extends IPSModule {
         //Config Profile
         $this->RegisterProfileFloat("Studer-Innotec.MWh", 	"Factory", "", " MWh", 0, 0, 0, 3);
         $this->RegisterProfileFloat("Studer-Innotec.kWh", 	"Electricity", "", " kWh", 0, 0, 0, 2);
-		$this->RegisterProfileFloat("Studer-Innotec.Hz",	"Freqency", "", " Hz", 0, 0, 0, 2);
+        $this->RegisterProfileFloat("Studer-Innotec.Hz",	"Freqency", "", " Hz", 0, 0, 0, 2);
+        $this->RegisterProfileFloat("Studer-Innotec.Hz",	"Energy", "", " V", 0, 0, 0, 2);
         
         // Config Variablen 
         $this->RegisterPropertyString("Variables", "");
@@ -90,16 +91,22 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
 			
 			if (!@$this->GetIDForIdent($var_ID )) {
 				IPS_LogMessage($this->moduleName,"==>create Var: ". $var_ID );
-				#Todo Check VarType (Float, etc....)
-				$this->RegisterVariableFloat($var_ID , $this->Translate($value->VarName), 'Studer-Innotec.'. $value->Unit);
-				$this->EnableAction($var_ID );
-				#ToDo: fix Icon
-				//IPS_SetIcon($ID_XT_IN_total_yesterday, 'Graph');
+                #Todo Check VarType (Float, etc....)
+                switch ($value->Format) {
+                    case "Float":
+                        $this->RegisterVariableFloat($var_ID , $this->Translate($value->VarName), 'Studer-Innotec.'. $value->Unit);
+                        $this->EnableAction($var_ID );
+                        #ToDo: fix Icon
+				        //IPS_SetIcon($ID_XT_IN_total_yesterday, 'Graph');
+                    default :
+                        IPS_LogMessage($this->moduleName,"coul not find Var-Format");
+                }
+
+				
 				#ToDo: fix Logging
 				//AC_SetLoggingStatus($archiv, $ID_XT_IN_total_yesterday, true);
 			}
 			SetValueFloat ($this->GetIDForIdent($var_ID ), (float) $this->Studer_Read($value->ID,"Value",$value->Type)->FloatValue);
-			//SetValueFloat ($var_ID, (float) $this->Studer_Read($value->ID,"Value",$value->Type)->FloatValue);
 		}
 	}
 }

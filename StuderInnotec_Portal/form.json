@@ -25,15 +25,15 @@
 							"type": "CheckBox" }
                         }],
                     "values": [
-					{"ID":"3000",	"Description":"Battery voltage",							"Unit":"V",		"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60", 	"VarName":""},
-					{"ID":"3075",	"Description":"State of the neutral transfer relay",		"Unit":"0:Opened,1:Closed",	"Format":"SHORT_ENUM",	"Type":"XT_Group",	"Intervall":"60","VarName":""},
-					{"ID":"3076",	"Description":"Discharge of battery of the previous day",	"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":""},
-					{"ID":"3078",	"Description":"Discharge of battery of the current day",	"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":""},
-					{"ID":"3080",	"Description":"Energy AC-In from the previous day",			"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":""},
-					{"ID":"3081",	"Description":"Energy AC-In from the current day",			"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":""},
-					{"ID":"3082",	"Description":"Consumers energy of the previous day",		"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":""},
-					{"ID":"3083",	"Description":"Consumers energy of the current day",		"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":""},
-					{"ID":"3084",	"Description":"Input frequency",							"Unit":"Hz",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":"XT_Input_frequency"},
+					{"ID":"3000",	"Description":"Battery voltage",							"Unit":"V",		"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"5", 	"VarName":"Battery_voltage"},
+					{"ID":"3075",	"Description":"State of the neutral transfer relay",		"Unit":"0:Opened,1:Closed",	"Format":"SHORT_ENUM",	"Type":"XT_Group",	"Intervall":"60","VarName":"XT_State_trabsfer_Relay"},
+					{"ID":"3076",	"Description":"Discharge of battery of the previous day",	"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":"XT_Discharge_battery_previous_day"},
+					{"ID":"3078",	"Description":"Discharge of battery of the current day",	"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":"XT_Discharge_battery_current_day"},
+					{"ID":"3080",	"Description":"Energy AC-In from the previous day",			"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":"XT_energy-IN_previous_day"},
+					{"ID":"3081",	"Description":"Energy AC-In from the current day",			"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":"XT_energy-IN_current_day"},
+					{"ID":"3082",	"Description":"Consumers energy of the previous day",		"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":"XT_energy-OUT_previous_day"},
+					{"ID":"3083",	"Description":"Consumers energy of the current day",		"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":"XT_energy-OUT_current_day"},
+					{"ID":"3084",	"Description":"Input frequency",							"Unit":"Hz",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"5",		"VarName":"XT_Input_frequency"},
 					{"ID":"3085",	"Description":"Output frequency",							"Unit":"Hz",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"5",		"VarName":"XT_Output_frequency"}
 					]
                 }
