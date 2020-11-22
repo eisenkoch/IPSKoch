@@ -7,14 +7,41 @@
         { "type": "ValidationTextBox",  "name": "url", "caption": "Portal URL", "width" : "450px"},
         { "type": "CheckBox",           "name": "Debug",    "caption": "Debug" },
         { "type": "Label",              "caption": "--------------------------------------------------------------------------------------------------------------------------------------------" },
-    	{ "type": "Label",              "caption": "Welche Bereiche der Aufzeichnungen sollen ausgelesen werden? " },
-        { "type": "Label",              "caption": "--------------------------------------------------------------------------------------------------------------------------------------------" },
-        { "type": "CheckBox",           "name": "std_15023", "caption": "VS_Total_produced_energy (FN: 15023)"},
-        { "type": "CheckBox",           "name": "XT_IN_total_yesterday", "caption": "XT_IN_total_yesterday"},
-        { "type": "CheckBox",           "name": "XT_Out_total_today", "caption": "XT_Out_total_today"},
-        { "type": "CheckBox",           "name": "std_3080",          "caption": "XT_Out_total_yesterday (FN: 3080)"},
-        { "type": "IntervalBox",        "name": "UpdateInterval",   "caption": "Minuten" },
-        { "type": "Label",              "caption": "--------------------------------------------------------------------------------------------------------------------------------------------" },
-        { "type": "IntervalBox",        "name": "UpdateInterval_long",   "caption": "Minuten" }
+		{ "type": "List",
+          "name": "Variables",
+          "caption": "",
+          "add": false,
+          "delete": false,
+          "columns": [
+			{"caption": "ID", "name": "ID", "width": "100px", "save": true},
+						{"caption": "Description","name": "Description","width": "400px","save": true},
+						{"caption": "Unit","name": "Unit","width": "400px","save": true},
+						{"caption": "Format","name": "Format","visible": true,"width": "400px","save": true},
+						{"caption": "Type","name": "Type","visible": true,"width": "100px","save": true},
+						{"caption": "Intervall","name": "Intervall","width": "60px","save": true},
+						{"caption": "VarName","name": "VarName","visible": false, "width": "60px","save": true},
+						{"caption": "Active","name": "Active","width": "70px","edit": {
+                            "caption": "Active",
+							"type": "CheckBox" }
+                        }],
+                    "values": [
+					{"ID":"3000",	"Description":"Battery voltage",							"Unit":"V",		"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60", 	"VarName":""},
+					{"ID":"3075",	"Description":"State of the neutral transfer relay",		"Unit":"0:Opened,1:Closed",	"Format":"SHORT_ENUM",	"Type":"XT_Group",	"Intervall":"60","VarName":""},
+					{"ID":"3076",	"Description":"Discharge of battery of the previous day",	"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":""},
+					{"ID":"3078",	"Description":"Discharge of battery of the current day",	"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":""},
+					{"ID":"3080",	"Description":"Energy AC-In from the previous day",			"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":""},
+					{"ID":"3081",	"Description":"Energy AC-In from the current day",			"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":""},
+					{"ID":"3082",	"Description":"Consumers energy of the previous day",		"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":""},
+					{"ID":"3083",	"Description":"Consumers energy of the current day",		"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":""},
+					{"ID":"3084",	"Description":"Input frequency",							"Unit":"Hz",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":"XT_Input_frequency"},
+					{"ID":"3085",	"Description":"Output frequency",							"Unit":"Hz",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"5",		"VarName":"XT_Output_frequency"}
+					]
+                }
+    ],
+	"status":
+    [
+		{ "code": 201, "icon": "error", "caption": "no Username set" },
+		{ "code": 202, "icon": "error", "caption": "no PW set" },
+		{ "code": 203, "icon": "error", "caption": "no Instance set" }
     ]
 }
