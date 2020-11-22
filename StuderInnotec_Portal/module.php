@@ -14,7 +14,7 @@ class StuderInnotecWeb extends IPSModule {
         $this->RegisterProfileFloat("Studer-Innotec.MWh", 	"Factory", "", " MWh", 0, 0, 0, 3);
         $this->RegisterProfileFloat("Studer-Innotec.kWh", 	"Electricity", "", " kWh", 0, 0, 0, 2);
         $this->RegisterProfileFloat("Studer-Innotec.Hz",	"Freqency", "", " Hz", 0, 0, 0, 2);
-        $this->RegisterProfileFloat("Studer-Innotec.Hz",	"Energy", "", " V", 0, 0, 0, 2);
+        $this->RegisterProfileFloat("Studer-Innotec.V",	"Energy", "", " V", 0, 0, 0, 2);
         
         // Config Variablen 
         $this->RegisterPropertyString("Variables", "");
@@ -97,7 +97,8 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
                         $this->RegisterVariableFloat($var_ID , $this->Translate($value->VarName), 'Studer-Innotec.'. $value->Unit);
                         $this->EnableAction($var_ID );
                         #ToDo: fix Icon
-				        //IPS_SetIcon($ID_XT_IN_total_yesterday, 'Graph');
+                        //IPS_SetIcon($ID_XT_IN_total_yesterday, 'Graph');
+                        break;
                     default :
                         IPS_LogMessage($this->moduleName,"coul not find Var-Format");
                 }
