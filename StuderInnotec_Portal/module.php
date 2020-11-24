@@ -113,7 +113,8 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
                 SetValueFloat ($this->GetIDForIdent($var_ID ), (float) $this->Studer_Read($value->ID,"Value",$value->Type)->FloatValue);
                 break;
             default :
-            IPS_LogMessage($this->moduleName,"coul not find Handler for: ". $value->Format);
+             IPS_LogMessage($this->moduleName,"coul not find Handler for: ". $value->Format);
+            }
 		}
 	}
 }
