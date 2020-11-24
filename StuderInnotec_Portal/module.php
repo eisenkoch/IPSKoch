@@ -94,26 +94,31 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
 				IPS_LogMessage($this->moduleName,"==>create Var: ". $var_ID );
                 #Todo Check VarType (Float, etc....)
                 switch ($value->Format) {
-                    case "Float":
+                    case "FLOAT":
                         $this->RegisterVariableFloat($var_ID , $this->Translate($value->VarName), 'Studer-Innotec.'. $value->Unit);
                         $this->EnableAction($var_ID );
                         #ToDo: fix Icon
                         //IPS_SetIcon($ID_XT_IN_total_yesterday, 'Graph');
                         break;
                     default :
-                        IPS_LogMessage($this->moduleName,"coul not find Var-Format");
+                        IPS_LogMessage($this->moduleName,"coul not find var-Format for: " . $value->Format);
                 }
 
 				
 				#ToDo: fix Logging
 				//AC_SetLoggingStatus($archiv, $ID_XT_IN_total_yesterday, true);
 			}
-			SetValueFloat ($this->GetIDForIdent($var_ID ), (float) $this->Studer_Read($value->ID,"Value",$value->Type)->FloatValue);
+            switch ($value->Format) {
+                case "FLOAT":
+                SetValueFloat ($this->GetIDForIdent($var_ID ), (float) $this->Studer_Read($value->ID,"Value",$value->Type)->FloatValue);
+                break;
+            default :
+            IPS_LogMessage($this->moduleName,"coul not find Handler for: ". $value->Format);
 		}
 	}
 }
 
-private function Studer_Read($infoId,$paramart,$device){
+private function Studer_Read($infoId,$paramart,$device) {
     global $email;
     global $pwd;
     global $installationNumber;
