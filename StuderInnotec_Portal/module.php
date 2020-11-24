@@ -100,11 +100,12 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
                         #ToDo: fix Icon
                         //IPS_SetIcon($ID_XT_IN_total_yesterday, 'Graph');
                         break;
+                    case "SHORT_ENUM":
+						break;
                     default :
                         IPS_LogMessage($this->moduleName,"coul not find var-Format for: " . $value->Format);
                 }
 
-				
 				#ToDo: fix Logging
 				//AC_SetLoggingStatus($archiv, $ID_XT_IN_total_yesterday, true);
 			}
@@ -112,6 +113,10 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
                 case "FLOAT":
                 SetValueFloat ($this->GetIDForIdent($var_ID ), (float) $this->Studer_Read($value->ID,"Value",$value->Type)->FloatValue);
                 break;
+            case "SHORT_ENUM":
+				$aa = $this->Studer_Read($value->ID,"Value",$value->Type);
+				print_r ($aa->FloatValue);
+				break;
             default :
              IPS_LogMessage($this->moduleName,"coul not find Handler for: ". $value->Format);
             }
