@@ -15,7 +15,7 @@ class StuderInnotecWeb extends IPSModule {
         $this->RegisterProfileFloat("Studer-Innotec.MWh", 	"Factory", "", " MWh", 0, 0, 0, 3);
         $this->RegisterProfileFloat("Studer-Innotec.kWh", 	"Electricity", "", " kWh", 0, 0, 0, 2);
         $this->RegisterProfileFloat("Studer-Innotec.Hz",	"Freqency", "", " Hz", 0, 0, 0, 2);
-        $this->RegisterProfileFloat("Studer-Innotec.V",	"Energy", "", " V", 0, 0, 0, 2);
+        $this->RegisterProfileFloat("Studer-Innotec.V",	    "Energy", "", " V", 0, 0, 0, 2);
         
         // Config Variablen 
         $this->RegisterPropertyString("Variables", "");
@@ -101,6 +101,8 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
                         //IPS_SetIcon($ID_XT_IN_total_yesterday, 'Graph');
                         break;
                     case "SHORT_ENUM":
+                        $this->RegisterVariableString($var_ID , $this->Translate($value->VarName));
+                        $this->EnableAction($var_ID );
 						break;
                     default :
                         IPS_LogMessage($this->moduleName,"coul not find var-Format for: " . $value->Format);
@@ -114,11 +116,16 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
                 SetValueFloat ($this->GetIDForIdent($var_ID ), (float) $this->Studer_Read($value->ID,"Value",$value->Type)->FloatValue);
                 break;
             case "SHORT_ENUM":
-				$aa = $this->Studer_Read($value->ID,"Value",$value->Type);
-				print_r ($aa->FloatValue);
+                //create Array from 'Unit' Paramter in form
+                $chunks = array_chunk(preg_split('/(:|,)/', $value->Unit), 2);
+                $result = array_combine(array_column($chunks, 0), array_column($chunks, 1));
+
+                $StuderState = $this->Studer_Read($value->ID,"Value", $value->Type);
+                $objAsString = (string)$StuderState->FloatValue; 
+                SetValueString($this->GetIDForIdent($var_ID),$result[$objAsString]);
 				break;
             default :
-             IPS_LogMessage($this->moduleName,"coul not find Handler for: ". $value->Format);
+                IPS_LogMessage($this->moduleName,"coul not find Handler for: ". $value->Format);
             }
 		}
 	}
@@ -157,9 +164,10 @@ private function Studer_Read($infoId,$paramart,$device) {
     return $xml;
     }
 }
-private function RegisterProfileFloat($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits)
-#Fuction orignal from https://github.com/Joey-1970/
-	{
+
+private function RegisterProfileFloat($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits){
+    #Fuction orignal from https://github.com/Joey-1970/
+	
 	        if (!IPS_VariableProfileExists($Name))
 	        {
 	            IPS_CreateVariableProfile($Name, 2);
