@@ -31,11 +31,11 @@
 							"type": "CheckBox" }
                         }],
                     "values": [
-					{"ID":"11002",	"Description":"Voltage of the PV generator",				"Unit":"V",		"Format":"FLOAT",	"Type":"VT_Group",	"Intervall":"5", 	"VarName":"VT_PV_voltage"},
-					{"ID":"11004",	"Description":"Power of the PV generator",					"Unit":"V",		"Format":"FLOAT",	"Type":"VT_Group",	"Intervall":"5", 	"VarName":"VT_PV_Power"},
 					{"ID":"11016",	"Description":"VT Operating mode",							"Unit":"0:Night,1:StartUp",		"Format":"SHORT_ENUM",	"Type":"VT_Group",	"Intervall":"5", 	"VarName":"VT_OperatingMode"},
 					{"ID":"3000",	"Description":"Battery voltage",							"Unit":"kw",	"Format":"FLOAT",	"Type":"VT_Group",	"Intervall":"5", 	"VarName":"Battery_voltage"},
-					{"ID":"3075",	"Description":"State of the neutral transfer relay",		"Unit":"0:Opened,1:Closed",	"Format":"SHORT_ENUM",	"Type":"XT_Group",	"Intervall":"60","VarName":"XT_State_transfer_Relay"},
+					{"ID":"3020",	"Description":"State of transfer relay",					"Unit":"0:Opened,1:Closed",	"Format":"SHORT_ENUM",	"Type":"XT_Group",	"Intervall":"5", 	"VarName":"XT_State_transfer_Relay"},
+					{"ID":"3028",	"Description":"Operating state",							"Unit":"0:Invalid_value,1:Inverter,2:Charger,3:Boost,4:Injection",	"Format":"SHORT_ENUM",	"Type":"XT_Group",	"Intervall":"5", 	"VarName":"XT_Operating_State"},
+					{"ID":"3075",	"Description":"State of the neutral transfer relay",		"Unit":"0:Opened,1:Closed",	"Format":"SHORT_ENUM",	"Type":"XT_Group",	"Intervall":"60","VarName":"XT_State_neutral_transfer_Relay"},
 					{"ID":"3076",	"Description":"Discharge of battery of the previous day",	"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":"XT_Discharge_battery_previous_day"},
 					{"ID":"3078",	"Description":"Discharge of battery of the current day",	"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":"XT_Discharge_battery_current_day"},
 					{"ID":"3080",	"Description":"Energy AC-In from the previous day",			"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":"XT_energy-IN_previous_day"},
@@ -43,7 +43,13 @@
 					{"ID":"3082",	"Description":"Consumers energy of the previous day",		"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":"XT_energy-OUT_previous_day"},
 					{"ID":"3083",	"Description":"Consumers energy of the current day",		"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":"XT_energy-OUT_current_day"},
 					{"ID":"3084",	"Description":"Input frequency",							"Unit":"Hz",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"5",		"VarName":"XT_Input_frequency"},
-					{"ID":"3085",	"Description":"Output frequency",							"Unit":"Hz",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"5",		"VarName":"XT_Output_frequency"}
+					{"ID":"3085",	"Description":"Output frequency",							"Unit":"Hz",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"5",		"VarName":"XT_Output_frequency"},
+					{"ID":"3101",	"Description":"Output active power (minute avg)",			"Unit":"kw",	"Format":"FLOAT",	"Type":"VT_Group",	"Intervall":"5", 	"VarName":""},
+					{"ID":"7002",	"Description":"State of Charge",							"Unit":"percent",		"Format":"FLOAT",	"Type":"VT_Group",	"Intervall":"5", 	"VarName":"BSP_State_of_Charge"},
+					{"ID":"11002",	"Description":"Voltage of the PV generator",				"Unit":"V",		"Format":"FLOAT",	"Type":"VT_Group",	"Intervall":"5", 	"VarName":"VT_PV_voltage"},
+					{"ID":"11004",	"Description":"Power of the PV generator",					"Unit":"V",		"Format":"FLOAT",	"Type":"VT_Group",	"Intervall":"5", 	"VarName":"VT_PV_Power"},
+					{"ID":"15010",	"Description":"PV power",									"Unit":"kw",	"Format":"FLOAT",	"Type":"VS_Group",	"Intervall":"5", 	"VarName":"VS_PV_Power"},
+					{"ID":"15013",	"Description":"PV operating mode",							"Unit":"0:Night,1:Security,2:OFF,3:Charge,4:ChargeV,5:Charge_I,6:ChargeP,7:ChargeIpv,8:ChargeT,10:Charge_Ibsp",	"Format":"FLOAT",	"Type":"VT_Group",	"Intervall":"5", 	"VarName":"VS_Operating_mode"}
 					]
                 }
     ],
