@@ -1,8 +1,0 @@
-{
-    "elements":
-    [
-        { "type": "Label", "caption": "This Module is still in Development" },
-        { "type": "CheckBox",       "name": "Debug",                "caption": "Debug" },
-        { "type": "SelectInstance", "name": "PropertyInstanceID",   "caption": "Target" }
-    ]
-}
