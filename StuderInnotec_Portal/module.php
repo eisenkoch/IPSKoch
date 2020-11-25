@@ -14,6 +14,7 @@ class StuderInnotecWeb extends IPSModule {
         //Config Profile
         $this->RegisterProfileFloat("Studer-Innotec.MWh", 	"Factory", "", " MWh", 0, 0, 0, 3);
         $this->RegisterProfileFloat("Studer-Innotec.kWh", 	"Electricity", "", " kWh", 0, 0, 0, 2);
+        $this->RegisterProfileFloat("Studer-Innotec.kW", 	"Electricity", "", " kW", 0, 0, 0, 2);
         $this->RegisterProfileFloat("Studer-Innotec.Hz",	"Freqency", "", " Hz", 0, 0, 0, 2);
         $this->RegisterProfileFloat("Studer-Innotec.V",	    "Energy", "", " V", 0, 0, 0, 2);
         $this->RegisterProfileFloat("Studer-Innotec.percent",	    "Percent", "", " %", 0, 0, 0, 1);
@@ -66,8 +67,8 @@ class StuderInnotecWeb extends IPSModule {
 			}
 			$intervall_active = array_unique((array_column($active, 'Intervall')));
 			foreach ($intervall_active as $value) {
-				$this->SetTimerInterval(("UpdateTimer_".$value), $value*60000);
-				//$this->SetTimerInterval(("UpdateTimer_".$value), $value*1000);
+				//$this->SetTimerInterval(("UpdateTimer_".$value), $value*60000);
+				$this->SetTimerInterval(("UpdateTimer_".$value), $value*1000);
 				//IPS_LogMessage($this->moduleName,($value));
 			}
 		}
@@ -93,20 +94,23 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
 			
 			if (!@$this->GetIDForIdent($var_ID )) {
 				IPS_LogMessage($this->moduleName,"==>create Var: ". $var_ID );
+                if(!$value->VarName){
+                    $var_name = $var_ID;
+                }else {$var_name = $this->Translate($value->VarName); }
                 #Todo Check VarType (Float, etc....)
                 switch ($value->Format) {
                     case "FLOAT":
-                        $this->RegisterVariableFloat($var_ID , $this->Translate($value->VarName), 'Studer-Innotec.'. $value->Unit);
+                        $this->RegisterVariableFloat($var_ID , $var_name, 'Studer-Innotec.'. $value->Unit);
                         $this->EnableAction($var_ID );
                         #ToDo: fix Icon
                         //IPS_SetIcon($ID_XT_IN_total_yesterday, 'Graph');
                         break;
                     case "SHORT_ENUM":
-                        $this->RegisterVariableString($var_ID , $this->Translate($value->VarName));
+                        $this->RegisterVariableString($var_ID , $var_name);
                         $this->EnableAction($var_ID );
 						break;
                     default :
-                        IPS_LogMessage($this->moduleName,"coul not find var-Format for: " . $value->Format);
+                        IPS_LogMessage($this->moduleName,"could not find var-Format for: " . $value->Format);
                 }
 
 				#ToDo: fix Logging
