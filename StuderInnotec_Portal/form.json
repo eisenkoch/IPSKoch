@@ -22,7 +22,8 @@
 						{"caption": "Type","name": "Type","visible": true,"width": "100px","save": true},
 						{"caption": "Intervall","name": "Intervall","width": "60px", "edit": {
                             "caption": "Intervall",
-							"type": "ValidationTextBox" }
+							"type": "ValidationTextBox",
+							"validate": "5|60"}
 						},
 						{"caption": "VarName","name": "VarName","visible": false, "width": "60px","save": true},
 						{"caption": "Active","name": "Active","width": "70px","edit": {
