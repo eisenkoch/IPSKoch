@@ -67,8 +67,8 @@ class StuderInnotecWeb extends IPSModule {
 			}
 			$intervall_active = array_unique((array_column($active, 'Intervall')));
 			foreach ($intervall_active as $value) {
-				//$this->SetTimerInterval(("UpdateTimer_".$value), $value*60000);
-				$this->SetTimerInterval(("UpdateTimer_".$value), $value*1000);
+				$this->SetTimerInterval(("UpdateTimer_".$value), $value*60000);
+				//$this->SetTimerInterval(("UpdateTimer_".$value), $value*1000);
 				//IPS_LogMessage($this->moduleName,($value));
 			}
 		}
