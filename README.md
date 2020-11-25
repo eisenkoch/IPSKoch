@@ -3,7 +3,7 @@ space for new IPS Modules connecting to Studer-Innotec devices
 ## Studer via Portal
 Mit diesem Modul können Studer-Innotec Installtionen aus IP-Symcon heraus gemonitored werden. Prinzipiell sind auch gebrandete Geräte ansteuerbar (Steca, etc.)
 ### Voraussetzungen
-* Studer Xtender (XTS/XTM/XTH)
+** Studer Xtender (XTS/XTM/XTH)
 * Studer VarioString oder Variotrack
 * Studer XCOM-RS232i 
   * Die Anlage muss im Studer Portal angemeldet sein (https://portal.studer-innotec.com/User/Login)
