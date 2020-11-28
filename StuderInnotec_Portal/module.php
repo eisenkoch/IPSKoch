@@ -73,6 +73,10 @@ class StuderInnotecWeb extends IPSModule {
 			}
 		}
     }
+    
+public function GetConfigurationForm(){
+    $data = json_decode(file_get_contents(__DIR__ . "/form.json"), true);
+}
 
 public function Update_5() {
 	//IPS_LogMessage($this->moduleName,"Update_5");
