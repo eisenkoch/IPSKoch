@@ -191,5 +191,45 @@ private function RegisterProfileFloat($Name, $Icon, $Prefix, $Suffix, $MinValue,
 	        IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
 	        IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);
 	        IPS_SetVariableProfileDigits($Name, $Digits);
+    }
+
+public function validateAccount() {
+	global $email;
+	global $pwd;
+	global $installationNumber;
+	global $url;
+	
+	$curl = curl_init();
+	curl_setopt_array($curl, array(
+		CURLOPT_URL => $this->ReadPropertyString("url") . "/GetInstallationList?email=". $this->ReadPropertyString("Username") ."&pwd=" . $this->ReadPropertyString("Password"),
+		CURLOPT_RETURNTRANSFER => true,
+    	CURLOPT_ENCODING => "",
+		CURLOPT_MAXREDIRS => 10,
+		CURLOPT_TIMEOUT => 30,
+		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		CURLOPT_CUSTOMREQUEST => "GET",
+		CURLOPT_POSTFIELDS => "",
+		CURLOPT_HTTPHEADER => array("cache-control: no-cache"),
+	));
+
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+
+    curl_close($curl);
+	$xml = new SimpleXMLElement($response);
+	
+	if ($err) {
+    	echo "cURL Error #:" . $err;
+    } else {
+		if (($xml->ErrorCode)!=1){
+			print("something is wrong Studer-Innotec says: " . $xml->ErrorMessage);
+		}
+		else {
+			echo "Studer-Innotec has the following ID's for you: \n" ;	
+			foreach ($xml->InstallationList->InstallationInfo as $installation) {
+				echo $installation->Id," => ", $installation->Name, PHP_EOL;
+			}
+		}
 	}
+}
 }
