@@ -50,7 +50,7 @@
 					{"ID":"11002",	"Description":"Voltage of the PV generator",				"Unit":"V",		"Format":"FLOAT",	"Type":"VT_Group",	"Intervall":"5", 	"VarName":"VT_PV_voltage"},
 					{"ID":"11004",	"Description":"Power of the PV generator",					"Unit":"V",		"Format":"FLOAT",	"Type":"VT_Group",	"Intervall":"5", 	"VarName":"VT_PV_Power"},
 					{"ID":"15010",	"Description":"PV power",									"Unit":"kW",	"Format":"FLOAT",	"Type":"VS_Group",	"Intervall":"5", 	"VarName":"VS_PV_Power"},
-					{"ID":"15013",	"Description":"PV operating mode",							"Unit":"0:Night,1:Security,2:OFF,3:Charge,4:ChargeV,5:Charge_I,6:ChargeP,7:ChargeIpv,8:ChargeT,10:Charge_Ibsp",	"Format":"SHORT_ENUM",	"Type":"VT_Group",	"Intervall":"5", 	"VarName":"VS_Operating_mode"}
+					{"ID":"15013",	"Description":"PV operating mode",							"Unit":"0:Night,1:Security,2:OFF,3:Charge,4:ChargeV,5:Charge_I,6:ChargeP,7:ChargeIpv,8:ChargeT,10:Charge_Ibsp",	"Format":"SHORT_ENUM",	"Type":"VS_Group",	"Intervall":"5", 	"VarName":"VS_Operating_mode"}
 					]
                 }
     ],
