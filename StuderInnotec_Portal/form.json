@@ -60,7 +60,7 @@
 					{"ID":"3083",	"Description":"Consumers energy of the current day",		"Unit":"kWh",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"60",		"VarName":"XT_energy-OUT_current_day"},
 					{"ID":"3084",	"Description":"Input frequency",							"Unit":"Hz",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"5",		"VarName":"XT_Input_frequency"},
 					{"ID":"3085",	"Description":"Output frequency",							"Unit":"Hz",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"5",		"VarName":"XT_Output_frequency"},
-					{"ID":"3101",	"Description":"Output active power (minute avg)",			"Unit":"kW",	"Format":"FLOAT",	"Type":"VT_Group",	"Intervall":"5", 	"VarName":""},
+					{"ID":"3101",	"Description":"Output active power (minute avg)",			"Unit":"kW",	"Format":"FLOAT",	"Type":"XT_Group",	"Intervall":"5", 	"VarName":"XT_Output"},
 					{"ID":"7002",	"Description":"State of Charge",							"Unit":"percent",		"Format":"FLOAT",	"Type":"VT_Group",	"Intervall":"5", 	"VarName":"BSP_State_of_Charge"},
 					{"ID":"11002",	"Description":"Voltage of the PV generator",				"Unit":"V",		"Format":"FLOAT",	"Type":"VT_Group",	"Intervall":"5", 	"VarName":"VT_PV_voltage"},
 					{"ID":"11004",	"Description":"Power of the PV generator",					"Unit":"V",		"Format":"FLOAT",	"Type":"VT_Group",	"Intervall":"5", 	"VarName":"VT_PV_Power"},
