@@ -20,7 +20,11 @@
           "name": "Variables",
           "caption": "",
           "add": false,
-          "delete": false,
+		  "delete": false,
+		  "sort": {
+			"column": "ID",
+			"direction": "descending"
+			},
           "columns": [
 			{"caption": "ID", "name": "ID", "width": "100px", "save": true},
 						{"caption": "Description","name": "Description","width": "400px","save": true},
@@ -33,6 +37,11 @@
 							"validate": "5|60"}
 						},
 						{"caption": "VarName","name": "VarName","visible": false, "width": "60px","save": true},
+						{"caption": "Archive","name": "Archive","width": "70px","edit": {
+							"caption": "Archive",
+							"type": "CheckBox",
+							"value": false}
+						},
 						{"caption": "Active","name": "Active","width": "70px","edit": {
                             "caption": "Active",
 							"type": "CheckBox" }
