@@ -21,8 +21,9 @@ class StuderInnotecWeb extends IPSModule {
         
         // Config Variablen 
         $this->RegisterPropertyString("Variables", "");
+		$this->RegisterPropertyString("activeDevices", "");
 		$this->RegisterPropertyBoolean("Debug", false);
-        $this->RegisterPropertyString('Username', '');
+		$this->RegisterPropertyString('Username', '');
         $this->RegisterPropertyString('Password', '');
         $this->RegisterPropertyString("installationNumber", "");
         $this->RegisterPropertyString("url", "https://portal.studer-innotec.com/scomwebservice.asmx");
@@ -62,14 +63,12 @@ class StuderInnotecWeb extends IPSModule {
 			foreach ($treeData as $value) {
 				if(($value->Active)==true){
 					$active[]=array('ID'=>($value->ID), 'Intervall'=>($value->Intervall));
-					//IPS_LogMessage($this->moduleName,($value->ID));
 				}
 			}
 			$intervall_active = array_unique((array_column($active, 'Intervall')));
 			foreach ($intervall_active as $value) {
 				$this->SetTimerInterval(("UpdateTimer_".$value), $value*60000);
 				//$this->SetTimerInterval(("UpdateTimer_".$value), $value*1000);
-				//IPS_LogMessage($this->moduleName,($value));
 			}
 		}
     }
@@ -95,16 +94,24 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
 	foreach ($treeData as $value) {
 		if((($value->Active)==true)and (($value->Intervall)== $timer)){
 			$var_ID = 'ID_' . $value->ID ;
-			
+			$configpage = json_decode(IPS_GetConfigurationForm($this->InstanceID));			
+			foreach ($configpage->elements[6]->values as $item) {
+				if ($item->ID == $value->ID) {
+					$unit =($item->Unit);
+					$format=($item->Format);
+					$varname= ($item->VarName);
+					$type = ($item->Type);
+				}
+			}
 			if (!@$this->GetIDForIdent($var_ID )) {
 				IPS_LogMessage($this->moduleName,"==>create Var: ". $var_ID );
-                if(!$value->VarName){
+                if(!$varname){
                     $var_name = $var_ID;
-                }else {$var_name = $this->Translate($value->VarName); }
+                }else {$var_name = $this->Translate($varname); }
                 #Todo Check VarType (Float, etc....)
-                switch ($value->Format) {
+                switch ($format) {
                     case "FLOAT":
-                        $this->RegisterVariableFloat($var_ID , $var_name, 'Studer-Innotec.'. $value->Unit);
+                        $this->RegisterVariableFloat($var_ID , $var_name, 'Studer-Innotec.'. $unit);
                         $this->EnableAction($var_ID );
                         #ToDo: fix Icon
                         //IPS_SetIcon($ID_XT_IN_total_yesterday, 'Graph');
@@ -114,22 +121,22 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
                         $this->EnableAction($var_ID );
 						break;
                     default :
-                        IPS_LogMessage($this->moduleName,"could not find var-Format for: " . $value->Format);
+                        IPS_LogMessage($this->moduleName,"could not find var-Format for: " . $format);
                 }
 
 				#ToDo: fix Logging
 				//AC_SetLoggingStatus($archiv, $ID_XT_IN_total_yesterday, true);
 			}
-            switch ($value->Format) {
+            switch ($format) {
                 case "FLOAT":
-                SetValueFloat ($this->GetIDForIdent($var_ID ), (float) $this->Studer_Read($value->ID,"Value",$value->Type)->FloatValue);
+                SetValueFloat ($this->GetIDForIdent($var_ID ), (float) $this->Studer_Read($value->ID,"Value",$type)->FloatValue);
                 break;
             case "SHORT_ENUM":
                 //create Array from 'Unit' Paramter in form
-                $chunks = array_chunk(preg_split('/(:|,)/', $value->Unit), 2);
+                $chunks = array_chunk(preg_split('/(:|,)/', $unit), 2);
                 $result = array_combine(array_column($chunks, 0), array_column($chunks, 1));
 
-                $StuderState = $this->Studer_Read($value->ID,"Value", $value->Type);
+                $StuderState = $this->Studer_Read($value->ID,"Value", $type);
                 $objAsString = (string)$StuderState->FloatValue; 
                 SetValueString($this->GetIDForIdent($var_ID),$result[$objAsString]);
 				break;
