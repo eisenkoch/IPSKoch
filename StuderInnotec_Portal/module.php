@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+const ARCHIVE_CONTROL_MODULE_ID = '{43192F0B-135B-4CE7-A0A7-1475603F3060}';
 require_once __DIR__ . '/../libs/common.php';  // globale Funktionen
 
 class StuderInnotecWeb extends IPSModule {
@@ -9,7 +10,7 @@ class StuderInnotecWeb extends IPSModule {
         // Diese Zeile nicht löschen.
         parent::Create();
 		#ToDo: Archiv funktioniert noch nicht
-        $archiv = IPS_GetInstanceIDByName("Archive", 0 );
+        //$archiv = IPS_GetInstanceIDByName("Archive", 0 );
         
         //Config Profile
         $this->RegisterProfileFloat("Studer-Innotec.MWh", 	"Factory", "", " MWh", 0, 0, 0, 3);
@@ -20,6 +21,7 @@ class StuderInnotecWeb extends IPSModule {
         $this->RegisterProfileFloat("Studer-Innotec.percent",	    "Percent", "", " %", 0, 0, 0, 1);
         
         // Config Variablen 
+		$this->RegisterPropertyInteger('ArchiveControlID', IPS_GetInstanceListByModuleID(ARCHIVE_CONTROL_MODULE_ID)[0]);
         $this->RegisterPropertyString("Variables", "");
 		$this->RegisterPropertyString("activeDevices", "");
 		$this->RegisterPropertyBoolean("Debug", false);
@@ -71,7 +73,7 @@ class StuderInnotecWeb extends IPSModule {
 				//$this->SetTimerInterval(("UpdateTimer_".$value), $value*1000);
 			}
 		}
-    }
+	}
     
 public function GetConfigurationForm(){
     $data = json_decode(file_get_contents(__DIR__ . "/form.json"), true);
@@ -108,13 +110,14 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
                 if(!$varname){
                     $var_name = $var_ID;
                 }else {$var_name = $this->Translate($varname); }
-                #Todo Check VarType (Float, etc....)
                 switch ($format) {
                     case "FLOAT":
                         $this->RegisterVariableFloat($var_ID , $var_name, 'Studer-Innotec.'. $unit);
                         $this->EnableAction($var_ID );
-                        #ToDo: fix Icon
-                        //IPS_SetIcon($ID_XT_IN_total_yesterday, 'Graph');
+						if (($value->Archive)==true){
+							AC_SetLoggingStatus($this->ReadPropertyInteger('ArchiveControlID'), $this->GetIDForIdent($var_ID), true);
+							IPS_ApplyChanges($this->ReadPropertyInteger('ArchiveControlID'));
+						}
                         break;
                     case "SHORT_ENUM":
                         $this->RegisterVariableString($var_ID , $var_name);
@@ -123,9 +126,6 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
                     default :
                         IPS_LogMessage($this->moduleName,"could not find var-Format for: " . $format);
                 }
-
-				#ToDo: fix Logging
-				//AC_SetLoggingStatus($archiv, $ID_XT_IN_total_yesterday, true);
 			}
             switch ($format) {
                 case "FLOAT":

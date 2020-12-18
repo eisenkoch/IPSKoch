@@ -70,7 +70,7 @@
 							"validate": "5|60"}
 						},
 						{"caption": "VarName","name": "VarName","visible": true, "width": "60px"},
-						{"caption": "Archive","name": "Archive","width": "70px","edit": {
+						{"caption": "Archive","name": "Archive","width": "70px","save": true,"edit": {
 							"caption": "Archive",
 							"type": "CheckBox",
 							"value": false}
