@@ -2,19 +2,21 @@
     "elements":
     [
 		{ "type": "RowLayout","items": [
-			{ "type": "ValidationTextBox",  "name": "Username",				"caption": "Username" , "width": "450px"  },
-			{ "type": "Label", "caption": "Bitte vor dem validate, Änderungen übernehmen drücken"}
+			{ "type": "ValidationTextBox",	"name": "Username",				"caption": "lbl_username" , "width": "450px"  },
+			{ "type": "Label",				"name":"lbl_validateAccount",	"caption": "lbl_validateAccount", "width": "450px"},
+			{ "type": "Label", 				"name":"lbl_reCheckVar",		"caption": "lbl_reCheckVar", "width": "450px"}
 		]},
 		{ "type": "RowLayout","items": [
-			{ "type": "PasswordTextBox",    "name": "Password", 			"caption": "Passwort", "width": "450px" },
-			{ "type": "Button", "caption": "Validate Username & Password", 	"onClick": "Studer_validateAccount($id);", "width": "450px" }
+			{ "type": "PasswordTextBox",    "name": "Password", 			"caption": "lbl_password", "width": "450px" },
+			{ "type": "Button", "caption": "btn_validateAccount", 	"onClick": "Studer_validateAccount($id);", "width": "450px" },
+			{ "type": "Button", "caption": "btn_reCheckVar", 	"onClick": "Studer_reCheckVar($id);", "width": "450px" }
 		]},
 		{ "type": "RowLayout","items": [
 			{ "type": "ValidationTextBox",  "name": "installationNumber", 	"caption": "installationNumber", "width": "450px"},
 			
 			{
 			"type": "ExpansionPanel",
-			"caption": "my active Devicetypes",
+			"caption": "lbl_activeDevices",
 			
 				"items": [
 				{ "type": "List",
@@ -67,7 +69,7 @@
 						{"caption": "Intervall","name": "Intervall","width": "60px", "edit": {
                             "caption": "Intervall",
 							"type": "ValidationTextBox",
-							"validate": "5|60"}
+							"validate": "2|5|60"}
 						},
 						{"caption": "VarName","name": "VarName","visible": true, "width": "60px"},
 						{"caption": "Archive","name": "Archive","width": "70px","save": true,"edit": {
