@@ -5,9 +5,11 @@
 			"lbl_password": "Passwort",
 			"lbl_validateAccount": "Bitte vor der Prüfung, Änderungen übernehmen drücken",
 			"lbl_reCheckVar":"Alle nicht benötigen Variablen werden entfernt. \nAuch der Archivstatus der Vars's wird geprüft",
-			"lbl_activeDevices":"meine aktiven Geräte",
+			"lbl_activeDevices" : "meine aktiven Geräte",
+			"lbl_CheckSofwareVersion" : "überprüfe die aktuell installierte Softwareversion \nder aktiven Geräte",
 			"btn_validateAccount" : "Prüfe Benutzernamen /Passwort",
 			"btn_reCheckVar" : "Prüfe Variable",
+			"btn_CheckSofwareVersion" : "Prüfe Studer SW Version",
 			"Description" : "Beschreibung",
 			"Unit":"Einheit",
 			"Type":"Typ"

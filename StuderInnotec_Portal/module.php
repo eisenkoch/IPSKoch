@@ -132,19 +132,19 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
 			}
             switch ($format) {
                 case "FLOAT":
-                SetValueFloat ($this->GetIDForIdent($var_ID ), (float) $this->Studer_Read($value->ID,"Value",$type)->FloatValue);
-                break;
-            case "SHORT_ENUM":
-                //create Array from 'Unit' Paramter in form
-                $chunks = array_chunk(preg_split('/(:|,)/', $unit), 2);
-                $result = array_combine(array_column($chunks, 0), array_column($chunks, 1));
-
-                $StuderState = $this->Studer_Read($value->ID,"Value", $type);
-                $objAsString = (string)$StuderState->FloatValue; 
-                SetValueString($this->GetIDForIdent($var_ID),$result[$objAsString]);
-				break;
-            default :
-                IPS_LogMessage($this->moduleName,"coul not find Handler for: ". $value->Format);
+					SetValueFloat ($this->GetIDForIdent($var_ID ), (float) $this->Studer_Read($value->ID,"Value",$type)->FloatValue);
+					break;
+				case "SHORT_ENUM":
+					//create Array from 'Unit' Paramter in form
+					$chunks = array_chunk(preg_split('/(:|,)/', $unit), 2);
+					$result = array_combine(array_column($chunks, 0), array_column($chunks, 1));
+	
+					$StuderState = $this->Studer_Read($value->ID,"Value", $type);
+					$objAsString = (string)$StuderState->FloatValue; 
+					SetValueString($this->GetIDForIdent($var_ID),$result[$objAsString]);
+					break;
+				default :
+					IPS_LogMessage($this->moduleName,"coul not find Handler for: ". $value->Format);
             }
 		}
 	}
@@ -185,20 +185,19 @@ private function Studer_Read($infoId,$paramart,$device) {
 }
 
 private function RegisterProfileFloat($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits){
-    #Fuction orignal from https://github.com/Joey-1970/
-	
-	    if (!IPS_VariableProfileExists($Name)) {
-	        IPS_CreateVariableProfile($Name, 2);
-	    }
-	    else {
-	        $profile = IPS_GetVariableProfile($Name);
-	        if ($profile['ProfileType'] != 2)
-	            throw new Exception("Variable profile type does not match for profile " . $Name);
-	    }
-	    IPS_SetVariableProfileIcon($Name, $Icon);
-	    IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
-	    IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);
-	    IPS_SetVariableProfileDigits($Name, $Digits);
+	#Function orignal from https://github.com/Joey-1970/
+	if (!IPS_VariableProfileExists($Name)) {
+		IPS_CreateVariableProfile($Name, 2);
+	}
+	else {
+		$profile = IPS_GetVariableProfile($Name);
+		if ($profile['ProfileType'] != 2)
+			throw new Exception("Variable profile type does not match for profile " . $Name);
+		}
+	IPS_SetVariableProfileIcon($Name, $Icon);
+	IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
+	IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);
+	IPS_SetVariableProfileDigits($Name, $Digits);
 }
 
 public function validateAccount() {
@@ -268,14 +267,56 @@ public function reCheckVar() {
 }
 
 public function CheckSofwareVersion() {
-	echo "this function is still in Development";
-	$infoId = "15078";
-	$type = "VS_Group";
-	//UIntValue FloatValue
-	$a = $this->Studer_Read($infoId,"Value",$type)->UIntValue;
-	echo $a;
-	echo ($a & 8). " " . ($a & 16). " " . ($a & 24). " " . ($a & 32);
+	$treeDataDevices = json_decode($this->ReadPropertyString("activeDevices"));
+	foreach ($treeDataDevices as $value) {
+		if(($value->Active)==true){
+			$chunks = array_chunk(preg_split('/(:|,)/', ($value->Software_msb_lsb)), 2);
+			$result = array_combine(array_column($chunks, 0), array_column($chunks, 1));
+			
+			$infoId_msb = $result["msb"];
+			$infoId_lsb = $result["lsb"];
+			$DeviceCat = $value->DeviceTypeID . "1";
+			if (($value->DeviceTypeID)=="XT") {
+				$xt_type = (float) $this->Studer_Read("3124","Value",$DeviceCat)->FloatValue;
+				switch ($xt_type) {
+					case "1":
+						$DeviceType = "XTH";
+						break;
+					case "256":
+						$DeviceType = "XTM";
+						break;
+					case "512":
+						$DeviceType = "XTS";
+						break;
+					default :
+						exit;
+				}
+				
+			}
+			else {
+				switch ($value->DeviceTypeID) {
+				case "VS" :
+					$DeviceType = "VARIOSTRING";
+					break;
+				case "VT" :
+					$DeviceType = "VARIOTRACK";
+				case "BSP" :
+					exit;
+				}
+			}
+			
+			$msb = (float) $this->Studer_Read($infoId_msb,"Value",$DeviceCat)->FloatValue;
+			$lsb = (float) $this->Studer_Read($infoId_lsb,"Value",$DeviceCat)->FloatValue;
+	
+			$studer_version = json_decode((file_get_contents(__DIR__ . "/../studer-version.json")),true);
 
+			if (($studer_version['versions'][$DeviceType])==(($msb >>8) . "." . ($lsb >>8) . "." . ($lsb & 0xFF))){
+				echo "found a active ". $DeviceType ." and no update needed \n\n";
+			}
+			else {
+				echo "the installed Version of your ". $DeviceType .": \n". (($msb >>8) . "." . ($lsb >>8) . "." . ($lsb & 0xFF)) . "\ndiffers from the actual known version: \n" . ($studer_version['versions'][$DeviceType]) ."\n" ;
+			}
+		}
+	}
 }
-
 }

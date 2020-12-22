@@ -3,13 +3,15 @@
     [
 		{ "type": "RowLayout","items": [
 			{ "type": "ValidationTextBox",	"name": "Username",				"caption": "lbl_username" , "width": "450px"  },
-			{ "type": "Label",				"name":"lbl_validateAccount",	"caption": "lbl_validateAccount", "width": "450px"},
-			{ "type": "Label", 				"name":"lbl_reCheckVar",		"caption": "lbl_reCheckVar", "width": "450px"}
+			{ "type": "Label",				"name":"lbl_validateAccount",	"caption": "lbl_validateAccount", "width": "440px"},
+			{ "type": "Label", 				"name":"lbl_reCheckVar",		"caption": "lbl_reCheckVar", "width": "440px"},
+			{ "type": "Label", 				"name":"lbl_CheckSofwareVersion",		"caption": "lbl_CheckSofwareVersion", "width": "440px"}
 		]},
 		{ "type": "RowLayout","items": [
-			{ "type": "PasswordTextBox",    "name": "Password", 			"caption": "lbl_password", "width": "450px" },
-			{ "type": "Button", "caption": "btn_validateAccount", 	"onClick": "Studer_validateAccount($id);", "width": "450px" },
-			{ "type": "Button", "caption": "btn_reCheckVar", 	"onClick": "Studer_reCheckVar($id);", "width": "450px" }
+			{ "type": "PasswordTextBox",    "name" : "Password", 			"caption": "lbl_password", "width": "450px" },
+			{ "type": "Button", "caption": "btn_validateAccount", 	"onClick": "Studer_validateAccount($id);", "width": "440px" },
+			{ "type": "Button", "caption": "btn_reCheckVar", 	"onClick": "Studer_reCheckVar($id);", "width": "440px" },
+			{ "type": "Button", "caption": "btn_CheckSofwareVersion", 	"onClick": "Studer_CheckSofwareVersion($id);", "width": "440px" }
 		]},
 		{ "type": "RowLayout","items": [
 			{ "type": "ValidationTextBox",  "name": "installationNumber", 	"caption": "installationNumber", "width": "450px"},
@@ -29,23 +31,26 @@
 						"direction": "descending"
 					},
 				"columns": [
-					{"caption": "ID", "name": "DeviceTypeID", "width": "70px"},
-					{"caption": "DeviceTypeDescription", "name": "DeviceTypeDescription", "width": "500px","save": true},
-					{"caption": "Active","name": "Active","width": "70px","save": true,"edit": {
+					{"caption": "ID", 						"name": "DeviceTypeID", 			"width": "70px",	"save": true},
+					{"caption": "DeviceTypeDescription", 	"name": "DeviceTypeDescription", 	"width": "500px",	"save": false},
+					{"caption": "Software_msb_lsb", 		"name": "Software_msb_lsb", 		"width": "500px",	"save": true, 	"visible": false},
+					{"caption": "Active",					"name": "Active",					"width": "70px",	"save": true,	"edit": {
                             "caption": "Active",
 							"type": "CheckBox" }
                     }
 				],
                     "values": [
-					{"DeviceTypeID":"XT","DeviceTypeDescription":"Xtender (XTH/XTS/XTM) in System"},
-					{"DeviceTypeID":"VS","DeviceTypeDescription":"VarioString (VS-70; VS-120)"},
-					{"DeviceTypeID":"VT","DeviceTypeDescription":"VarioTrack (VT-40; VT-65; VT-80)"},
-					{"DeviceTypeID":"BSP","DeviceTypeDescription":"BSP/CAN in System active (example for Lithium)"}
+					{"DeviceTypeID" : "XT" , "DeviceTypeDescription" : "Xtender (XTH/XTS/XTM) in System", 	"Software_msb_lsb" : "msb:3130,lsb:3131"},
+					{"DeviceTypeID" : "VS" , "DeviceTypeDescription" : "VarioString (VS-70; VS-120)", 		"Software_msb_lsb" : "msb:15077,lsb:15078"},
+					{"DeviceTypeID" : "VT" , "DeviceTypeDescription" : "VarioTrack (VT-40; VT-65; VT-80)",	"Software_msb_lsb" : "msb:11050,lsb:11051"},
+					{"DeviceTypeID" : "BSP", "DeviceTypeDescription" : "BSP/CAN in System active (example for Lithium)", "Software_msb_lsb" : "msb:7037,lsb:7038"}
 					]
 				}]
 			}
 		]},
-        { "type": "ValidationTextBox",  "name": "url", 					"caption": "Portal URL", "width" : "450px"},
+		{ "type": "RowLayout","items": [
+			{ "type": "ValidationTextBox",  "name": "url", 					"caption": "Portal URL", "width" : "450px"}
+		]},
         { "type": "CheckBox",           "name": "Debug",    			"caption": "Debug" , "visible": false},
         { "type": "Image",
             "image": "data:image/jpeg;base64,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",
@@ -61,17 +66,17 @@
 			"direction": "descending"
 			},
           "columns": [
-			{"caption": "ID", "name": "ID", "width": "100px","save": true},
+			{"caption": "ID", "name": "ID", "width": "70px","save": true},
 						{"caption": "Description","name": "Description","width": "400px"},
 						{"caption": "Unit","name": "Unit","width": "400px"},
-						{"caption": "Format","name": "Format","visible": true,"width": "400px"},
+						{"caption": "Format","name": "Format","visible": true,"width": "150px"},
 						{"caption": "Type","name": "Type","visible": true,"width": "100px"},
-						{"caption": "Intervall","name": "Intervall","width": "60px", "edit": {
+						{"caption": "Intervall","name": "Intervall","width": "70px", "edit": {
                             "caption": "Intervall",
 							"type": "ValidationTextBox",
 							"validate": "2|5|60"}
 						},
-						{"caption": "VarName","name": "VarName","visible": true, "width": "60px"},
+						{"caption": "VarName","name": "VarName","visible": true, "width": "250px"},
 						{"caption": "Archive","name": "Archive","width": "70px","save": true,"edit": {
 							"caption": "Archive",
 							"type": "CheckBox",
@@ -100,7 +105,8 @@
 					{"ID":"11002",	"Description":"Voltage of the PV generator",				"Unit":"V",		"Format":"FLOAT",	"Type":"VT_Group",	"Intervall":"5", 	"VarName":"VT_PV_voltage"},
 					{"ID":"11004",	"Description":"Power of the PV generator",					"Unit":"V",		"Format":"FLOAT",	"Type":"VT_Group",	"Intervall":"5", 	"VarName":"VT_PV_Power"},
 					{"ID":"15010",	"Description":"PV power",									"Unit":"kW",	"Format":"FLOAT",	"Type":"VS_Group",	"Intervall":"5", 	"VarName":"VS_PV_Power"},
-					{"ID":"15013",	"Description":"PV operating mode",							"Unit":"0:Night,1:Security,2:OFF,3:Charge,4:ChargeV,5:Charge_I,6:ChargeP,7:ChargeIpv,8:ChargeT,10:Charge_Ibsp",	"Format":"SHORT_ENUM",	"Type":"VS_Group",	"Intervall":"5", 	"VarName":"VS_Operating_mode"}
+					{"ID":"15013",	"Description":"PV operating mode",							"Unit":"0:Night,1:Security,2:OFF,3:Charge,4:ChargeV,5:Charge_I,6:ChargeP,7:ChargeIpv,8:ChargeT,10:Charge_Ibsp",	"Format":"SHORT_ENUM",	"Type":"VS_Group",	"Intervall":"5", 	"VarName":"VS_Operating_mode"},
+					{"ID":"3160",	"Description":"Source of limitation for charger",			"Unit":"0:0,1:Ubatt,2:Ubattp,3:Ubattpp,4:Ibatt,5:Pchar,6:UbattInj,7:Iinj,8:Imax,9:Ilim,10:Ithermal,11:PchNeg","Format":"SHORT_ENUM","Type":"XT_Group",	"Intervall":"5","VarName":"XT_Charger_Limitation"}
 					]
                 }
     ],
