@@ -49,7 +49,7 @@
 			}
 		]},
 		{ "type": "RowLayout","items": [
-			{ "type": "ValidationTextBox",  "name": "url", 					"caption": "Portal URL", "width" : "450px"}
+			{ "type": "ValidationTextBox",  "name": "url", 					"caption": "Portal URL", "width" : "450px", "visible": false}
 		]},
         { "type": "CheckBox",           "name": "Debug",    			"caption": "Debug" , "visible": false},
         { "type": "Image",
@@ -108,7 +108,6 @@
 					{"ID":"15013",	"Description":"PV operating mode",							"Unit":"0:Night,1:Security,2:OFF,3:Charge,4:ChargeV,5:Charge_I,6:ChargeP,7:ChargeIpv,8:ChargeT,10:Charge_Ibsp",	"Format":"SHORT_ENUM",	"Type":"VS_Group",	"Intervall":"5", 	"VarName":"VS_Operating_mode"},
 					{"ID":"3160",	"Description":"Source of limitation for charger",			"Unit":"0:0,1:Ubatt,2:Ubattp,3:Ubattpp,4:Ibatt,5:Pchar,6:UbattInj,7:Iinj,8:Imax,9:Ilim,10:Ithermal,11:PchNeg","Format":"SHORT_ENUM","Type":"XT_Group",	"Intervall":"5","VarName":"XT_Charger_Limitation"},
 					{"ID":"7055",	"Description":"XCOM-CAN Battery Capacity",					"Unit":"Ah",	"Format":"FLOAT",	"Type":"BSP_Group","Intervall":"5", 	"VarName":"XCOM_CAN_bCap"}
-					
 					]
                 }
     ],

@@ -28,6 +28,7 @@ class StuderInnotecWeb extends IPSModule {
         $this->RegisterPropertyString('Password', '');
         $this->RegisterPropertyString("installationNumber", "");
         $this->RegisterPropertyString("url", "https://portal.studer-innotec.com/scomwebservice.asmx");
+		$this->RegisterPropertyString("url_api", "https://api.studer-innotec.com/api/v1");
         $this->RegisterTimer("UpdateTimer_2", 0, 'Studer_Update_2($_IPS[\'TARGET\']);');
 		$this->RegisterTimer("UpdateTimer_5", 0, 'Studer_Update_5($_IPS[\'TARGET\']);');
 		$this->RegisterTimer("UpdateTimer_60", 0, 'Studer_Update_60($_IPS[\'TARGET\']);');
@@ -202,43 +203,44 @@ private function RegisterProfileFloat($Name, $Icon, $Prefix, $Suffix, $MinValue,
 }
 
 public function validateAccount() {
-	global $email;
-	global $pwd;
-	global $installationNumber;
-	global $url;
-	
 	$curl = curl_init();
+
 	curl_setopt_array($curl, array(
-		CURLOPT_URL => $this->ReadPropertyString("url") . "/GetInstallationList?email=". $this->ReadPropertyString("Username") ."&pwd=" . $this->ReadPropertyString("Password"),
+		CURLOPT_URL => $this->ReadPropertyString("url_api") .'/installation/installations',
 		CURLOPT_RETURNTRANSFER => true,
-    	CURLOPT_ENCODING => "",
+		CURLOPT_ENCODING => '',
 		CURLOPT_MAXREDIRS => 10,
-		CURLOPT_TIMEOUT => 30,
+		CURLOPT_TIMEOUT => 0,
+		CURLOPT_FOLLOWLOCATION => true,
 		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-		CURLOPT_CUSTOMREQUEST => "GET",
-		CURLOPT_POSTFIELDS => "",
-		CURLOPT_HTTPHEADER => array("cache-control: no-cache"),
+		CURLOPT_CUSTOMREQUEST => 'GET',
+		CURLOPT_HTTPHEADER => array(
+		'PHASH:'. md5($this->ReadPropertyString("Password")),
+		'UHASH:'. hash('sha256',$this->ReadPropertyString("Username"))
+		),
 	));
 
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
+	$response = curl_exec($curl);
+	$respCode = curl_getinfo($curl, CURLINFO_RESPONSE_CODE);  
+	curl_close($curl);
 
-    curl_close($curl);
-	$xml = new SimpleXMLElement($response);
+	$xml = json_decode($response, true);
 	
-	if ($err) {
-    	echo "cURL Error #:" . $err;
-    } else {
-		if (($xml->ErrorCode)!=1){
-			print("something is wrong Studer-Innotec says: " . $xml->ErrorMessage);
-		}
-		else {
+	switch ($respCode){
+		case "401" :
+			echo "Access not allowed.";
+			break;
+		case "500" :
+			echo "An error occured while retrieving data.";
+			break;
+		case "200" :
 			echo "Studer-Innotec has the following ID's for you: \n" ;	
-			foreach ($xml->InstallationList->InstallationInfo as $installation) {
-				echo $installation->Id," => ", $installation->Name, PHP_EOL;
+			foreach ($xml as $installation) {				
+				echo $installation['id']," => ", $installation['name'], PHP_EOL;
 			}
-		}
-	}
+		default :
+			exit;
+    }
 }
 
 public function reCheckVar() {
