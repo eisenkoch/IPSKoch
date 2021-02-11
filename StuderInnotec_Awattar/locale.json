@@ -1,0 +1,12 @@
+{
+	"translations": {
+		"de": {
+			"lbl_username": "Benutzername",
+			"lbl_password": "Passwort"
+			},
+		"en": {
+			"lbl_username": "Username",
+			"lbl_password": "Password"
+			}
+		}
+}

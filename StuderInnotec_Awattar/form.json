@@ -1,0 +1,71 @@
+{
+	"elements":
+	[
+		{ "type": "Label", "name": "Size", "caption": "demo text", "visible": false },
+		{ "type": "Label", "caption": "This Module is still in Development" },
+		{ "type": "RowLayout","items": [
+			{ "type": "Select", "name": "Connection_type", "caption": "Connection","width" : "450px","options": [
+				{ "caption": "Studer WebPortal", "value": 0 },
+				{ "caption": "Studer XCOM-RS232 + LAN", "value": 1 },
+				{ "caption": "Studer XCOM-RS485 + LAN", "value": 2 }
+			]
+			},
+			{"type": "ExpansionPanel",
+				"caption": "Web Portal Data",
+				"name": "webPortalData", 
+				"visible": false,
+				"items": [
+					{ "type": "ValidationTextBox",	"name": "Username",				"caption": "lbl_username" , "width": "450px"  },
+					{ "type": "PasswordTextBox",    "name": "Password", 			"caption": "lbl_password", "width": "450px" },
+					{ "type": "ValidationTextBox",  "name": "installationNumber", 	"caption": "installationNumber", "width": "450px"},
+					{ "type": "ValidationTextBox",  "name": "url", 					"caption": "Portal URL", "width" : "450px", "visible": false}
+				]
+			},
+			{"type": "ExpansionPanel",
+				"caption": "RS485 (Modbus) Data",
+				"name": "rs485PortalData", 
+				"visible": false,
+				"items": [
+					{ "type": "ValidationTextBox",	"name": "IP_Modbus_Gateway",	"caption": "lbl_RS485_IP" ,	"width": "450px" ,"validate":"((^|\\.)((25[0-5])|(2[0-4]\\d)|(1\\d\\d)|([1-9]?\\d))){4}$" },
+					{ "type": "ValidationTextBox",	"name": "IP_Modbus_Port",		"caption": "lbl_RS485_Port" ,	"width": "450px" ,"validate":"" }
+				]
+			}
+		]},
+		{ "type": "Select", "name": "Config_type", "caption": "Konfiguration","width" : "450px","options": [
+			{ "caption": "XTM/XTH/XTS System mit Standard Batterie", "value": 0 },
+			{ "caption": "XTM/XTH/XTS System mit BSP und Standard Batterie", "value": 1 },
+			{ "caption": "XTM/XTH/XTS System mit CAN Adapter und Lithium Akku", "value": 2 }
+		]
+		},
+		{ "type": "Select", "name": "Voltage", "caption": "Spannungsebene","width" : "450px","options": [
+			{ "caption": "230V System", "value": 230 },
+			{ "caption": "110V System", "value": 110 }
+		]
+		},
+		{ "type": "Select", "name": "Bat_Voltage", "caption": "Bat Voltage System","width" : "450px","options": [
+			{ "caption": "12V System", "value": 12 },
+			{ "caption": "24V System", "value": 24 },
+			{ "caption": "48V System", "value": 48 }
+		]
+		},
+		{ "type": "NumberSpinner",  "name": "SOC_low", 				"caption": "SOC_low", "width" : "450px","suffix":"%" ,"minimum": "5", "maximum": "100" },
+		{ "type": "NumberSpinner",  "name": "SOC_high", 			"caption": "SOC_high", "width" : "450px","suffix":"%" ,"minimum": "5", "maximum": "100"},
+		{ "type": "NumberSpinner",  "name": "SOC_actual", 			"caption": "SOC_actual", "width" : "450px","suffix":"%", "enabled": false},
+		{ "type": "NumberSpinner",  "name": "max_Charge_Current",	"caption": "max_Charge_Current", "width" : "450px", "digits": 2, "suffix":"kW" ,"minimum": "0.5", "maximum": "2.5", "enabled": true },
+		
+		{ "type": "RowLayout","items": [
+			{ "type": "NumberSpinner",  "name": "Batt_Cap", 			"caption": "Batt_Cap", "width" : "450px", "enabled": true},
+			{ "type": "Button", "caption": "btn_init", 	"onClick": "StuderAWT_awt_init($id);", "width": "440px" , "enabled": true}
+		]},
+		{ "type": "CheckBox", "name": "System_active", "caption": "active" },
+		{ "type": "Label", "caption": "------------------------------------------------------------------------------------------------------------------------" },
+		{ "type": "Label", "caption": "1) zuerst ist der Verbindungstyp zu wählen" },
+		{ "type": "Label", "caption": "2) eine Konfiguration entsprechend der verwendeten HW auswählen" },
+		{ "type": "Label", "caption": "*soc_low: gibt an wie tief maximal der SOC gestellt werden darf" },
+		{ "type": "Label", "caption": "*soc_high: gibt an wie voll das System geladen werden soll" },
+		{ "type": "Label", "caption": "*max_Charge_Current: gibt an welche Leistung zum Laden zu verfügung steht" }
+		
+
+
+	]
+}

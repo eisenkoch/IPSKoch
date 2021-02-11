@@ -1,0 +1,15 @@
+{
+    "id": "{1C2B86E0-46D4-211D-E928-748541796145}",
+    "name": "StuderAWT",
+    "type": 3,
+    "vendor": "Studer Innotec",
+    "aliases":
+    [
+        "Studer Innotec aWATTar"
+    ],
+    "url": "https://www.symcon.de",
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "StuderAWT"
+}
