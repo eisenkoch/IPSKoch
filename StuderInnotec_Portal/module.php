@@ -32,6 +32,8 @@ class StuderInnotecWeb extends IPSModule {
         $this->RegisterTimer("UpdateTimer_2", 0, 'Studer_Update_2($_IPS[\'TARGET\']);');
 		$this->RegisterTimer("UpdateTimer_5", 0, 'Studer_Update_5($_IPS[\'TARGET\']);');
 		$this->RegisterTimer("UpdateTimer_60", 0, 'Studer_Update_60($_IPS[\'TARGET\']);');
+		$this->RegisterTimer("UpdateTimer_360", 0, 'Studer_Update_60($_IPS[\'TARGET\']);');
+		$this->RegisterTimer("UpdateTimer_720", 0, 'Studer_Update_60($_IPS[\'TARGET\']);');
     }
 public function Destroy() {
     //Never delete this line!
@@ -78,6 +80,9 @@ public function ApplyChanges() {
     
 public function GetConfigurationForm(){
     $data = json_decode(file_get_contents(__DIR__ . "/form.json"), true);
+	$var_element = json_decode(file_get_contents(__DIR__ . "/../libs/_param.json"),true);
+	$data['elements'][6]['values'] = $var_element ;
+	return json_encode($data);
 }
 
 public function Update_2() {
@@ -91,8 +96,17 @@ public function Update_5() {
 }
 
 public function Update_60() {
-	//IPS_LogMessage($this->moduleName,"Update_60");
 	$timer_var = '60';
+	$this->call_Studer_from_Timer($timer_var);
+}
+
+public function Update_360() {
+	$timer_var = '360';
+	$this->call_Studer_from_Timer($timer_var);
+}
+
+public function Update_720() {
+	$timer_var = '720';
 	$this->call_Studer_from_Timer($timer_var);
 }
 
@@ -125,6 +139,7 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
 						}
                         break;
                     case "SHORT_ENUM":
+					case "LONG_ENUM":
                         $this->RegisterVariableString($var_ID , $var_name);
                         $this->EnableAction($var_ID );
 						break;
@@ -137,6 +152,7 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
 					SetValueFloat ($this->GetIDForIdent($var_ID ), (float) $this->Studer_Read($value->ID,"Value",$type)->FloatValue);
 					break;
 				case "SHORT_ENUM":
+				case "LONG_ENUM":
 					//create Array from 'Unit' Paramter in form
 					$chunks = array_chunk(preg_split('/(:|,)/', $unit), 2);
 					$result = array_combine(array_column($chunks, 0), array_column($chunks, 1));
@@ -200,6 +216,10 @@ private function RegisterProfileFloat($Name, $Icon, $Prefix, $Suffix, $MinValue,
 	IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
 	IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);
 	IPS_SetVariableProfileDigits($Name, $Digits);
+}
+
+public function validateDevices () {
+	echo "not implementet";
 }
 
 public function validateAccount() {
