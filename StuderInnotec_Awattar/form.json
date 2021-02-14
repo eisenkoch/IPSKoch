@@ -51,7 +51,7 @@
 		{ "type": "NumberSpinner",  "name": "SOC_low", 				"caption": "SOC_low", "width" : "450px","suffix":"%" ,"minimum": "5", "maximum": "100" },
 		{ "type": "NumberSpinner",  "name": "SOC_high", 			"caption": "SOC_high", "width" : "450px","suffix":"%" ,"minimum": "5", "maximum": "100"},
 		{ "type": "NumberSpinner",  "name": "SOC_actual", 			"caption": "SOC_actual", "width" : "450px","suffix":"%", "enabled": false},
-		{ "type": "NumberSpinner",  "name": "max_Charge_Current",	"caption": "max_Charge_Current", "width" : "450px", "digits": 2, "suffix":"kW" ,"minimum": "0.5", "maximum": "2.5", "enabled": true },
+		{ "type": "NumberSpinner",  "name": "max_Charge_Current",	"caption": "max_Charge_Current", "width" : "450px", "digits": 2, "suffix":"kW" ,"minimum": "0.5", "maximum": "3.25", "enabled": true },
 		
 		{ "type": "RowLayout","items": [
 			{ "type": "NumberSpinner",  "name": "Batt_Cap", 			"caption": "Batt_Cap", "width" : "450px", "enabled": true},
@@ -65,7 +65,6 @@
 		{ "type": "Label", "caption": "*soc_high: gibt an wie voll das System geladen werden soll" },
 		{ "type": "Label", "caption": "*max_Charge_Current: gibt an welche Leistung zum Laden zu verfügung steht" }
 		
-
-
+		
 	]
 }

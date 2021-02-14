@@ -291,6 +291,7 @@ public function reCheckVar() {
 
 public function CheckSofwareVersion() {
 	$treeDataDevices = json_decode($this->ReadPropertyString("activeDevices"));
+	if (!$treeDataDevices){exit;} //omits the error if the function is called before any saving
 	foreach ($treeDataDevices as $value) {
 		if(($value->Active)==true){
 			$chunks = array_chunk(preg_split('/(:|,)/', ($value->Software_msb_lsb)), 2);
@@ -331,7 +332,7 @@ public function CheckSofwareVersion() {
 			$msb = (float) $this->Studer_Read($infoId_msb,"Value",$DeviceCat)->FloatValue;
 			$lsb = (float) $this->Studer_Read($infoId_lsb,"Value",$DeviceCat)->FloatValue;
 	
-			$studer_version = json_decode((file_get_contents(__DIR__ . "/../studer-version.json")),true);
+			$studer_version = json_decode((file_get_contents(__DIR__ . "/../libs/studer-version.json")),true);
 
 			if (($studer_version['versions'][$DeviceType])==(($msb >>8) . "." . ($lsb >>8) . "." . ($lsb & 0xFF))){
 				echo "found a active ". $DeviceType ." and no update needed \n\n";

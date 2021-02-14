@@ -184,6 +184,7 @@ public function awt_init(){
 }
 
 public function Charge_AWT() {
+	//print ("a");
 	switch($this->ReadPropertyInteger("Connection_type")){
 		case 0:	//Studer WebPortal
 			$ID_Loadfill        		= '6062';   //in einem Lithium System ist das der notwendige wert zum anheben
@@ -203,13 +204,12 @@ public function Charge_AWT() {
 		case "2" : //Connection => RS485(Modbus)
 			$modbus = new ModbusMaster($this->ReadPropertyString("IP_Modbus_Gateway"), "TCP");
 			$SOC_minLoadStart   = "90"; 
-			$actual_Soc = (float) PhpType::bytes2float($modbus->readMultipleRegisters(60, 4, 2),1);
+			$actual_Soc = (float) PhpType::bytes2float($modbus->readMultipleInputRegisters(60, 4, 2),1); //FC4
 			if ($actual_Soc < $SOC_minLoadStart){
-				//$modbus->writeMultipleRegister(60, 6124, array((number_format($this->ReadPropertyInteger('SOC_high'),1))), array("REAL"), 1);
-				//$this->Studer_Maintain_Portal('BSP_Group',number_format($this->ReadPropertyInteger('SOC_high'),1) ,$ID_Loadfill);
+				$modbus->writeMultipleRegister(60, 6124, array((number_format($this->ReadPropertyInteger('SOC_high'),1))), array("REAL"), 1);
 			}
 			elseif ($actual_Soc > $this->ReadPropertyInteger('SOC_high')){
-				//$this->Studer_Maintain_Portal('BSP_Group',number_format($this->ReadPropertyInteger('SOC_low'),1) ,$ID_Loadfill);
+				$modbus->writeMultipleRegister(60, 6124, array((number_format($this->ReadPropertyInteger('SOC_low'),1))), array("REAL"), 1);
 			}
 			break;
 	}
@@ -221,6 +221,19 @@ public function Start_AWT(){
 
 public function Stop_AWT(){
 	$this->SetTimerInterval(("ChargeAWT"), 0);
+	switch($this->ReadPropertyInteger("Connection_type")){
+		case 0:	//Studer WebPortal
+			$ID_Loadfill        		= '6062';   //in einem Lithium System ist das der notwendige wert zum anheben
+			$this->Studer_Maintain_Portal('BSP_Group',number_format($this->ReadPropertyInteger('SOC_low'),1) ,$ID_Loadfill);
+			break;
+		case "1" : //Connection => RS232
+			break;
+		case "2" : //Connection => RS485(Modbus)
+			$modbus = new ModbusMaster($this->ReadPropertyString("IP_Modbus_Gateway"), "TCP");
+			$modbus->writeMultipleRegister(60, 6124, array((number_format($this->ReadPropertyInteger('SOC_low'),1))), array("REAL"), 1);
+			break;
+	}
+	
 }
 
 public function Update_2() {
@@ -283,9 +296,18 @@ public function awt_xtcl(){
 				IPS_ApplyChanges($this->InstanceID);	
 			}
 			break;
+		case 2:
+			$modbus = new ModbusMaster($this->ReadPropertyString("IP_Modbus_Gateway"), "TCP");
+			$awt_std_soc = (float) PhpType::bytes2float($modbus->readMultipleInputRegisters(60, 4, 2),1);
+			if ($awt_std_soc <> $this->ReadPropertyInteger("SOC_actual") ){
+				IPS_SetProperty($this->InstanceID,"SOC_actual", $awt_std_soc);
+				IPS_ApplyChanges($this->InstanceID);	
+			}
+			break;
 		default:
 			echo $this->ReadPropertyInteger("Connection_type") ." Connection_Type not implemented";
 			exit;
+			
 	}	
 }
 

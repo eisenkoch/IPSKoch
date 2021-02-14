@@ -1040,7 +1040,7 @@ class ModbusMaster {
         $dataLen += 2;
       }
     }
-	echo $buffer;
+	
     // build body
     $buffer2 = "";
     $buffer2 .= (new iecType)->iecBYTE(16);           	// FC 16 = 16(0x10)

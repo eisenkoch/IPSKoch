@@ -1,8 +1,110 @@
 {
     "elements":
     [
-        { "type": "Label", "caption": "This Module is still in Development" },
-        { "type": "CheckBox",       "name": "Debug",                "caption": "Debug" },
-        { "type": "SelectInstance", "name": "PropertyInstanceID",   "caption": "Target" }
+	{ "type": "RowLayout","items": [
+			{ "type": "ValidationTextBox",	"name": "IP_Modbus_Gateway",	"caption": "lbl_RS485_IP" ,	"width": "400px" ,"validate":"((^|\\.)((25[0-5])|(2[0-4]\\d)|(1\\d\\d)|([1-9]?\\d))){4}$" },
+			{
+			"type": "ExpansionPanel",
+			"caption": "lbl_activeDevices",
+			
+				"items": [
+				{ "type": "List",
+					"name": "activeDevices",
+					"caption": "",
+					"add": false,
+					"delete": false,
+					"sort": {
+						"column": "DeviceTypeDescription",
+						"direction": "descending"
+					},
+				"columns": [
+					{"caption": "ID", 						"name": "DeviceTypeID", 			"width": "70px",	"save": true},
+					{"caption": "DeviceTypeDescription", 	"name": "DeviceTypeDescription", 	"width": "500px",	"save": false},
+					{"caption": "Software_msb_lsb", 		"name": "Software_msb_lsb", 		"width": "500px",	"save": true, 	"visible": false},
+					{"caption": "mb_DeviceTypeID", 			"name": "mb_DeviceTypeID", 			"width": "500px",	"save": true, 	"visible": false},
+					{"caption": "mb_Software_msb_lsb", 		"name": "mb_Software_msb_lsb", 		"width": "500px",	"save": true, 	"visible": false},
+					{"caption": "Active",					"name": "Active",					"width": "70px",	"save": true,	"edit": {
+                            "caption": "Active",
+							"type": "CheckBox" }
+                    }
+				],
+                    "values": [
+					{
+						"DeviceTypeID" 			: "XT", 
+						"DeviceTypeDescription" : "Xtender (XTH/XTS/XTM) in System",
+						"Software_msb_lsb" 		: "msb:3130,lsb:3131",
+						"mb_DeviceTypeID" 		: "10",
+						"mb_Software_msb_lsb" 	: "msb:260,lsb:262"
+					},
+					{
+						"DeviceTypeID" 			: "VS", 
+						"DeviceTypeDescription" : "VarioString (VS-70; VS-120)",	
+						"Software_msb_lsb" 		: "msb:15077,lsb:15078",
+						"mb_DeviceTypeID" 		: "40",
+						"mb_Software_msb_lsb" 	: "msb:154,lsb:156"
+					},
+					{
+						"DeviceTypeID" 			: "VT",
+						"DeviceTypeDescription" : "VarioTrack (VT-40; VT-65; VT-80)",
+						"Software_msb_lsb" 		: "msb:11050,lsb:11051",
+						"mb_DeviceTypeID" 		: "20",
+						"mb_Software_msb_lsb" 	: "msb:100,lsb:102"
+					},
+					{
+						"DeviceTypeID" 			: "BSP", 
+						"DeviceTypeDescription" : "BSP/CAN in System active (example for Lithium)", 
+						"Software_msb_lsb" 		: "msb:7037,lsb:7030",
+						"mb_DeviceTypeID" 		: "60",
+						"mb_Software_msb_lsb" 	: "msb:74,lsb:76"
+					}
+					]
+				},
+				{ "type": "Button", "caption": "btn_validateDevices", 	"onClick": "StuderRS485_validateDevices($id);", "width": "440px" }
+				]
+			}
+		]},
+		{ "type": "RowLayout","items": [
+			{ "type": "ValidationTextBox",	"name": "IP_Modbus_Port",		"caption": "lbl_RS485_Port" ,	"width": "400px" ,"validate":"" },
+			{ "type": "Button", "caption": "btn_reCheckVar", 				"onClick": "StuderRS485_reCheckVar($id);", "width": "400px" },
+			{ "type": "Button", "caption": "btn_CheckSofwareVersion", 		"onClick": "StuderRS485_CheckSofwareVersion($id);", "width": "400px" }
+		]},
+        { "type": "List",
+          "name": "Variables",
+          "caption": "",
+          "add": false,
+		  "delete": false,
+		  "sort": {
+			"column": "ID",
+			"direction": "descending"
+			},
+          "columns": [
+			{"caption": "ID", "name": "ID", "width": "70px","save": true},
+						{"caption": "Description","name": "Description","width": "400px"},
+						{"caption": "Unit","name": "Unit","width": "400px"},
+						{"caption": "Format","name": "Format","visible": true,"width": "150px"},
+						{"caption": "Type","name": "Type","visible": true,"width": "100px"},
+						{"caption": "Intervall","name": "Intervall","width": "70px", "edit": {
+                            "caption": "Intervall",
+							"type": "ValidationTextBox",
+							"validate": "2|5|60|360|720"}
+						},
+						{"caption": "VarName","name": "VarName","visible": true, "width": "250px"},
+						{"caption": "Archive","name": "Archive","width": "70px","save": true,"edit": {
+							"caption": "Archive",
+							"type": "CheckBox",
+							"value": false}
+						},
+						{"caption": "Active","name": "Active","width": "70px","save": true,"edit": {
+                            "caption": "Active",
+							"type": "CheckBox" }
+                        }],
+                    "values": [
+					
+					]
+                }
+    ],
+	"status":
+    [
+		
     ]
 }
