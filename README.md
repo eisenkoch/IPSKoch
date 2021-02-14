@@ -8,7 +8,7 @@ Nutzung auf eigene Gefahr ohne Gewähr. Das Modul kann jederzeit überarbeitet w
  * prüfen der SoftwareVersion
  
 ### Voraussetzungen
-  * Studer XCOM-RS232i
+  * Studer XCOM-RS232i + DeviceServer (bsp. Moxa NPort 5110)
   * Die Anlage muss im Studer Portal angemeldet sein (https://portal.studer-innotec.com/User/Login)
 * eines der folgenden Devices
   * Studer Xtender (XTS/XTM/XTH)
@@ -16,10 +16,12 @@ Nutzung auf eigene Gefahr ohne Gewähr. Das Modul kann jederzeit überarbeitet w
   * optional XCOM-CAN oder BSP
 
 ## Studer via rs485 (modbus)
-Dieses Modul ist noch in der Entwicklung
+### Features
+ * auslesen von Statusinformationen der Geräte
+ * prüfen der SoftwareVersion
 
 ### Voraussetzungen
-  * Studer XCOM-RS485i
+  * Studer XCOM-RS485i + Modbus TCP Gateway (bsp. Moxa MGate MB3180)
  * eines der folgenden Devices
   * Studer Xtender (XTS/XTM/XTH)
   * Studer VarioString oder Variotrack
