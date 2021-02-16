@@ -70,8 +70,10 @@ public function ApplyChanges() {
 	}
 	if ($this->ReadPropertyInteger("Connection_type")==2){
 		if (!Sys_Ping($this->ReadPropertyString("IP_Modbus_Gateway"), 1000)){
-			$this->SetStatus(204);;
+			$this->SetStatus(204);
 			exit;
+		}else {
+			$this->SetStatus(102);
 		}
 	}
 }
