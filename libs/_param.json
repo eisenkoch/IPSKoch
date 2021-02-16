@@ -110,7 +110,7 @@
 	"Type":"XT_Group",
 	"Intervall":"5",
 	"VarName":"XT_Output",
-	"mbP":"10:102"},
+	"mbP":"10:202"},
 {"ID":"7002",
 	"Description":"State of Charge",
 	"Unit":"percent",
