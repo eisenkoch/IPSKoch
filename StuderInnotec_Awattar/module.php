@@ -68,6 +68,12 @@ public function ApplyChanges() {
 			IPS_SetEventActive($this->ReadPropertyInteger("eID_stop"), false);
 		}
 	}
+	if ($this->ReadPropertyInteger("Connection_type")==2){
+		if (!Sys_Ping($this->ReadPropertyString("IP_Modbus_Gateway"), 1000)){
+			$this->SetStatus(204);;
+			exit;
+		}
+	}
 }
 
 public function GetConfigurationForm(){

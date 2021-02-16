@@ -66,5 +66,9 @@
 		{ "type": "Label", "caption": "*max_Charge_Current: gibt an welche Leistung zum Laden zu verfügung steht" }
 		
 		
-	]
+	],
+	"status":
+    [
+		{ "code": 204, "icon": "error", "caption": "can not reach Modbus Gateway" }
+    ] 
 }
