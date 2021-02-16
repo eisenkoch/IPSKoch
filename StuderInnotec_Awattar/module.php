@@ -6,7 +6,7 @@ require_once __DIR__ . '/../libs/Phpmodbus/ModbusMaster.php';  	// Modbus Featur
 
 class StuderAWT extends IPSModule {
     var $moduleName = "StuderAWT";
-	use StuderCommonLib;
+	//use StuderCommonLib;
 
 public function Create() {
 	// Diese Zeile nicht löschen.

@@ -34,4 +34,5 @@ Die Entwicklung der Module ist sehr kostenintensiv, z.B. werden viele verschiede
 
 ## License:
 ![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)
+
 CC By-NC 4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
