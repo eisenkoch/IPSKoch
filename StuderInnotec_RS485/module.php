@@ -130,6 +130,7 @@ foreach ($treeData as $value) {
                 case "FLOAT":
 					$modbus = new ModbusMaster($this->ReadPropertyString("IP_Modbus_Gateway"), "TCP");
 					SetValueFloat ($this->GetIDForIdent($var_ID ),(float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1));
+					$this->SendDebug("Debug", ("ID: ".$value->ID. " MB_Device: " . $mb_device ." MB_Address: ". $mb_adress) ,0);
 					break;
 				case "SHORT_ENUM":
 				case "LONG_ENUM":

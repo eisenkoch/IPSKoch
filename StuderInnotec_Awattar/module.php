@@ -184,7 +184,6 @@ public function awt_init(){
 }
 
 public function Charge_AWT() {
-	//print ("a");
 	switch($this->ReadPropertyInteger("Connection_type")){
 		case 0:	//Studer WebPortal
 			$ID_Loadfill        		= '6062';   //in einem Lithium System ist das der notwendige wert zum anheben
@@ -255,7 +254,8 @@ public function Update_2() {
 public function Update_AWT(){
 $Lowest_Price = '999999999';
 $starttime = '24';
-$bat_voltage = 48;
+//$bat_voltage = 48;
+$bat_voltage = $this->ReadPropertyInteger("Bat_Voltage");
 
 //ToDo: use max Charge Value
 $aa  = $this->ReadPropertyFloat("max_Charge_Current");
