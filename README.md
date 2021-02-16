@@ -33,4 +33,5 @@ Nutzung auf eigene Gefahr ohne Gewähr. Das Modul kann jederzeit überarbeitet w
 Die Entwicklung der Module ist sehr kostenintensiv, z.B. werden viele verschiedene Testgeräte benötigt. Bitte unterstützen Sie die Entwicklung mit einer Spende via [PayPal](https://www.paypal.com/paypalme/eisenkoch) oder durch eine Aufmerksamkeit auf meinem [Amazon Wunschzettel](https://www.amazon.de/hz/wishlist/ls/2XXR17YLMP93U?ref_=wl_share).
 
 ## License:
+[!License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)]
 CC By-NC 4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
