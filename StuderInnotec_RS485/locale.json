@@ -1,0 +1,14 @@
+{
+	"translations": {
+		"de": {
+			"lbl_display-total-or-single"	: "Darstellung Werte",
+			"lbl_RS485_IP"					: "Modbus Gateway IP",
+			"lbl_activeDevices"				: "aktive Geräte"
+			},
+		"en": {
+			"lbl_display-total-or-single"	: "Display Values",
+			"lbl_RS485_IP"					: "Modbus Gateway IP",
+			"lbl_activeDevices"				: "active Devices"
+			}
+		}
+}

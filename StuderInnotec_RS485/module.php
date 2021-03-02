@@ -18,14 +18,24 @@ public function Create() {
 	$this->RegisterProfileFloat("Studer-Innotec.V",	    "Energy", "", " V", 0, 0, 0, 2);
 	$this->RegisterProfileFloat("Studer-Innotec.Ah",	"Capacity", "", " Ah", 0, 0, 0, 0);
 	$this->RegisterProfileFloat("Studer-Innotec.percent",	    "Percent", "", " %", 0, 0, 0, 1);
-        
-	// Config Variablen 
+	        
+	//Config Variablen 
 	$this->RegisterPropertyInteger('ArchiveControlID', IPS_GetInstanceListByModuleID(ARCHIVE_CONTROL_MODULE_ID)[0]);
-	$this->RegisterPropertyString("Variables", "");
+	$this->RegisterPropertyInteger('summaryValues', 0);
+	$this->RegisterPropertyString('Variables', '');
 	$this->RegisterPropertyString('IP_Modbus_Gateway', '192.168.1.100');
 	$this->RegisterPropertyString('IP_Modbus_Port', '520');
-	$this->RegisterPropertyString("activeDevices", "");
-	$this->RegisterPropertyBoolean("Debug", false);
+	$this->RegisterPropertyString('activeDevices', '');
+	$this->RegisterPropertyString('url', 'https://service.st-ips.de/studer-version.json');
+	$this->RegisterPropertyBoolean('Debug', false);
+	
+	//register Attribute
+	$this->RegisterAttributeInteger("count_XT", 0);
+	$this->RegisterAttributeInteger("count_VS", 0);
+	$this->RegisterAttributeInteger("count_VT", 0);
+	$this->RegisterAttributeInteger("count_BSP", 0);
+	
+	//register Timer
 	$this->RegisterTimer("UpdateTimer_2", 0, 'StuderRS485_Update_2($_IPS[\'TARGET\']);');
 	$this->RegisterTimer("UpdateTimer_5", 0, 'StuderRS485_Update_5($_IPS[\'TARGET\']);');
 	$this->RegisterTimer("UpdateTimer_60", 0, 'StuderRS485_Update_60($_IPS[\'TARGET\']);');
@@ -51,7 +61,10 @@ public function ApplyChanges() {
 		foreach ($intervall_active as $value) {
 			$this->SetTimerInterval(("UpdateTimer_".$value), $value*60000);
 			//$this->SetTimerInterval(("UpdateTimer_".$value), $value*1000);
+			//$this->SetTimerInterval(("UpdateTimer_".$value), $value*2000);
 		}
+	$this->call_Studer_from_Timer('720');
+	$this->call_Studer_from_Timer('60');
 	}
 }
 
@@ -97,6 +110,9 @@ foreach ($treeData as $value) {
 					$unit =($item->Unit);
 					$format=($item->Format);
 					$varname= ($item->VarName);
+					$type = (explode('_', ($item->Type), 2))[0];
+					$summary = ($item->summary);
+					$devInfo = ($item->devInfo);
 					$mbP = ($item->mbP);
 					$mb_result = explode(":", $mbP);
 					$mb_device = $mb_result[0];
@@ -104,6 +120,8 @@ foreach ($treeData as $value) {
 				}
 			}
 			if (!@$this->GetIDForIdent($var_ID )) {
+				//add a way to validate summary
+				IPS_LogMessage($this->moduleName,"summary= ". $this->ReadPropertyInteger('summaryValues'));
 				IPS_LogMessage($this->moduleName,"==>create Var: ". $var_ID );
                 if(!$varname){
                     $var_name = $var_ID;
@@ -119,7 +137,7 @@ foreach ($treeData as $value) {
                         break;
                     case "SHORT_ENUM":
 					case "LONG_ENUM":
-                        $this->RegisterVariableString($var_ID , $var_name);
+                        $this->RegisterVariableString($var_ID, $var_name);
                         $this->EnableAction($var_ID );
 						break;
                     default :
@@ -129,8 +147,31 @@ foreach ($treeData as $value) {
             switch ($format) {
                 case "FLOAT":
 					$modbus = new ModbusMaster($this->ReadPropertyString("IP_Modbus_Gateway"), "TCP");
-					SetValueFloat ($this->GetIDForIdent($var_ID ),(float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1));
+					$count = $this->ReadAttributeInteger("count_". $type);
+					if ($summary == "true"){
+						$counter=0;
+						$val=0;
+						do {
+							$mb_device = $mb_device+1;
+							//IPS_LogMessage($this->moduleName,"Device: ".$type . "_" .  $counter." Summary: ". $summary." ".$mb_device ." Address: ".$mb_adress);
+							$val = $val + (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1);
+							$counter++;
+						} while($counter<$count);	
+					//IPS_LogMessage($this->moduleName, $val);
+					SetValueFloat ($this->GetIDForIdent($var_ID ),$val);
+					}
+					else {
+						//IPS_LogMessage($this->moduleName,$type . " " .$count ." ". $summary );
+						if ($devInfo=="info"){
+							SetValueFloat ($this->GetIDForIdent($var_ID ),(float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1));
+						}
+						elseif ($devInfo=="param"){
+							SetValueFloat ($this->GetIDForIdent($var_ID ),(float) PhpType::bytes2float($modbus->readMultipleRegisters($mb_device, $mb_adress, 2),1));
+						}
+					}
+					
 					$this->SendDebug("Debug", ("ID: ".$value->ID. " MB_Device: " . $mb_device ." MB_Address: ". $mb_adress) ,0);
+					
 					break;
 				case "SHORT_ENUM":
 				case "LONG_ENUM":
@@ -138,7 +179,12 @@ foreach ($treeData as $value) {
 					$chunks = array_chunk(preg_split('/(:|,)/', $unit), 2);
 					$result = array_combine(array_column($chunks, 0), array_column($chunks, 1));
 					$modbus = new ModbusMaster($this->ReadPropertyString("IP_Modbus_Gateway"), "TCP");
-					$StuderState = (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1);
+					if ($devInfo=="info"){
+						$StuderState = (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1);
+					}
+					elseif ($devInfo=="param"){
+						$StuderState = (float) PhpType::bytes2float($modbus->readMultipleRegisters($mb_device, $mb_adress, 2),1);
+					}
 					SetValueString($this->GetIDForIdent($var_ID),$result[$StuderState]);
 					break;
 				default :
@@ -153,20 +199,64 @@ foreach ($treeData as $value) {
 public function validateDevices () {
 	$treeDataDevices = json_decode($this->ReadPropertyString("activeDevices"));
 	if (!$treeDataDevices){exit;} //omits the error if the function is called before any saving
+	$this->UpdateFormField("Progress_01", "visible", true);
 	foreach ($treeDataDevices as $value) {
 		if(($value->Active)==true){
+			$modbus = new ModbusMaster($this->ReadPropertyString("IP_Modbus_Gateway"), "TCP");
+			$mb_DeviceTypeID = ($value->mb_DeviceTypeID);
+			$mb_DeviceTypeRegister = ($value->mb_DeviceTypeRegister);
 			if (($value->DeviceTypeID)=="XT") {
-				$modbus = new ModbusMaster($this->ReadPropertyString("IP_Modbus_Gateway"), "TCP");
-				echo(float) PhpType::bytes2float($modbus->readMultipleInputRegisters(10, 249, 2),1);
+				$count=0;
+				for ($i = ($mb_DeviceTypeID+1); $i <= ($mb_DeviceTypeID+9); $i++) {
+					try {
+						$a = (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($i, $mb_DeviceTypeRegister, 2),1) . "\n";
+						if ($a==1||256||512){ $count++;	}
+					}catch (Exception $e) {
+						//echo "did not find any XT Device\n";
+					}
+				}
+				$this->WriteAttributeInteger("count_XT", $count);
+				if ($count > 0){echo "found " .$count++ ." XT Devices\n";}
 			}elseif(($value->DeviceTypeID)=="VS"){
-				break;
+				$count=0;
+				for ($i = ($mb_DeviceTypeID+1); $i <= ($mb_DeviceTypeID+9); $i++) {
+					try {
+						$a = (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($i, $mb_DeviceTypeRegister, 2),1) . "\n";
+						if ($a==12801||13057){ $count++;	}
+					}catch (Exception $e) {
+						//echo "did not find any VS Device\n";
+					}
+				}
+				$this->WriteAttributeInteger("count_VS", $count);
+				if ($count > 0){echo "found " .$count++ ." VS Devices\n";}
 			}elseif(($value->DeviceTypeID)=="VT"){
-				break;
+				$count=0;
+				for ($i = ($mb_DeviceTypeID+1); $i <= ($mb_DeviceTypeID+9); $i++) {
+					try {
+						$a = (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($i, $mb_DeviceTypeRegister, 2),1) . "\n";
+						if ($a==0||1||2||3){ $count++;	}
+					}catch (Exception $e) {
+						//echo "did not find any VT Device\n";
+					}
+				}
+				$this->WriteAttributeInteger("count_VT", $count);
+				if ($count > 0){echo "found " .$count++ ." VT Devices\n";}
 			}elseif(($value->DeviceTypeID)=="BSP"){
-				break;
+				$count=0;
+				for ($i = ($mb_DeviceTypeID+1); $i <= ($mb_DeviceTypeID+9); $i++) {
+					try {
+						$a = (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($i, $mb_DeviceTypeRegister, 2),1) . "\n";
+						if ($a==13830||10241){ $count++;	}
+					}catch (Exception $e) {
+						//echo "did not find any BSP Device\n";
+					}
+				}
+				$this->WriteAttributeInteger("count_BSP", $count);
+				if ($count > 0){echo "found " .$count++ ." BSP Devices\n";}
 			}
 		}
 	}
+	$this->UpdateFormField("Progress_01", "visible", false);
 }
 
 public function reCheckVar() {
@@ -180,7 +270,6 @@ public function reCheckVar() {
 				echo "deleted " . $var_ID . "\n";
 			}
 			if ($value->Active==true){
-				//
 				if (($value->Archive)==true){
 					AC_SetLoggingStatus($this->ReadPropertyInteger('ArchiveControlID'), $this->GetIDForIdent($var_ID), true);
 					IPS_ApplyChanges($this->ReadPropertyInteger('ArchiveControlID'));
@@ -240,8 +329,8 @@ public function CheckSofwareVersion() {
 			$msb = (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($DeviceCat, $infoId_msb, 2),1);
 			$lsb = (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($DeviceCat, $infoId_lsb, 2),1);
 	
-			$studer_version = json_decode((file_get_contents(__DIR__ . "/../libs/studer-version.json")),true);
-
+			$studer_version = ($this->GetDataStuderVersion());
+			
 			if (($studer_version['versions'][$DeviceType])==(($msb >>8) . "." . ($lsb >>8) . "." . ($lsb & 0xFF))){
 				echo "found a active ". $DeviceType ." and no update needed \n\n";
 			}
@@ -267,5 +356,24 @@ private function RegisterProfileFloat($Name, $Icon, $Prefix, $Suffix, $MinValue,
 	IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);
 	IPS_SetVariableProfileDigits($Name, $Digits);
 }
+function GetDataStuderVersion() {
+    $curl = curl_init();
 
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => $this->ReadPropertyString("url"),
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => array("cache-control: no-cache"),
+    ));
+
+    $response = json_decode(curl_exec($curl), true); 
+    curl_close($curl);
+    
+	return ($response); 
+}
 }

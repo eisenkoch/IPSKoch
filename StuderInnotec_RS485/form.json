@@ -3,6 +3,10 @@
     [
 	{ "type": "RowLayout","items": [
 			{ "type": "ValidationTextBox",	"name": "IP_Modbus_Gateway",	"caption": "lbl_RS485_IP" ,	"width": "400px" ,"validate":"((^|\\.)((25[0-5])|(2[0-4]\\d)|(1\\d\\d)|([1-9]?\\d))){4}$" },
+			{ "type": "Select", "name": "summaryValues", "caption": "lbl_display-total-or-single","width" : "400px","options": [
+				{ "caption": "get summary of Values if more then one Device", "value": 0 },
+				{ "caption": "get single Values if more then one Device", "value": 1 }
+			]},	
 			{
 			"type": "ExpansionPanel",
 			"caption": "lbl_activeDevices",
@@ -23,6 +27,8 @@
 					{"caption": "Software_msb_lsb", 		"name": "Software_msb_lsb", 		"width": "500px",	"save": true, 	"visible": false},
 					{"caption": "mb_DeviceTypeID", 			"name": "mb_DeviceTypeID", 			"width": "500px",	"save": true, 	"visible": false},
 					{"caption": "mb_Software_msb_lsb", 		"name": "mb_Software_msb_lsb", 		"width": "500px",	"save": true, 	"visible": false},
+					{"caption": "mb_DeviceType", 			"name": "mb_DeviceType", 			"width": "500px",	"save": true, 	"visible": false},
+					{"caption": "mb_DeviceTypeRegister", 	"name": "mb_DeviceTypeRegister", 	"width": "500px",	"save": true, 	"visible": false},
 					{"caption": "Active",					"name": "Active",					"width": "70px",	"save": true,	"edit": {
                             "caption": "Active",
 							"type": "CheckBox" }
@@ -34,32 +40,42 @@
 						"DeviceTypeDescription" : "Xtender (XTH/XTS/XTM) in System",
 						"Software_msb_lsb" 		: "msb:3130,lsb:3131",
 						"mb_DeviceTypeID" 		: "10",
-						"mb_Software_msb_lsb" 	: "msb:260,lsb:262"
+						"mb_Software_msb_lsb" 	: "msb:260,lsb:262",
+						"mb_DeviceType"			: "1:XTH, 256:XTM, 512:XTH",
+						"mb_DeviceTypeRegister"	: "248"
 					},
 					{
 						"DeviceTypeID" 			: "VS", 
 						"DeviceTypeDescription" : "VarioString (VS-70; VS-120)",	
 						"Software_msb_lsb" 		: "msb:15077,lsb:15078",
 						"mb_DeviceTypeID" 		: "40",
-						"mb_Software_msb_lsb" 	: "msb:154,lsb:156"
+						"mb_Software_msb_lsb" 	: "msb:154,lsb:156",
+						"mb_DeviceType"			: "12801:VS-120, 13057:VS-70",
+						"mb_DeviceTypeRegister"	: "148"
 					},
 					{
 						"DeviceTypeID" 			: "VT",
 						"DeviceTypeDescription" : "VarioTrack (VT-40; VT-65; VT-80)",
 						"Software_msb_lsb" 		: "msb:11050,lsb:11051",
 						"mb_DeviceTypeID" 		: "20",
-						"mb_Software_msb_lsb" 	: "msb:100,lsb:102"
+						"mb_Software_msb_lsb" 	: "msb:100,lsb:102",
+						"mb_DeviceType"			: "0:VT-80, 1:VT-65, 2:VT-40, 3:VT-HV",
+						"mb_DeviceTypeRegister"	: "30"
+						
 					},
 					{
 						"DeviceTypeID" 			: "BSP", 
 						"DeviceTypeDescription" : "BSP/CAN in System active (example for Lithium)", 
 						"Software_msb_lsb" 		: "msb:7037,lsb:7030",
 						"mb_DeviceTypeID" 		: "60",
-						"mb_Software_msb_lsb" 	: "msb:74,lsb:76"
+						"mb_Software_msb_lsb" 	: "msb:74,lsb:76",
+						"mb_DeviceType"			: "13830:XCOM-CAN, 10241:BSP500/BSP1200",
+						"mb_DeviceTypeRegister"	: "68"
 					}
 					]
 				},
-				{ "type": "Button", "caption": "btn_validateDevices", 	"onClick": "StuderRS485_validateDevices($id);", "width": "440px" }
+				{ "type": "ProgressBar",	"caption": "lbl_pogress", 			"name": "Progress_01",	"indeterminate": true,	"caption": "Laden...",	"visible": false },
+				{ "type": "Button", 		"caption": "btn_validateDevices", 	"onClick": "StuderRS485_validateDevices($id);", "width": "440px" }
 				]
 			}
 		]},
