@@ -221,7 +221,7 @@
 	"mbP":"60:114"},
 {"ID":"15023",
 	"Description":"Total PV produced energy",
-	"Unit":"kWh",
+	"Unit":"MWh",
 	"Format":"FLOAT",
 	"Type":"VS_Group",
 	"Intervall":"720",
