@@ -89,32 +89,31 @@
           "caption": "",
           "add": false,
 		  "delete": false,
-		  "sort": {
-			"column": "ID",
-			"direction": "descending"
+		  "columns": [
+			{"caption": "ID", 			"name": "ID",			"visible": true,	"width": "70px",	"save": true},
+			{"caption": "Description",	"name": "Description",	"visible": true,	"width": "400px",	"save": false},
+			{"caption": "Unit",			"name": "Unit",			"visible": true,	"width": "400px",	"save": false},
+			{"caption": "Format",		"name": "Format",		"visible": true,	"width": "150px",	"save": false},
+			{"caption": "Type",			"name": "Type",			"visible": true,	"width": "100px",	"save": false},
+			{"caption": "Intervall",	"name": "Intervall",	"visible": true,	"width": "70px", 	"save": true,	"edit": {
+				"caption": "Intervall",
+				"type": "ValidationTextBox",
+				"validate": "1|2|5|60|360|720"}
 			},
-          "columns": [
-			{"caption": "ID", "name": "ID", "width": "70px","save": true},
-						{"caption": "Description","name": "Description","width": "400px"},
-						{"caption": "Unit","name": "Unit","width": "400px"},
-						{"caption": "Format","name": "Format","visible": true,"width": "150px"},
-						{"caption": "Type","name": "Type","visible": true,"width": "100px"},
-						{"caption": "Intervall","name": "Intervall","width": "70px", "edit": {
-                            "caption": "Intervall",
-							"type": "ValidationTextBox",
-							"validate": "2|5|60|360|720"}
-						},
-						{"caption": "VarName","name": "VarName","visible": true, "width": "250px"},
-						{"caption": "Archive","name": "Archive","width": "70px","save": true,"edit": {
-							"caption": "Archive",
-							"type": "CheckBox",
-							"value": false}
-						},
-						{"caption": "Active","name": "Active","width": "70px","save": true,"edit": {
-                            "caption": "Active",
-							"type": "CheckBox" }
-                        }],
-                    "values": [
+			{"caption": "VarName",		"name": "VarName",		"visible": true, 	"width": "250px",	"save": false},
+			{"caption": "summary",		"name": "summary",		"visible": false, 	"width": "50px",	"save": false},
+			{"caption": "devInfo",		"name": "devInfo",		"visible": false, 	"width": "50px",	"save": false},
+			{"caption": "mbP",			"name": "mbP",			"visible": false, 	"width": "50px",	"save": false},
+			{"caption": "Archive",		"name": "Archive",		"visible": true,	"width": "70px",	"save": true,	"edit": {
+				"caption": "Archive",
+				"type": "CheckBox",
+				"value": false}
+			},
+			{"caption": "Active",		"name": "Active",		"visible": true,	"width": "70px",	"save": true,	"edit": {
+				"caption": "Active",
+				"type": "CheckBox" }
+			}],
+				"values": [
 					
 					]
                 }

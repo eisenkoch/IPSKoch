@@ -36,6 +36,7 @@ public function Create() {
 	$this->RegisterAttributeInteger("count_BSP", 0);
 	
 	//register Timer
+	$this->RegisterTimer("UpdateTimer_1", 0, 'StuderRS485_Update_1($_IPS[\'TARGET\']);');
 	$this->RegisterTimer("UpdateTimer_2", 0, 'StuderRS485_Update_2($_IPS[\'TARGET\']);');
 	$this->RegisterTimer("UpdateTimer_5", 0, 'StuderRS485_Update_5($_IPS[\'TARGET\']);');
 	$this->RegisterTimer("UpdateTimer_60", 0, 'StuderRS485_Update_60($_IPS[\'TARGET\']);');
@@ -46,9 +47,14 @@ public function Create() {
 public function ApplyChanges() {
     // Diese Zeile nicht löschen
     parent::ApplyChanges();
+	echo $this->ReadPropertyString("Variables");
 	//clear Timer
+	$this->SetTimerInterval("UpdateTimer_1",0);
+	$this->SetTimerInterval("UpdateTimer_2",0);
 	$this->SetTimerInterval("UpdateTimer_5",0);
 	$this->SetTimerInterval("UpdateTimer_60",0);
+	$this->SetTimerInterval("UpdateTimer_360",0);
+	$this->SetTimerInterval("UpdateTimer_720",0);
 	$treeData = json_decode($this->ReadPropertyString("Variables"));
 	if(!empty($treeData)){
 		$active = array();
@@ -74,6 +80,12 @@ public function ApplyChanges() {
 	$data['elements'][2]['values'] = $var_element ;
 	return json_encode($data);
 }
+
+public function Update_1() {
+	$timer_var = '1';
+	$this->call_Studer_from_Timer($timer_var);
+}
+
 public function Update_2() {
 	$timer_var = '2';
 	$this->call_Studer_from_Timer($timer_var);
@@ -148,44 +160,106 @@ foreach ($treeData as $value) {
                 case "FLOAT":
 					$modbus = new ModbusMaster($this->ReadPropertyString("IP_Modbus_Gateway"), "TCP");
 					$count = $this->ReadAttributeInteger("count_". $type);
-					if ($summary == "true"){
-						$counter=0;
-						$val=0;
-						do {
-							$mb_device = $mb_device+1;
-							//IPS_LogMessage($this->moduleName,"Device: ".$type . "_" .  $counter." Summary: ". $summary." ".$mb_device ." Address: ".$mb_adress);
-							$val = $val + (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1);
-							$counter++;
-						} while($counter<$count);	
-					//IPS_LogMessage($this->moduleName, $val);
-					SetValueFloat ($this->GetIDForIdent($var_ID ),$val);
-					}
-					else {
-						//IPS_LogMessage($this->moduleName,$type . " " .$count ." ". $summary );
-						if ($devInfo=="info"){
-							SetValueFloat ($this->GetIDForIdent($var_ID ),(float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1));
-						}
-						elseif ($devInfo=="param"){
-							SetValueFloat ($this->GetIDForIdent($var_ID ),(float) PhpType::bytes2float($modbus->readMultipleRegisters($mb_device, $mb_adress, 2),1));
-						}
+					/* 	
+						"summary":"0" => create summary not allowed
+						"summary":"1" => create summary allowed
+						"summary":"2" => create summary never allowed 
+					*/
+					//IPS_LogMessage($this->moduleName,$type . " " .$count ." ". $summary );
+					switch ($summary) {
+						case "0":
+							//IPS_LogMessage($this->moduleName,$type . " " .$count ." ". $summary );
+							if ($devInfo=="info"){
+								SetValueFloat ($this->GetIDForIdent($var_ID ),(float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1));
+							}
+							elseif ($devInfo=="param"){
+								SetValueFloat ($this->GetIDForIdent($var_ID ),(float) PhpType::bytes2float($modbus->readMultipleRegisters($mb_device, $mb_adress, 2),1));
+							}
+							break;
+						case "1":
+							$counter=0;
+							$val=0;
+							do {
+								$mb_device = $mb_device+1;
+								//IPS_LogMessage($this->moduleName,"Device: ".$type . "_" .  $counter." Summary: ". $summary." ".$mb_device ." Address: ".$mb_adress);
+								$val = $val + (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1);
+								$counter++;
+							} while($counter<$count);	
+							//IPS_LogMessage($this->moduleName, $val);
+							SetValueFloat ($this->GetIDForIdent($var_ID ),$val);
+							break;
+						case "2":
+							$counter=0;
+							$val=0;
+							do {
+								IPS_LogMessage($this->moduleName,$type . " " .$count ." ". $summary ." ". $mb_adress);
+								$mb_device = $mb_device+1;
+								//ToDo
+								$counter++;
+							} while($counter<$count);
+							
+							//IPS_LogMessage($this->moduleName,$type . " " .$count ." ". $summary );
+							if ($devInfo=="info"){
+								SetValueFloat ($this->GetIDForIdent($var_ID ),(float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1));
+							}
+							elseif ($devInfo=="param"){
+								SetValueFloat ($this->GetIDForIdent($var_ID ),(float) PhpType::bytes2float($modbus->readMultipleRegisters($mb_device, $mb_adress, 2),1));
+							}
+							break;
 					}
 					
-					$this->SendDebug("Debug", ("ID: ".$value->ID. " MB_Device: " . $mb_device ." MB_Address: ". $mb_adress) ,0);
+						$this->SendDebug("Debug", ("ID: ".$value->ID. " MB_Device: " . $mb_device ." MB_Address: ". $mb_adress) ,0);
 					
 					break;
 				case "SHORT_ENUM":
 				case "LONG_ENUM":
+					$count = $this->ReadAttributeInteger("count_". $type);
+					/* 	
+						"summary":"0" => create summary not allowed
+						"summary":"1" => create summary allowed
+						"summary":"2" => create summary never allowed 
+					*/
 					//create Array from 'Unit' Paramter in form
 					$chunks = array_chunk(preg_split('/(:|,)/', $unit), 2);
 					$result = array_combine(array_column($chunks, 0), array_column($chunks, 1));
 					$modbus = new ModbusMaster($this->ReadPropertyString("IP_Modbus_Gateway"), "TCP");
-					if ($devInfo=="info"){
-						$StuderState = (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1);
+					switch ($summary) {
+						case "0":
+							if ($devInfo=="info"){
+								$StuderState = (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1);
+							}
+							elseif ($devInfo=="param"){
+								$StuderState = (float) PhpType::bytes2float($modbus->readMultipleRegisters($mb_device, $mb_adress, 2),1);
+							}
+							SetValueString($this->GetIDForIdent($var_ID),$result[$StuderState]);
+							break;
+						case "1":
+							if ($devInfo=="info"){
+								$StuderState = (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1);
+							}
+							elseif ($devInfo=="param"){
+								$StuderState = (float) PhpType::bytes2float($modbus->readMultipleRegisters($mb_device, $mb_adress, 2),1);
+							}
+							SetValueString($this->GetIDForIdent($var_ID),$result[$StuderState]);
+							break;
+						case "2":
+						$counter=0;
+							$val=0;
+							$devResult='';
+							do {
+								$mb_device = $mb_device+1;
+								if ($devInfo=="info"){
+									$StuderState = (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1);
+								}
+								elseif ($devInfo=="param"){
+									$StuderState = (float) PhpType::bytes2float($modbus->readMultipleRegisters($mb_device, $mb_adress, 2),1);
+								}
+								$devResult = $type. "_".$counter.": " . $result[$StuderState] . " " . $devResult;
+								$counter++;
+							} while($counter<$count);
+							SetValueString($this->GetIDForIdent($var_ID),$devResult);
+						break;
 					}
-					elseif ($devInfo=="param"){
-						$StuderState = (float) PhpType::bytes2float($modbus->readMultipleRegisters($mb_device, $mb_adress, 2),1);
-					}
-					SetValueString($this->GetIDForIdent($var_ID),$result[$StuderState]);
 					break;
 				default :
 					IPS_LogMessage($this->moduleName,"coul not find Handler for: ". $value->Format);
