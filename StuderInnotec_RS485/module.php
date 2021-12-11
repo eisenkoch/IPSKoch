@@ -34,7 +34,8 @@ public function Create() {
 	$this->RegisterAttributeInteger("count_VS", 0);
 	$this->RegisterAttributeInteger("count_VT", 0);
 	$this->RegisterAttributeInteger("count_BSP", 0);
-	
+	$this->RegisterAttributeString("minimumFWVersion", '');
+		
 	//register Timer
 	$this->RegisterTimer("UpdateTimer_1", 0, 'StuderRS485_Update_1($_IPS[\'TARGET\']);');
 	$this->RegisterTimer("UpdateTimer_2", 0, 'StuderRS485_Update_2($_IPS[\'TARGET\']);');
@@ -47,7 +48,7 @@ public function Create() {
 public function ApplyChanges() {
     // Diese Zeile nicht löschen
     parent::ApplyChanges();
-	echo $this->ReadPropertyString("Variables");
+	//echo $this->ReadPropertyString("Variables");
 	//clear Timer
 	$this->SetTimerInterval("UpdateTimer_1",0);
 	$this->SetTimerInterval("UpdateTimer_2",0);
@@ -99,6 +100,7 @@ public function Update_5() {
 public function Update_60() {
 	$timer_var = '60';
 	$this->call_Studer_from_Timer($timer_var);
+	$this->CheckSofwareVersion("auto");
 }
 
 public function Update_360() {
@@ -359,6 +361,14 @@ public function reCheckVar() {
 }
 
 public function CheckSofwareVersion() {
+	$versionNOK = 0;
+	$numargs = func_num_args();
+	$func_call = 0;
+	if ($numargs >= 1) {
+		if (func_get_arg(0)=="auto"){
+			$func_call=1;				# Function was called from timer and not manual
+		}    
+    }
 	$treeDataDevices = json_decode($this->ReadPropertyString("activeDevices"));
 	if (!$treeDataDevices){exit;} //omits the error if the function is called before any saving
 	foreach ($treeDataDevices as $value) {
@@ -390,13 +400,34 @@ public function CheckSofwareVersion() {
 			else {
 				switch ($value->DeviceTypeID) {
 				case "VS" :
-					$DeviceType = "VARIOSTRING";
+					$modbus = new ModbusMaster($this->ReadPropertyString("IP_Modbus_Gateway"), "TCP");
+					$vs_type = (float) PhpType::bytes2float($modbus->readMultipleInputRegisters(40, 148, 2),1);
+					switch ($vs_type){
+						case "13057":
+							$DeviceType = "VARIOSTRING VS-70";		
+							break;
+						case "12801";
+							$DeviceType = "VARIOSTRING VS-120";		
+							break;
+						default :
+							exit;
+					}
 					break;
 				case "VT" :
 					$DeviceType = "VARIOTRACK";
+					break;
 				case "BSP" :
-					//ToDo: BSP does not work as there could be several BSP Types (CAN, BSP, etc ...)
-					exit;
+					$modbus = new ModbusMaster($this->ReadPropertyString("IP_Modbus_Gateway"), "TCP");
+					$bsp_type = (float) PhpType::bytes2float($modbus->readMultipleInputRegisters(60, 68, 2),1);
+					switch ($bsp_type){
+						case "13830":
+							$DeviceType = "XCOM CAN";
+							break;
+						case "10241":
+							$DeviceType = "BSP";
+							break;
+					}
+					break;
 				}
 			}
 			
@@ -406,10 +437,18 @@ public function CheckSofwareVersion() {
 			$studer_version = ($this->GetDataStuderVersion());
 			
 			if (($studer_version['versions'][$DeviceType])==(($msb >>8) . "." . ($lsb >>8) . "." . ($lsb & 0xFF))){
-				echo "found a active ". $DeviceType ." and no update needed \n\n";
+				if (!$func_call ==1){
+					echo "found a active ". $DeviceType ." and no update needed \n\n";
+				}
 			}
 			else {
-				echo "the installed Version of your ". $DeviceType .": \n". (($msb >>8) . "." . ($lsb >>8) . "." . ($lsb & 0xFF)) . "\ndiffers from the actual known version: \n" . ($studer_version['versions'][$DeviceType]) ."\n" ;
+				$versionNOK = $versionNOK + 1;
+				if (!$func_call==1){
+					echo "the installed Version of your ". $DeviceType .": \n". (($msb >>8) . "." . ($lsb >>8) . "." . ($lsb & 0xFF)) . "\ndiffers from the actual known version: \n" . ($studer_version['versions'][$DeviceType]) ."\n" ;
+				}
+			}
+			if ($versionNOK > 0){
+				$this->SetStatus(206);
 			}
 		}
 	}
