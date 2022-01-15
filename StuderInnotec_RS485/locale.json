@@ -3,12 +3,20 @@
 		"de": {
 			"lbl_display-total-or-single"	: "Darstellung Werte",
 			"lbl_RS485_IP"					: "Modbus Gateway IP",
-			"lbl_activeDevices"				: "aktive Geräte"
+			"lbl_activeDevices"				: "aktive Geräte",
+			"lbl_RS485_Port"				: "Modbus Port",
+			"btn_validateDevices"			: "prüfe Gerätesetup",
+			"btn_reCheckVar"				: "prüfe Variablen",
+			"btn_CheckSofwareVersion"		: "prüfe Softwareversion"
 			},
 		"en": {
 			"lbl_display-total-or-single"	: "Display Values",
 			"lbl_RS485_IP"					: "Modbus Gateway IP",
-			"lbl_activeDevices"				: "active Devices"
+			"lbl_activeDevices"				: "active Devices",
+			"lbl_RS485_Port"				: "Modbus Port",
+			"btn_validateDevices"			: "validate Devicesetup",
+			"btn_reCheckVar"				: "check Variables",
+			"btn_CheckSofwareVersion"		: "check Software Version"
 			}
 		}
 }

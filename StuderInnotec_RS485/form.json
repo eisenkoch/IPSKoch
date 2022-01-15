@@ -120,6 +120,7 @@
     ],
 	"status":
     [
-		
+		{ "code": 205, "icon": "error", "caption": "actual Version is not minimum Version" },
+		{ "code": 206, "icon": "active", "caption": "there is a newer Software availible" }	
     ]
 }

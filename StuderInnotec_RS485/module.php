@@ -366,11 +366,11 @@ public function CheckSofwareVersion() {
 	$func_call = 0;
 	if ($numargs >= 1) {
 		if (func_get_arg(0)=="auto"){
-			$func_call=1;				# Function was called from timer and not manual
+			$func_call=1;				// Function was called from timer and not manual
 		}    
     }
 	$treeDataDevices = json_decode($this->ReadPropertyString("activeDevices"));
-	if (!$treeDataDevices){exit;} //omits the error if the function is called before any saving
+	if (!$treeDataDevices){exit;}		// omits the error if the function is called before any saving
 	foreach ($treeDataDevices as $value) {
 		if(($value->Active)==true){
 			$chunks = array_chunk(preg_split('/(:|,)/', ($value->mb_Software_msb_lsb)), 2);
@@ -435,6 +435,9 @@ public function CheckSofwareVersion() {
 			$lsb = (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($DeviceCat, $infoId_lsb, 2),1);
 	
 			$studer_version = ($this->GetDataStuderVersion());
+			if ($studer_version == NULL){
+				exit;
+			}
 			
 			if (($studer_version['versions'][$DeviceType])==(($msb >>8) . "." . ($lsb >>8) . "." . ($lsb & 0xFF))){
 				if (!$func_call ==1){
@@ -472,21 +475,27 @@ private function RegisterProfileFloat($Name, $Icon, $Prefix, $Suffix, $MinValue,
 function GetDataStuderVersion() {
     $curl = curl_init();
 
-    curl_setopt_array($curl, array(
-        CURLOPT_URL => $this->ReadPropertyString("url"),
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'GET',
-        CURLOPT_HTTPHEADER => array("cache-control: no-cache"),
-    ));
-
-    $response = json_decode(curl_exec($curl), true); 
-    curl_close($curl);
-    
+	curl_setopt($curl, CURLOPT_URL, $this->ReadPropertyString("url"));
+	curl_setopt($curl, CURLOPT_HEADER, 0);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+	
+	curl_exec($curl);
+	
+	#print_r (curl_getinfo($curl));
+	
+	$httpCode = curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
+	
+	if ( $httpCode != 200 ){
+		echo "Return code is {$httpCode} " . curl_error($curl) ."\n";
+		echo "It seems there is a error with the OnlineDatabase. Please contact the ModuleDeveloper";
+		$response = NULL;
+	} else {	    
+		$response = json_decode(curl_exec($curl), true); 
+	}
+	
+	curl_close($curl);
+	
 	return ($response); 
 }
 }
