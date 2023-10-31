@@ -27,7 +27,6 @@ class StuderInnotecWeb extends IPSModule {
 		$this->RegisterPropertyString('Username', '');
         $this->RegisterPropertyString('Password', '');
         $this->RegisterPropertyString("installationNumber", "");
-        $this->RegisterPropertyString("url", "https://portal.studer-innotec.com/scomwebservice.asmx");
 		$this->RegisterPropertyString("url_api", "https://api.studer-innotec.com/api/v1");
         $this->RegisterTimer("UpdateTimer_2", 0, 'Studer_Update_2($_IPS[\'TARGET\']);');
 		$this->RegisterTimer("UpdateTimer_5", 0, 'Studer_Update_5($_IPS[\'TARGET\']);');
@@ -149,16 +148,15 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
 			}
             switch ($format) {
                 case "FLOAT":
-					SetValueFloat ($this->GetIDForIdent($var_ID ), (float) $this->Studer_Read($value->ID,"Value",$type)->FloatValue);
+					SetValueFloat ($this->GetIDForIdent($var_ID ), json_decode($this->Studer_Read($value->ID,"Value",$type))->{'floatValue'});
 					break;
 				case "SHORT_ENUM":
 				case "LONG_ENUM":
 					//create Array from 'Unit' Paramter in form
 					$chunks = array_chunk(preg_split('/(:|,)/', $unit), 2);
 					$result = array_combine(array_column($chunks, 0), array_column($chunks, 1));
-	
-					$StuderState = $this->Studer_Read($value->ID,"Value", $type);
-					$objAsString = (string)$StuderState->FloatValue; 
+					$StuderState = json_decode($this->Studer_Read($value->ID,"Value",$type));         
+					$objAsString = (string)$StuderState->floatValue; 
 					SetValueString($this->GetIDForIdent($var_ID),$result[$objAsString]);
 					break;
 				default :
@@ -172,33 +170,40 @@ private function Studer_Read($infoId,$paramart,$device) {
     global $email;
     global $pwd;
     global $installationNumber;
-	global $url;
 	
 	$curl = curl_init();
 
-    curl_setopt_array($curl, array(
-    CURLOPT_URL => $this->ReadPropertyString("url") . "/ReadUserInfo?email=". $this->ReadPropertyString("Username") ."&pwd=" . $this->ReadPropertyString("Password") ."&installationNumber=". $this->ReadPropertyString("installationNumber")  ."&infoId=". $infoId . "&paramPart=". $paramart ."&device=". $device,
-    CURLOPT_RETURNTRANSFER => true,
+	curl_setopt_array($curl, array(
+    CURLOPT_URL => $this->ReadPropertyString("url_api") .'/installation/user-info/'. $this->ReadPropertyString("installationNumber") . '?device='. $device. "&infoId=". $infoId .'&paramPart=Value',
+	CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => "",
     CURLOPT_MAXREDIRS => 10,
-    CURLOPT_TIMEOUT => 30,
-    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => "GET",
-    CURLOPT_POSTFIELDS => "",
-    CURLOPT_HTTPHEADER => array("cache-control: no-cache"),
+    CURLOPT_TIMEOUT => 0,
+	CURLOPT_FOLLOWLOCATION => true,
+	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+	CURLOPT_CUSTOMREQUEST => 'GET',
+    CURLOPT_HTTPHEADER => array(
+		'PHASH:'. md5($this->ReadPropertyString("Password")),
+		'UHASH:'. hash('sha256',$this->ReadPropertyString("Username"))
+		),
     ));
 
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
+   	$response = curl_exec($curl);
+	$respCode = curl_getinfo($curl, CURLINFO_RESPONSE_CODE);  
+	curl_close($curl);
 
-    curl_close($curl);
-
-    if ($err) {
-    	echo "cURL Error #:" . $err;
-    } else {
-    $xml = new SimpleXMLElement($response);
-    //var_dump ($xml->FloatValue);
-    return $xml;
+    switch ($respCode){
+		case "401" :
+			IPS_LogMessage($this->moduleName,"Access not allowed");
+			break;
+		case "500" :
+			IPS_LogMessage($this->moduleName,"An error occured while retrieving data.");
+			break;
+		case "200" :
+			if ($this->ReadPropertyBoolean("Debug")){IPS_LogMessage($this->moduleName,"Connect to Studer OK");}
+			return $response;
+		default :
+			exit;
     }
 }
 
