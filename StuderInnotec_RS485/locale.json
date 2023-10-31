@@ -7,7 +7,8 @@
 			"lbl_RS485_Port"				: "Modbus Port",
 			"btn_validateDevices"			: "prüfe Gerätesetup",
 			"btn_reCheckVar"				: "prüfe Variablen",
-			"btn_CheckSofwareVersion"		: "prüfe Softwareversion"
+			"btn_CheckSofwareVersion"		: "prüfe Softwareversion",
+			"btn_setTime"					: "setze aktuelles Datum und Uhrzeit"
 			},
 		"en": {
 			"lbl_display-total-or-single"	: "Display Values",
@@ -16,7 +17,8 @@
 			"lbl_RS485_Port"				: "Modbus Port",
 			"btn_validateDevices"			: "validate Devicesetup",
 			"btn_reCheckVar"				: "check Variables",
-			"btn_CheckSofwareVersion"		: "check Software Version"
+			"btn_CheckSofwareVersion"		: "check Software Version",
+			"btn_setTime"					: "set actual Date and Time"
 			}
 		}
 }
