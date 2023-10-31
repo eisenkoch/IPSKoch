@@ -71,6 +71,12 @@
 						"mb_Software_msb_lsb" 	: "msb:74,lsb:76",
 						"mb_DeviceType"			: "13830:XCOM-CAN, 10241:BSP500/BSP1200",
 						"mb_DeviceTypeRegister"	: "68"
+					},
+					{
+						"DeviceTypeID" 			: "RS485i", 
+						"DeviceTypeDescription" : "Xcom-485i Modbus Gateway", 
+						"mb_DeviceTypeID" 		: "1",
+						"mb_DeviceTypeRegister"	: "4"
 					}
 					]
 				},
@@ -82,7 +88,8 @@
 		{ "type": "RowLayout","items": [
 			{ "type": "ValidationTextBox",	"name": "IP_Modbus_Port",		"caption": "lbl_RS485_Port" ,	"width": "400px" ,"validate":"" },
 			{ "type": "Button", "caption": "btn_reCheckVar", 				"onClick": "StuderRS485_reCheckVar($id);", "width": "400px" },
-			{ "type": "Button", "caption": "btn_CheckSofwareVersion", 		"onClick": "StuderRS485_CheckSofwareVersion($id);", "width": "400px" }
+			{ "type": "Button", "caption": "btn_CheckSofwareVersion", 		"onClick": "StuderRS485_CheckSofwareVersion($id);", "width": "400px" },
+			{ "type": "Button", "caption": "btn_setTime",					"onClick": "StuderRS485_setDateTime($id);", "width": "400px" }
 		]},
         { "type": "List",
           "name": "Variables",
