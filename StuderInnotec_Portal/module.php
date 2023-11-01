@@ -201,7 +201,14 @@ private function Studer_Read($infoId,$paramart,$device) {
 			break;
 		case "200" :
 			if ($this->ReadPropertyBoolean("Debug")){IPS_LogMessage($this->moduleName,"Connect to Studer OK");}
-			return $response;
+			$status = strval(json_decode($response)->{'status'});
+			if(!preg_match("/OK/i", $status)){
+				IPS_LogMessage($this->moduleName,((json_decode($response)->{'status'})) . " ID: " . $infoId);
+				exit;
+			}
+			else{
+				return $response;
+			}
 		default :
 			exit;
     }
