@@ -22,6 +22,7 @@ public function Create() {
 	//Config Variablen 
 	$this->RegisterPropertyInteger('ArchiveControlID', IPS_GetInstanceListByModuleID(ARCHIVE_CONTROL_MODULE_ID)[0]);
 	$this->RegisterPropertyInteger('summaryValues', 0);
+	$this->RegisterPropertyInteger('FW_Xcom-485i', 0);
 	$this->RegisterPropertyString('Variables', '');
 	$this->RegisterPropertyString('IP_Modbus_Gateway', '192.168.1.100');
 	$this->RegisterPropertyString('IP_Modbus_Port', '520');
@@ -135,8 +136,8 @@ foreach ($treeData as $value) {
 			}
 			if (!@$this->GetIDForIdent($var_ID )) {
 				//add a way to validate summary
-				IPS_LogMessage($this->moduleName,"summary= ". $this->ReadPropertyInteger('summaryValues'));
-				IPS_LogMessage($this->moduleName,"==>create Var: ". $var_ID );
+				$this->IPS_LogMessage($this->moduleName,"summary= ". $this->ReadPropertyInteger('summaryValues'));
+				$this->IPS_LogMessage($this->moduleName,"==>create Var: ". $var_ID );
                 if(!$varname){
                     $var_name = $var_ID;
                 }else {$var_name = $this->Translate($varname); }
@@ -155,7 +156,7 @@ foreach ($treeData as $value) {
                         $this->EnableAction($var_ID );
 						break;
                     default :
-                        IPS_LogMessage($this->moduleName,"could not find var-Format for: " . $format);
+                        $this->IPS_LogMessage($this->moduleName,"could not find var-Format for: " . $format);
                 }
 			}
             switch ($format) {
@@ -167,10 +168,10 @@ foreach ($treeData as $value) {
 						"summary":"1" => create summary allowed
 						"summary":"2" => create summary never allowed 
 					*/
-					//IPS_LogMessage($this->moduleName,$type . " " .$count ." ". $summary );
+					//$this->IPS_LogMessage($this->moduleName,$type . " " .$count ." ". $summary );
 					switch ($summary) {
 						case "0":
-							//IPS_LogMessage($this->moduleName,$type . " " .$count ." ". $summary );
+							//$this->IPS_LogMessage($this->moduleName,$type . " " .$count ." ". $summary );
 							if ($devInfo=="info"){
 								SetValueFloat ($this->GetIDForIdent($var_ID ),(float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1));
 							}
@@ -183,24 +184,24 @@ foreach ($treeData as $value) {
 							$val=0;
 							do {
 								$mb_device = $mb_device+1;
-								//IPS_LogMessage($this->moduleName,"Device: ".$type . "_" .  $counter." Summary: ". $summary." ".$mb_device ." Address: ".$mb_adress);
+								$this->IPS_LogMessage($this->moduleName,"Device: ".$type . "_" .  $counter." Summary: ". $summary." ".$mb_device ." Address: ".$mb_adress);
 								$val = $val + (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1);
 								$counter++;
 							} while($counter<$count);	
-							//IPS_LogMessage($this->moduleName, $val);
+							$this->IPS_LogMessage($this->moduleName, $val);
 							SetValueFloat ($this->GetIDForIdent($var_ID ),$val);
 							break;
 						case "2":
 							$counter=0;
 							$val=0;
 							do {
-								IPS_LogMessage($this->moduleName,$type . " " .$count ." ". $summary ." ". $mb_adress);
+								$this->IPS_LogMessage($this->moduleName,$type . " " .$count ." ". $summary ." ". $mb_adress);
 								$mb_device = $mb_device+1;
 								//ToDo
 								$counter++;
 							} while($counter<$count);
 							
-							//IPS_LogMessage($this->moduleName,$type . " " .$count ." ". $summary );
+							//$this->IPS_LogMessage($this->moduleName,$type . " " .$count ." ". $summary );
 							if ($devInfo=="info"){
 								SetValueFloat ($this->GetIDForIdent($var_ID ),(float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1));
 							}
@@ -264,7 +265,7 @@ foreach ($treeData as $value) {
 					}
 					break;
 				default :
-					IPS_LogMessage($this->moduleName,"coul not find Handler for: ". $value->Format);
+					$this->IPS_LogMessage($this->moduleName,"coul not find Handler for: ". $value->Format);
             }
 		}
 	}
@@ -359,6 +360,12 @@ public function reCheckVar() {
 		}
 	}
 }
+public function setDateTime(){
+	$actualFW485 = $this->ReadPropertyInteger("FW_Xcom-485i");
+	if ($actualFW485 < '1.6.86') {
+		echo $actualFW485;
+	}
+}
 
 public function CheckSofwareVersion() {
 	$versionNOK = 0;
@@ -373,6 +380,21 @@ public function CheckSofwareVersion() {
 	if (!$treeDataDevices){exit;}		// omits the error if the function is called before any saving
 	foreach ($treeDataDevices as $value) {
 		if(($value->Active)==true){
+			if ($value->DeviceTypeID == "RS485i") {
+				echo $value->DeviceTypeID . "\n"	;	
+				$modbus = new ModbusMaster($this->ReadPropertyString("IP_Modbus_Gateway"), "TCP");
+				//$rs485ID = (float) PhpType::bytes2unsignedint($modbus->readMultipleInputRegisters(1, 10, 5),0);
+				$rs485ID = $modbus->readMultipleInputRegisters(1,10, 5);
+				/* print_r (dechex($rs485ID));
+				for($iShift = 0; $iShift < 8; $iShift++) {
+					if($rs485ID & (1 << $iShift)) {
+						echo "Bit " . ($iShift+1) . "  IS set\n";
+					} else {
+						echo "Bit " . ($iShift+1) . " NOT set\n";
+					}
+				} */
+				continue;
+			}
 			$chunks = array_chunk(preg_split('/(:|,)/', ($value->mb_Software_msb_lsb)), 2);
 			$result = array_combine(array_column($chunks, 0), array_column($chunks, 1));
 			

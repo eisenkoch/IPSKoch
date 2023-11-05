@@ -47,17 +47,17 @@ public function ApplyChanges() {
 	$this->SetTimerInterval("UpdateTimer_60",0);
 	if(empty($this->ReadPropertyString("Username"))){
 		//Warung fehlender Username
-		if ($this->ReadPropertyBoolean("Debug")){IPS_LogMessage($this->moduleName,"Warung fehlender Username");}
+		if ($this->ReadPropertyBoolean("Debug")){$this->IPS_LogMessage($this->moduleName,"Warung fehlender Username");}
 		$this->SetStatus(201);
 	}else {$this->SetStatus(102);}
 	if(empty($this->ReadPropertyString("Password"))){
 		//Warung fehlendes Passwort
-		if ($this->ReadPropertyBoolean("Debug")){IPS_LogMessage($this->moduleName,"Warung fehlendes Passwort");}
+		if ($this->ReadPropertyBoolean("Debug")){$this->IPS_LogMessage($this->moduleName,"Warung fehlendes Passwort");}
 		$this->SetStatus(202);
 	}else {$this->SetStatus(102);}
 	if(empty($this->ReadPropertyString("installationNumber"))){
 		//Warung fehlende installationNumber
-		if ($this->ReadPropertyBoolean("Debug")){IPS_LogMessage($this->moduleName,"Warung fehlende installationNumber");}
+		if ($this->ReadPropertyBoolean("Debug")){$this->IPS_LogMessage($this->moduleName,"Warung fehlende installationNumber");}
 		$this->SetStatus(203);
 	}else {$this->SetStatus(102);}
 	
@@ -124,7 +124,7 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
 				}
 			}
 			if (!@$this->GetIDForIdent($var_ID )) {
-				IPS_LogMessage($this->moduleName,"==>create Var: ". $var_ID );
+				$this->IPS_LogMessage($this->moduleName,"==>create Var: ". $var_ID );
                 if(!$varname){
                     $var_name = $var_ID;
                 }else {$var_name = $this->Translate($varname); }
@@ -143,7 +143,7 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
                         $this->EnableAction($var_ID );
 						break;
                     default :
-                        IPS_LogMessage($this->moduleName,"could not find var-Format for: " . $format);
+                        $this->IPS_LogMessage($this->moduleName,"could not find var-Format for: " . $format);
                 }
 			}
             switch ($format) {
@@ -160,7 +160,7 @@ $treeData = json_decode($this->ReadPropertyString("Variables"));
 					SetValueString($this->GetIDForIdent($var_ID),$result[$objAsString]);
 					break;
 				default :
-					IPS_LogMessage($this->moduleName,"coul not find Handler for: ". $value->Format);
+					$this->IPS_LogMessage($this->moduleName,"coul not find Handler for: ". $value->Format);
             }
 		}
 	}
@@ -194,16 +194,16 @@ private function Studer_Read($infoId,$paramart,$device) {
 
     switch ($respCode){
 		case "401" :
-			IPS_LogMessage($this->moduleName,"Access not allowed");
+			$this->IPS_LogMessage($this->moduleName,"Access not allowed");
 			break;
 		case "500" :
-			IPS_LogMessage($this->moduleName,"An error occured while retrieving data.");
+			$this->IPS_LogMessage($this->moduleName,"An error occured while retrieving data.");
 			break;
 		case "200" :
-			if ($this->ReadPropertyBoolean("Debug")){IPS_LogMessage($this->moduleName,"Connect to Studer OK");}
+			if ($this->ReadPropertyBoolean("Debug")){$this->IPS_LogMessage($this->moduleName,"Connect to Studer OK");}
 			$status = strval(json_decode($response)->{'status'});
 			if(!preg_match("/OK/i", $status)){
-				IPS_LogMessage($this->moduleName,((json_decode($response)->{'status'})) . " ID: " . $infoId);
+				$this->IPS_LogMessage($this->moduleName,((json_decode($response)->{'status'})) . " ID: " . $infoId);
 				exit;
 			}
 			else{
