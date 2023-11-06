@@ -42,8 +42,8 @@ public function Create() {
 	$this->RegisterTimer("UpdateTimer_2", 0, 'StuderRS485_Update_2($_IPS[\'TARGET\']);');
 	$this->RegisterTimer("UpdateTimer_5", 0, 'StuderRS485_Update_5($_IPS[\'TARGET\']);');
 	$this->RegisterTimer("UpdateTimer_60", 0, 'StuderRS485_Update_60($_IPS[\'TARGET\']);');
-	$this->RegisterTimer("UpdateTimer_360", 0, 'StuderRS485_Update_60($_IPS[\'TARGET\']);');
-	$this->RegisterTimer("UpdateTimer_720", 0, 'StuderRS485_Update_60($_IPS[\'TARGET\']);');
+	$this->RegisterTimer("UpdateTimer_360", 0, 'StuderRS485_Update_360($_IPS[\'TARGET\']);');
+	$this->RegisterTimer("UpdateTimer_720", 0, 'StuderRS485_Update_720($_IPS[\'TARGET\']);');
 }
  
 public function ApplyChanges() {
@@ -68,8 +68,6 @@ public function ApplyChanges() {
 		$intervall_active = array_unique((array_column($active, 'Intervall')));
 		foreach ($intervall_active as $value) {
 			$this->SetTimerInterval(("UpdateTimer_".$value), $value*60000);
-			//$this->SetTimerInterval(("UpdateTimer_".$value), $value*1000);
-			//$this->SetTimerInterval(("UpdateTimer_".$value), $value*2000);
 		}
 	$this->call_Studer_from_Timer('720');
 	$this->call_Studer_from_Timer('60');
@@ -114,7 +112,7 @@ public function Update_720() {
 	$this->call_Studer_from_Timer($timer_var);
 }
 
-private function call_Studer_from_Timer($timer){
+public function call_Studer_from_Timer($timer){
 $treeData = json_decode($this->ReadPropertyString("Variables"));
 foreach ($treeData as $value) {
 		if((($value->Active)==true)and (($value->Intervall)== $timer)){
