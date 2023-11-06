@@ -134,8 +134,8 @@ foreach ($treeData as $value) {
 			}
 			if (!@$this->GetIDForIdent($var_ID )) {
 				//add a way to validate summary
-				$this->IPS_LogMessage($this->moduleName,"summary= ". $this->ReadPropertyInteger('summaryValues'));
-				$this->IPS_LogMessage($this->moduleName,"==>create Var: ". $var_ID );
+				$this->LogMessage("summary= ". $this->ReadPropertyInteger('summaryValues') , KL_MESSAGE);
+				$this->LogMessage("==>create Var: ". $var_ID , KL_MESSAGE);
                 if(!$varname){
                     $var_name = $var_ID;
                 }else {$var_name = $this->Translate($varname); }
@@ -154,7 +154,7 @@ foreach ($treeData as $value) {
                         $this->EnableAction($var_ID );
 						break;
                     default :
-                        $this->IPS_LogMessage($this->moduleName,"could not find var-Format for: " . $format);
+                        $this->LogMessage("could not find var-Format for: " . $format , KL_MESSAGE);
                 }
 			}
             switch ($format) {
@@ -166,10 +166,10 @@ foreach ($treeData as $value) {
 						"summary":"1" => create summary allowed
 						"summary":"2" => create summary never allowed 
 					*/
-					//$this->IPS_LogMessage($this->moduleName,$type . " " .$count ." ". $summary );
+					//$this->LogMessage($type . " " .$count ." ". $summary , KL_MESSAGE);
 					switch ($summary) {
 						case "0":
-							//$this->IPS_LogMessage($this->moduleName,$type . " " .$count ." ". $summary );
+							//$this->LogMessage($type . " " .$count ." ". $summary , KL_MESSAGE);
 							if ($devInfo=="info"){
 								SetValueFloat ($this->GetIDForIdent($var_ID ),(float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1));
 							}
@@ -182,24 +182,24 @@ foreach ($treeData as $value) {
 							$val=0;
 							do {
 								$mb_device = $mb_device+1;
-								$this->IPS_LogMessage($this->moduleName,"Device: ".$type . "_" .  $counter." Summary: ". $summary." ".$mb_device ." Address: ".$mb_adress);
+								$this->LogMessage("Device: ".$type . "_" .  $counter." Summary: ". $summary." ".$mb_device ." Address: ".$mb_adress , KL_MESSAGE);
 								$val = $val + (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1);
 								$counter++;
 							} while($counter<$count);	
-							$this->IPS_LogMessage($this->moduleName, $val);
+							$this->LogMessage($val, KL_MESSAGE);
 							SetValueFloat ($this->GetIDForIdent($var_ID ),$val);
 							break;
 						case "2":
 							$counter=0;
 							$val=0;
 							do {
-								$this->IPS_LogMessage($this->moduleName,$type . " " .$count ." ". $summary ." ". $mb_adress);
+								$this->LogMessage($type . " " .$count ." ". $summary ." ". $mb_adress , KL_MESSAGE);
 								$mb_device = $mb_device+1;
 								//ToDo
 								$counter++;
 							} while($counter<$count);
 							
-							//$this->IPS_LogMessage($this->moduleName,$type . " " .$count ." ". $summary );
+							//$this->LogMessage($this->moduleName,$type . " " .$count ." ". $summary , KL_MESSAGE);
 							if ($devInfo=="info"){
 								SetValueFloat ($this->GetIDForIdent($var_ID ),(float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1));
 							}
@@ -263,7 +263,7 @@ foreach ($treeData as $value) {
 					}
 					break;
 				default :
-					$this->IPS_LogMessage($this->moduleName,"coul not find Handler for: ". $value->Format);
+					$this->LogMessage("could not find Handler for: ". $value->Format , KL_MESSAGE);
             }
 		}
 	}
