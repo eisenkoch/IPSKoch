@@ -20,17 +20,17 @@ public function Create() {
 	$this->RegisterProfileFloat("Studer-Innotec.percent",	    "Percent", "", " %", 0, 0, 0, 1);
 	        
 	//Config Variablen 
-	$this->RegisterPropertyInteger('ArchiveControlID', IPS_GetInstanceListByModuleID(ARCHIVE_CONTROL_MODULE_ID)[0]);
 	$this->RegisterPropertyInteger('summaryValues', 0);
 	$this->RegisterPropertyInteger('FW_Xcom-485i', 0);
 	$this->RegisterPropertyString('Variables', '');
 	$this->RegisterPropertyString('IP_Modbus_Gateway', '192.168.1.100');
 	$this->RegisterPropertyString('IP_Modbus_Port', '520');
 	$this->RegisterPropertyString('activeDevices', '');
-	$this->RegisterPropertyString('url', 'https://service.st-ips.de/studer-version.json');
 	$this->RegisterPropertyBoolean('Debug', false);
 	
 	//register Attribute
+	$this->RegisterAttributeInteger('ArchiveControlID', IPS_GetInstanceListByModuleID(ARCHIVE_CONTROL_MODULE_ID)[0]);
+	$this->RegisterAttributeString('stips_url', 'https://service.st-ips.de/studer-version.json');
 	$this->RegisterAttributeInteger("count_XT", 0);
 	$this->RegisterAttributeInteger("count_VS", 0);
 	$this->RegisterAttributeInteger("count_VT", 0);
@@ -144,8 +144,8 @@ foreach ($treeData as $value) {
                         $this->RegisterVariableFloat($var_ID , $var_name, 'Studer-Innotec.'. $unit);
                         $this->EnableAction($var_ID );
 						if (($value->Archive)==true){
-							AC_SetLoggingStatus($this->ReadPropertyInteger('ArchiveControlID'), $this->GetIDForIdent($var_ID), true);
-							IPS_ApplyChanges($this->ReadPropertyInteger('ArchiveControlID'));
+							AC_SetLoggingStatus($this->ReadAttributeInteger ('ArchiveControlID'), $this->GetIDForIdent($var_ID), true);
+							IPS_ApplyChanges($this->ReadAttributeInteger('ArchiveControlID'));
 						}
                         break;
                     case "SHORT_ENUM":
@@ -346,12 +346,12 @@ public function reCheckVar() {
 			}
 			if ($value->Active==true){
 				if (($value->Archive)==true){
-					AC_SetLoggingStatus($this->ReadPropertyInteger('ArchiveControlID'), $this->GetIDForIdent($var_ID), true);
-					IPS_ApplyChanges($this->ReadPropertyInteger('ArchiveControlID'));
+					AC_SetLoggingStatus($this->ReadAttributeInteger('ArchiveControlID'), $this->GetIDForIdent($var_ID), true);
+					IPS_ApplyChanges($this->ReadAttributeInteger('ArchiveControlID'));
 				}
 				else {
-					AC_SetLoggingStatus($this->ReadPropertyInteger('ArchiveControlID'), $this->GetIDForIdent($var_ID), false);
-					IPS_ApplyChanges($this->ReadPropertyInteger('ArchiveControlID'));
+					AC_SetLoggingStatus($this->ReadAttributeInteger('ArchiveControlID'), $this->GetIDForIdent($var_ID), false);
+					IPS_ApplyChanges($this->ReadAttributeInteger('ArchiveControlID'));
 					
 				}
 			}
@@ -495,14 +495,12 @@ private function RegisterProfileFloat($Name, $Icon, $Prefix, $Suffix, $MinValue,
 function GetDataStuderVersion() {
     $curl = curl_init();
 
-	curl_setopt($curl, CURLOPT_URL, $this->ReadPropertyString("url"));
+	curl_setopt($curl, CURLOPT_URL, $this->ReadAttributeString("stips_url"));
 	curl_setopt($curl, CURLOPT_HEADER, 0);
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 	
 	curl_exec($curl);
-	
-	#print_r (curl_getinfo($curl));
 	
 	$httpCode = curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
 	

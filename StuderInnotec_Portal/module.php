@@ -19,7 +19,7 @@ class StuderInnotecWeb extends IPSModule {
 		$this->RegisterProfileFloat("Studer-Innotec.Ah",	"Capacity", "", " Ah", 0, 0, 0, 0);
 		$this->RegisterProfileFloat("Studer-Innotec.percent",	    "Percent", "", " %", 0, 0, 0, 1);
         
-        // Config Variablen 
+        // Config Variablen Property
 		$this->RegisterPropertyInteger('ArchiveControlID', IPS_GetInstanceListByModuleID(ARCHIVE_CONTROL_MODULE_ID)[0]);
         $this->RegisterPropertyString("Variables", "");
 		$this->RegisterPropertyString("activeDevices", "");
@@ -27,8 +27,12 @@ class StuderInnotecWeb extends IPSModule {
 		$this->RegisterPropertyString('Username', '');
         $this->RegisterPropertyString('Password', '');
         $this->RegisterPropertyString("installationNumber", "");
-		$this->RegisterPropertyString("url_api", "https://api.studer-innotec.com/api/v1");
-        $this->RegisterTimer("UpdateTimer_2", 0, 'Studer_Update_2($_IPS[\'TARGET\']);');
+		        
+		// Config Variablen Attribute
+		$this->RegisterAttributeString("url_api", "https://api.studer-innotec.com/api/v1");
+		
+		// Config Variablen Timer
+		$this->RegisterTimer("UpdateTimer_2", 0, 'Studer_Update_2($_IPS[\'TARGET\']);');
 		$this->RegisterTimer("UpdateTimer_5", 0, 'Studer_Update_5($_IPS[\'TARGET\']);');
 		$this->RegisterTimer("UpdateTimer_60", 0, 'Studer_Update_60($_IPS[\'TARGET\']);');
 		$this->RegisterTimer("UpdateTimer_360", 0, 'Studer_Update_60($_IPS[\'TARGET\']);');
@@ -174,7 +178,7 @@ private function Studer_Read($infoId,$paramart,$device) {
 	$curl = curl_init();
 
 	curl_setopt_array($curl, array(
-    CURLOPT_URL => $this->ReadPropertyString("url_api") .'/installation/user-info/'. $this->ReadPropertyString("installationNumber") . '?device='. $device. "&infoId=". $infoId .'&paramPart=Value',
+    CURLOPT_URL => $this->ReadAttributeString("url_api") .'/installation/user-info/'. $this->ReadPropertyString("installationNumber") . '?device='. $device. "&infoId=". $infoId .'&paramPart=Value',
 	CURLOPT_RETURNTRANSFER => true,
     CURLOPT_ENCODING => "",
     CURLOPT_MAXREDIRS => 10,
@@ -238,7 +242,7 @@ public function validateAccount() {
 	$curl = curl_init();
 
 	curl_setopt_array($curl, array(
-		CURLOPT_URL => $this->ReadPropertyString("url_api") .'/installation/installations',
+		CURLOPT_URL => $this->ReadAttributeString("url_api") .'/installation/installations',
 		CURLOPT_RETURNTRANSFER => true,
 		CURLOPT_ENCODING => '',
 		CURLOPT_MAXREDIRS => 10,
