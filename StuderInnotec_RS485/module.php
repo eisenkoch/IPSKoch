@@ -182,7 +182,7 @@ foreach ($treeData as $value) {
 							$val=0;
 							do {
 								$mb_device = $mb_device+1;
-								$this->LogMessage("Device: ".$type . "_" .  $counter." Summary: ". $summary." ".$mb_device ." Address: ".$mb_adress , KL_MESSAGE);
+								$this->LogMessage("Device: ".$type . "_" .  $counter."; Summary: ". $summary."; mb_device ".$mb_device ."; Address: ".$mb_adress , KL_MESSAGE);
 								$val = $val + (float) PhpType::bytes2float($modbus->readMultipleInputRegisters($mb_device, $mb_adress, 2),1);
 								$counter++;
 							} while($counter<$count);	
